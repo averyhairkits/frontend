@@ -5,9 +5,54 @@
   --darkgrey: #747474;
   --white: #fff;
   --text: #191a23;
+
+  --purple1: #662080;
+  --white: #ffffff;
+  --black: #000000;
+  --light-gray: #e7e7e7;
+  --medium-gray: #a499ab;
+  --dark-gray: #5e5462;
+  --red: #dc4444;
+  --solid-blue: #6b95ff;
+  --purple2: #b300ea;
+  --sign-up-fill-1: #e5edff;
+  --sign-up-fill-2: #bfd1ff;
+  --sign-up-fill-3: #99b6ff;
+  --sign-up-fill-4: #739aff;
+  --sign-up-fill-5: #4d7fff;
+  --sign-up-fill-6: #2664ff;
+  --event-shadow: #3800d236;
+  --translucent: #d0c0d770;
+  --lightest-gray: #f7f7f9;
+
 }
 
 * {
   font-family: Verdana, sans-serif;
   color: var(--text);
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+}
+
+.leftSection {
+  background-color: var(--purple1);
+  
+  display: flex;
+  flex-direction: column;
+
+  width: 400px;
+  height: 100vh;
+}
+
+.rightSection {
+  background-color: var(--white);
+
+  display: flex;
+  flex-direction: column;
+
+  flex: 1
+
 }
