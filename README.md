@@ -1,4 +1,4 @@
-# Frontend Template
+# Frontend Template.
 
 _2025 Discover Program Project Templates_
 
