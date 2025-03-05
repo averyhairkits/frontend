@@ -28,7 +28,7 @@
 }
 
 * {
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--text);
 }
 
@@ -44,15 +44,5 @@ main {
   flex-direction: column;
 
   width: 400px;
-  height: 100vh;
-}
-
-.rightSection {
-  background-color: var(--white);
-
-  display: flex;
-  flex-direction: column;
-
-  flex: 1
-
+  min-height: 100vh;
 }

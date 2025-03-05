@@ -1,0 +1,167 @@
+h4 {
+  font-size: 23px;
+  font-weight: 700;
+}
+
+h5 {
+  font-size: 21px;
+  font-weight: 400;
+}
+
+h6 {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--purple1);
+}
+
+.boldedSymbol {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--dark-gray);
+}
+
+.navIcon {
+  background-color: var(--purple1);
+  color: var(--white);
+  word-wrap: break-word;
+  border: 0px;
+  border-radius: 5px;
+  width: 37px;
+  height: 37px;
+  position: fixed;
+  top: 25px;
+  right: 28px;
+}
+
+.rightSection {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  padding: 43px 27px 70px;
+  gap: 25px;
+}
+
+.calendarNav {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 56px;
+
+  height: 43px;
+}
+
+.calendarNavButton {
+  border: 0px;
+  background-color: transparent;
+  color: var(--purple1);
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.timeContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.numVolunteersContainer {
+  height: 81px;
+
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.numVolunteersButton {
+  background-color: var(--purple1);
+  color: var(--white);
+  word-wrap: break-word;
+  border-radius: 10px;
+  border: 0px;
+  height: 38px;
+  width: 77px;
+
+}
+
+.timeList {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  text-align: right;
+}
+
+.rightMainSection {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  flex: 1;
+}
+
+.gridContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  flex: 1;
+}
+
+.headerGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(2, 28px);
+
+  align-items: center;
+}
+
+.headerGridItem {
+  text-align: center;
+
+  color: var(--dark-gray);
+}
+
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+
+  border-radius: 10px;
+  outline: 1.5px solid var(--purple1);
+  outline-offset: -1px;
+
+  overflow: hidden;
+  flex: 1;
+}
+
+.calendarGridItemTop {
+  border: 1px solid var(--purple1);
+  border-bottom: 1px dashed var(--purple1);
+}
+
+.calendarGridItemBottom {
+  border: 1px solid var(--purple1);
+  border-top: 1px dashed var(--purple1);
+}
+
+.saveButton {
+  background-color: var(--medium-gray);
+  color: var(--white);
+  font-size: 21px;
+  font-weight: 800;
+  border: 0px;
+  border-radius: 5px;
+  
+  position: fixed;
+  bottom: 17px;
+  right: 27px;
+
+  width: 85px;
+  height: 36px;
+}
+
+
+
