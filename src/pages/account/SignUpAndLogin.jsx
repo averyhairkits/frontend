@@ -3,15 +3,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import GoogleButton from 'common/components/GoogleButton';
-import { Form, FormTitle } from 'common/components/form/Form';
+import { Form } from 'common/components/form/Form';
 import { Input } from 'common/components/form/Input';
 import SubmitButton from 'common/components/form/SubmitButton';
 import { useUser } from 'common/contexts/UserContext';
 
-import { StyledPage } from './styles';
+import { LeftSide, RightSide, StyledPage, ToggleContainer, ToggleTab } from './styles';
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [isSignIn, setIsSignIn] = useState(true);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { googleAuth } = useUser();
@@ -24,6 +25,13 @@ export default function SignUp() {
     username: '',
   });
 
+  //handles toggling btw signin and create account
+  const handleToggle = () => {
+    setIsSignIn(!isSignIn);
+    setError("");
+  };
+
+  //form component functions
   const handleChangeFirstname = (e) => {
     setFormState({ ...formState, firstname: e.target.value });
     setError('');
@@ -102,51 +110,49 @@ export default function SignUp() {
     }
   };
 
+
+
   return (
     <StyledPage>
-      <Form onSubmit={handleSubmit}>
-        <FormTitle>Create an account</FormTitle>
-        {error && <div className='text-red-500 mb-4'>{error}</div>}
-        <Input.Text
-          title='First name'
-          placeholder='John'
-          value={formState.firstname}
-          onChange={handleChangeFirstname}
-        />
-        <Input.Text
-          title='Last name'
-          placeholder='Smith'
-          value={formState.lastname}
-          onChange={handleChangeLastname}
-        />
-        <Input.Text
-          title='Email'
-          placeholder='j@example.com'
-          value={formState.email}
-          onChange={handleChangeEmail}
-          required
-        />
-        <Input.Text
-          title='Username'
-          placeholder='johnsmith'
-          value={formState.username}
-          onChange={handleChangeUsername}
-        />
-        <Input.Password
-          title='Password'
-          value={formState.password}
-          onChange={handleChangePassword}
-          required
-        />
-        <SubmitButton onClick={() => {}} disabled={isLoading}>
-          {isLoading ? 'Creating account...' : 'Sign Up'}
-        </SubmitButton>
-        <GoogleButton
-          onClick={handleGoogleSignup}
-          isLoading={isLoading}
-          text='Sign up with Google'
-        />
-      </Form>
+      <LeftSide>
+        <div className='Logo'></div>
+        <div className='BigText'>Welcome to our volunteer scheduling website!</div>
+        <div className='BigText'>If this is your first time here, please create a new account to continue. For returning volunteers, please sign in using your existing account.</div>
+      </LeftSide>
+      <RightSide>
+        <ToggleContainer>
+          <ToggleTab active={isSignIn} onClick={() => setIsSignIn(true)}>
+            Sign in
+          </ToggleTab>
+          <ToggleTab active={!isSignIn} onClick={() => setIsSignIn(false)}>
+            Create account
+          </ToggleTab>
+        </ToggleContainer>
+
+        <Form onSubmit={() => {}}>
+
+          {isSignIn ? (
+            // Sign-in Form
+            <>
+              <Input.Text title="Email" placeholder="example@mail.com" />
+              <Input.Password title="Password" placeholder="password" />
+              <Input.Password title="Confirm Password" placeholder="re-enter password" />
+              <SubmitButton>Sign in</SubmitButton>
+              <GoogleButton text="Sign in with Google" />
+            </>
+          ) : (
+            // Sign-up Form
+            <>
+              <Input.Text title="First Name" placeholder="John" />
+              <Input.Text title="Last Name" placeholder="Doe" />
+              <Input.Text title="Email" placeholder="example@mail.com" />
+              <Input.Password title="Password" placeholder="password" />
+              <SubmitButton>Create Account</SubmitButton>
+              <GoogleButton text="Sign up with Google" />
+            </>
+          )}
+        </Form>
+      </RightSide>
     </StyledPage>
   );
 }

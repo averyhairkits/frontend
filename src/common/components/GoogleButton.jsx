@@ -65,7 +65,7 @@ export default function GoogleButton({
   return (
     <>
       <Divider>
-        <span>Or continue with</span>
+        <span>OR</span>
       </Divider>
       <StyledButton type='button' onClick={onClick} disabled={isLoading}>
         <svg width='18' height='18' viewBox='0 0 24 24'>
