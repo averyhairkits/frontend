@@ -86,10 +86,12 @@ h6 {
 }
 
 .numVolunteersContainer {
-  height: 71px;
+  position: relative;
+  height: 77px;
   display: flex;
-  padding-left: 5px;
-  padding-top: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .numVolunteersButton {
@@ -106,13 +108,47 @@ h6 {
   color: var(--white);
   font-size: 20px;
   font-weight: 600;
+  text-align: center;
 }
 
-.numVolunteersContent {
+.numVolunteersButtonContent {
   stroke: var(--white);
   width: 25px;
   height: 25px;
   stroke-width: 3;
+}
+
+.numVolunteersPopUp {
+  position: absolute;
+  top: -103px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  display: flex;
+  flex-direction: column;
+  outline: 1.5px solid var(--purple1);
+  outline-offset: -1px;
+  border: 0;
+  border-radius: 10px;
+  width: 90px;
+  padding: 0;
+  box-shadow: 0 3px 5px var(--medium-gray);
+}
+
+.numVolunteersOption {
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  border: 1px solid var(--purple1);
+  color: var(--purple1);
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+.numVolunteersOption.selected {
+  background-color: var(--purple1);
+  color: var(--white);
 }
 
 .sunIcon {
