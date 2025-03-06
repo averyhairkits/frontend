@@ -19,7 +19,7 @@ h6 {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--dark-gray);
   gap: 10px;
@@ -132,7 +132,7 @@ h6 {
 .rightMainSection {
   display: flex;
   flex-direction: row;
-  gap: 30px;
+  gap: 25px;
   flex: 1;
 }
 
