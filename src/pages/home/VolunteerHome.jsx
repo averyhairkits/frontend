@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Icon } from 'assets/icons/icons.js';
 import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
@@ -13,7 +14,7 @@ const CalendarNav = ({ currentDate, weekdates }) => {
   return (
     <nav className='calendarNav'>
       <button onClick={handlePrevWeek} className='calendarNavButton'>
-        &lt;
+        <Icon.Back className='calendarNavIcon' />
       </button>
       <h6>
         {currentDate.toLocaleDateString(undefined, {
@@ -29,7 +30,7 @@ const CalendarNav = ({ currentDate, weekdates }) => {
           : weekdates[6].toLocaleDateString(undefined, { day: 'numeric' })}
       </h6>
       <button onClick={handleNextWeek} className='calendarNavButton'>
-        &gt;
+        <Icon.Next className='calendarNavIcon' />
       </button>
     </nav>
   );
@@ -59,6 +60,9 @@ const Times = () => {
     <div className='timeList'>
       {AllTimes.map((time) => (
         <div className='boldedSymbol' key={time}>
+          {time === '9:00 AM' ? <Icon.Sunrise className='sunIcon' /> : ''}
+          {time === '12:00 PM' ? <Icon.Noon className='sunIcon' /> : ''}
+          {time === '5:00 PM' ? <Icon.Sunset className='sunIcon' /> : ''}
           {time}
         </div>
       ))}
@@ -107,14 +111,20 @@ const VolunteerHome = () => {
 
   return (
     <main>
-      <button className='navIcon'>logout</button>
+      <button className='navButton'>
+        <Icon.Logout className='navIcon' />
+      </button>
       <div className='leftSection'></div>
       <div className='rightSection'>
         <CalendarNav currentDate={currentDate} weekdates={weekdates} />
         <div className='rightMainSection'>
           <div className='timeContainer'>
             <div className='numVolunteersContainer'>
-              <button className='numVolunteersButton'>#People</button>
+              <button className='numVolunteersButton'>
+                <Icon.Person className='numVolunteersContent' />
+                3
+                <Icon.Up className='numVolunteersContent' />
+              </button>
             </div>
             <Times />
           </div>
