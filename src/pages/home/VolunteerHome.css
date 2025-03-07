@@ -1,97 +1,10 @@
-h4 {
-  font-size: 23px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-h5 {
-  font-size: 21px;
-  font-weight: 400;
-}
-
-h6 {
-  font-size: 40px;
-  font-weight: 600;
-  color: var(--purple1);
-}
-
-.boldedSymbol {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--dark-gray);
-  gap: 10px;
-}
-
-.navButton {
-  background-color: var(--purple1);
-  color: var(--white);
-  word-wrap: break-word;
-  border: 0px;
-  border-radius: 5px;
-  width: 37px;
-  height: 37px;
-  position: fixed;
-  top: 25px;
-  right: 28px;
-}
-
-.navIcon {
-  stroke: var(--white);
-  stroke-width: 3;
-}
-
-.rightSection {
-  display: flex;
-  flex-direction: column;
-
-  flex: 1;
-
-  padding: 43px 27px 70px;
-  gap: 25px;
-}
-
-.calendarNav {
-  display: flex;
-  flex-direction: row;
-
-  justify-content: center;
-  align-items: center;
-
-  gap: 56px;
-
-  height: 43px;
-}
-
-.calendarNavButton {
-  border: 0px;
-  background-color: transparent;
-  color: var(--purple1);
-  font-size: 30px;
-  font-weight: 600;
-}
-
-.calendarNavIcon {
-  stroke: var(--purple1);
-  stroke-width: 4;
-  width: 30px;
-  height: 30px;
-}
-
-.timeContainer {
-  display: flex;
-  flex-direction: column;
-}
-
 .numVolunteersContainer {
   position: relative;
   height: 77px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: end;
 }
 
 .numVolunteersButton {
@@ -121,6 +34,7 @@ h6 {
 .numVolunteersPopUp {
   position: absolute;
   top: -103px;
+  left: 18px;
   overflow-x: hidden;
   overflow-y: visible;
   display: flex;
@@ -146,75 +60,10 @@ h6 {
   font-weight: 600;
   text-align: center;
 }
+
 .numVolunteersOption.selected {
   background-color: var(--purple1);
   color: var(--white);
-}
-
-.sunIcon {
-  stroke: var(--dark-gray);
-  width: 20px;
-  height: 20px;
-}
-
-.timeList {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1;
-  text-align: right;
-}
-
-.rightMainSection {
-  display: flex;
-  flex-direction: row;
-  gap: 25px;
-  flex: 1;
-}
-
-.gridContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  flex: 1;
-}
-
-.headerGrid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(2, 28px);
-
-  align-items: center;
-}
-
-.headerGridItem {
-  text-align: center;
-
-  color: var(--dark-gray);
-}
-
-
-.calendarGrid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(20, 1fr);
-
-  border-radius: 10px;
-  outline: 1.5px solid var(--purple1);
-  outline-offset: -1px;
-
-  overflow: hidden;
-  flex: 1;
-}
-
-.calendarGridItemTop {
-  border: 1px solid var(--purple1);
-  border-bottom: 1px dashed var(--purple1);
-}
-
-.calendarGridItemBottom {
-  border: 1px solid var(--purple1);
-  border-top: 1px dashed var(--purple1);
 }
 
 .saveButton {

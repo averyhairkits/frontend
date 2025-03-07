@@ -46,3 +46,38 @@ main {
   width: 400px;
   min-height: 100vh;
 }
+
+h4 {
+  font-size: 23px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h5 {
+  font-size: 21px;
+  font-weight: 400;
+}
+
+h6 {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--purple1);
+}
+
+.navButton {
+  background-color: var(--purple1);
+  color: var(--white);
+  word-wrap: break-word;
+  border: 0px;
+  border-radius: 5px;
+  width: 37px;
+  height: 37px;
+  position: fixed;
+  top: 25px;
+  right: 28px;
+}
+
+.navIcon {
+  stroke: var(--white);
+  stroke-width: 3;
+}
