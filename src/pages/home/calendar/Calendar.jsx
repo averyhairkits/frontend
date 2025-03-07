@@ -9,35 +9,55 @@ import 'pages/home/VolunteerHome.css';
 import { useCalendarNav } from 'pages/home/calendar/useCalendarNav';
 import { useNumVolunteers } from 'pages/home/calendar/useNumVolunteers';
 
-const CalendarNav = ({ currentDate, weekdates }) => {
+const CalendarNav = ({
+  todaysDate,
+  thisWeeksStart,
+  currentDate,
+  weekdates,
+}) => {
   const { handlePrevWeek, handleNextWeek } = useCalendarNav();
+  const hasMonthOverlap = weekdates[0].getMonth() !== weekdates[6].getMonth();
+  const atTodaysWeek =
+    thisWeeksStart.toLocaleDateString() !== weekdates[0].toLocaleDateString();
+  const isFourWeeksAhead =
+    currentDate.getTime() - todaysDate.getTime() > 14 * 24 * 60 * 60 * 1000;
 
   return (
     <nav className='calendarNav'>
-      <button onClick={handlePrevWeek} className='calendarNavButton'>
-        <Icon.Back className='calendarNavIcon' />
-      </button>
+      {atTodaysWeek ? (
+        <button onClick={handlePrevWeek} className='calendarNavButton'>
+          <Icon.Back className='calendarNavIcon' />
+        </button>
+      ) : (
+        <button className='calendarNavButton' />
+      )}
       <h6>
         {currentDate.toLocaleDateString(undefined, {
           month: 'long',
           day: 'numeric',
         })}
         {' - '}
-        {weekdates[0].getMonth() !== weekdates[6].getMonth()
+        {hasMonthOverlap
           ? weekdates[6].toLocaleDateString(undefined, {
               month: 'long',
               day: 'numeric',
             })
           : weekdates[6].toLocaleDateString(undefined, { day: 'numeric' })}
       </h6>
-      <button onClick={handleNextWeek} className='calendarNavButton'>
-        <Icon.Next className='calendarNavIcon' />
-      </button>
+      {isFourWeeksAhead ? (
+        <button className='calendarNavButton' />
+      ) : (
+        <button onClick={handleNextWeek} className='calendarNavButton'>
+          <Icon.Next className='calendarNavIcon' />
+        </button>
+      )}
     </nav>
   );
 };
 
 CalendarNav.propTypes = {
+  thisWeeksStart: PropTypes.instanceOf(Date).isRequired,
+  todaysDate: PropTypes.instanceOf(Date).isRequired,
   currentDate: PropTypes.instanceOf(Date).isRequired,
   weekdates: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
 };
@@ -144,10 +164,16 @@ const CalendarGrid = () => {
 };
 
 export const Calendar = () => {
-  const { currentDate, weekdates } = useCalendarContext();
+  const { todaysDate, thisWeeksStart, currentDate, weekdates } =
+    useCalendarContext();
   return (
     <div className='calendar'>
-      <CalendarNav currentDate={currentDate} weekdates={weekdates} />
+      <CalendarNav
+        todaysDate={todaysDate}
+        thisWeeksStart={thisWeeksStart}
+        currentDate={currentDate}
+        weekdates={weekdates}
+      />
       <div className='rightMainSection'>
         <div className='timeContainer'>
           <NumVolunteers />

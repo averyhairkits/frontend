@@ -35,7 +35,13 @@ const CalendarContextProvider = ({ children }) => {
 
   return (
     <CalendarContext.Provider
-      value={{ currentDate, setCurrentDate, weekdates }}
+      value={{
+        todaysDate,
+        thisWeeksStart,
+        currentDate,
+        setCurrentDate,
+        weekdates,
+      }}
     >
       {children}
     </CalendarContext.Provider>

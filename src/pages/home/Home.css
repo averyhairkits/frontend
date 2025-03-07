@@ -10,14 +10,19 @@
 
 .calendarNav {
   display: flex;
+
   flex-direction: row;
 
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+
+  text-align: center;
 
   gap: 56px;
 
   height: 43px;
+  padding-right: 150px;
+  padding-left: 200px;
 }
 
 .calendarNavButton {
@@ -26,6 +31,8 @@
   color: var(--purple1);
   font-size: 30px;
   font-weight: 600;
+  text-align: center;
+  width: 30px;
 }
 
 .calendarNavIcon {
