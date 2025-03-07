@@ -97,6 +97,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(20, 1fr);
+  grid-auto-flow: column;
 
   border-radius: 10px;
   outline: 1.5px solid var(--purple1);
