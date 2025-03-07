@@ -154,9 +154,8 @@ const CalendarGrid = () => {
   return (
     <div className='calendarGrid'>
       {gridItems.map((_, i) => {
-        const row = Math.floor(i / 7);
         const itemType =
-          row % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom';
+          i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom';
         return <div key={i} className={itemType}></div>;
       })}
     </div>
