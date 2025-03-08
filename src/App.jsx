@@ -12,7 +12,7 @@ import AuthCallback from 'pages/account/AuthCallback';
 import Login from 'pages/account/Login';
 import RequestPasswordReset from 'pages/account/RequestPasswordReset';
 import ResetPassword from 'pages/account/ResetPassword';
-import SignUp from 'pages/account/SignUp';
+import SignUp from 'pages/account/SignUpAndLogin';
 import Home from 'pages/home/Home';
 import NotFound from 'pages/not-found/NotFound';
 

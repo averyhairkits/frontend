@@ -1,13 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
 /* global color presets */
+
 :root {
   --primary-green: #45bf84;
-  --secondary-lightgrey: #f3f3f3;
+  --lightgrey: #d3cfd5; /*from our figma*/
   --darkgrey: #747474;
   --white: #fff;
   --text: #191a23;
+  --darkpurple: #662080; /*from our figma*/
 }
 
 * {
-  font-family: Verdana, sans-serif;
+  font-family: 'Inter', sans-serif;
   color: var(--text);
 }
