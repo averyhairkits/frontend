@@ -161,13 +161,9 @@ export default function SignUp() {
                 title='Confirm Password'
                 placeholder='re-enter password'
               />
-<<<<<<< Updated upstream
               <SubmitButton onClick={() => navigate('/volunteer-home')}>
                 Create Account
               </SubmitButton>
-=======
-              <SubmitButton onClick={() => navigate('/volunteer-home')>Create Account</SubmitButton>
->>>>>>> Stashed changes
               <GoogleButton text='Sign up with Google' />
             </>
           )}

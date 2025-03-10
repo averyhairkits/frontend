@@ -8,10 +8,6 @@ import {
 } from 'common/components/routes/ProtectedRoutes';
 import { CalendarContextProvider } from 'common/contexts/CalendarContext';
 import { UserProvider } from 'common/contexts/UserContext';
-<<<<<<< Updated upstream
-=======
-import NavLayout from 'common/layouts/NavLayout';
->>>>>>> Stashed changes
 import AuthCallback from 'pages/account/AuthCallback';
 import RequestPasswordReset from 'pages/account/RequestPasswordReset';
 import ResetPassword from 'pages/account/ResetPassword';
