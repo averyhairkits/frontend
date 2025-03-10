@@ -1,6 +1,8 @@
 import { ReactComponent as Back } from './back.svg';
 import { ReactComponent as eye } from './eye.svg';
 import { ReactComponent as eyeClosed } from './eyeclosed.svg';
+import { ReactComponent as Faq } from './faq.svg';
+import { ReactComponent as HowTo } from './howto.svg';
 import { ReactComponent as Logout } from './logout.svg';
 import { ReactComponent as Next } from './next.svg';
 import { ReactComponent as Noon } from './noon.svg';
@@ -30,4 +32,6 @@ export const Icon = {
   Person,
   Up,
   Logout,
+  HowTo,
+  Faq,
 };

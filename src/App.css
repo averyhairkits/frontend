@@ -44,7 +44,7 @@ main {
   flex-direction: column;
 
   width: 400px;
-  min-height: 100vh;
+  height: 135vh;
 }
 
 h4 {
