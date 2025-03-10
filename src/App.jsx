@@ -12,7 +12,6 @@ import AuthCallback from 'pages/account/AuthCallback';
 import RequestPasswordReset from 'pages/account/RequestPasswordReset';
 import ResetPassword from 'pages/account/ResetPassword';
 import SignUp from 'pages/account/SignUpAndLogin';
-import Home from 'pages/home/Home';
 import VolunteerHome from 'pages/home/VolunteerHome';
 import NotFound from 'pages/not-found/NotFound';
 
@@ -24,9 +23,7 @@ export default function App() {
       <CalendarContextProvider>
         <BrowserRouter>
           <Routes>
-            <Route element={<PrivateRoute />}>
-              <Route index element={<Home />} />
-            </Route>
+            <Route element={<PrivateRoute />}></Route>
             <Route path='/' element={<PublicOnlyRoute />}>
               <Route path='volunteer-home' element={<VolunteerHome />} />
               <Route path='login' element={<SignUp />} />
