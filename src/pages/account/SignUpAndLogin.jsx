@@ -8,7 +8,13 @@ import { Input } from 'common/components/form/Input';
 import SubmitButton from 'common/components/form/SubmitButton';
 import { useUser } from 'common/contexts/UserContext';
 
-import { LeftSide, RightSide, StyledPage, ToggleContainer, ToggleTab } from './styles';
+import {
+  LeftSide,
+  RightSide,
+  StyledPage,
+  ToggleContainer,
+  ToggleTab,
+} from './styles';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -28,7 +34,7 @@ export default function SignUp() {
   //handles toggling btw signin and create account
   const handleToggle = () => {
     setIsSignIn(!isSignIn);
-    setError("");
+    setError('');
   };
 
   //form component functions
@@ -110,14 +116,18 @@ export default function SignUp() {
     }
   };
 
-
-
   return (
     <StyledPage>
       <LeftSide>
         <div className='Logo'></div>
-        <div className='BigText'>Welcome to our volunteer scheduling website!</div>
-        <div className='BigText'>If this is your first time here, please create a new account to continue. For returning volunteers, please sign in using your existing account.</div>
+        <div className='BigText'>
+          Welcome to our volunteer scheduling website!
+        </div>
+        <div className='BigText'>
+          If this is your first time here, please create a new account to
+          continue. For returning volunteers, please sign in using your existing
+          account.
+        </div>
       </LeftSide>
       <RightSide>
         <ToggleContainer>
@@ -130,25 +140,27 @@ export default function SignUp() {
         </ToggleContainer>
 
         <Form onSubmit={() => {}}>
-
           {isSignIn ? (
             // Sign-in Form
             <>
-              <Input.Text title="Email" placeholder="example@mail.com" />
-              <Input.Password title="Password" placeholder="password" />
-              <Input.Password title="Confirm Password" placeholder="re-enter password" />
+              <Input.Text title='Email' placeholder='example@mail.com' />
+              <Input.Password title='Password' placeholder='password' />
               <SubmitButton>Sign in</SubmitButton>
-              <GoogleButton text="Sign in with Google" />
+              <GoogleButton text='Sign in with Google' />
             </>
           ) : (
             // Sign-up Form
             <>
-              <Input.Text title="First Name" placeholder="John" />
-              <Input.Text title="Last Name" placeholder="Doe" />
-              <Input.Text title="Email" placeholder="example@mail.com" />
-              <Input.Password title="Password" placeholder="password" />
+              <Input.Text title='First Name' placeholder='John' />
+              <Input.Text title='Last Name' placeholder='Doe' />
+              <Input.Text title='Email' placeholder='example@mail.com' />
+              <Input.Password title='Password' placeholder='password' />
+              <Input.Password
+                title='Confirm Password'
+                placeholder='re-enter password'
+              />
               <SubmitButton>Create Account</SubmitButton>
-              <GoogleButton text="Sign up with Google" />
+              <GoogleButton text='Sign up with Google' />
             </>
           )}
         </Form>

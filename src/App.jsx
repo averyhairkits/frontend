@@ -9,7 +9,6 @@ import {
 import { UserProvider } from 'common/contexts/UserContext';
 import NavLayout from 'common/layouts/NavLayout';
 import AuthCallback from 'pages/account/AuthCallback';
-import Login from 'pages/account/Login';
 import RequestPasswordReset from 'pages/account/RequestPasswordReset';
 import ResetPassword from 'pages/account/ResetPassword';
 import SignUp from 'pages/account/SignUpAndLogin';
@@ -28,7 +27,7 @@ export default function App() {
               <Route index element={<Home />} />
             </Route>
             <Route element={<PublicOnlyRoute />}>
-              <Route path='login' element={<Login />} />
+              <Route path='login' element={<Home />} />
               <Route path='signup' element={<SignUp />} />
               <Route
                 path='forgot-password'
