@@ -1,0 +1,92 @@
+.numVolunteersContainer {
+  position: relative;
+  height: 77px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+}
+
+.numVolunteersButton {
+  background-color: var(--purple1);
+  word-wrap: break-word;
+  border-radius: 10px;
+  border: 0px;
+  height: 42px;
+  width: 90px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--white);
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.numVolunteersButtonContent {
+  stroke: var(--white);
+  width: 25px;
+  height: 25px;
+  stroke-width: 3;
+}
+
+.numVolunteersPopUp {
+  position: absolute;
+  top: -103px;
+  left: 18px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  display: flex;
+  flex-direction: column;
+  outline: 1.5px solid var(--purple1);
+  outline-offset: -1px;
+  border: 0;
+  border-radius: 10px;
+  width: 90px;
+  padding: 0;
+  box-shadow: 0 3px 5px var(--medium-gray);
+}
+
+.numVolunteersOption {
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  border: 1px solid var(--purple1);
+  color: var(--purple1);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.numVolunteersOption.selected {
+  background-color: var(--purple1);
+  color: var(--white);
+}
+
+.calendarNavIcon.hidden {
+  stroke: var(--white);
+}
+
+.saveButton {
+  background-color: var(--medium-gray);
+  color: var(--white);
+  font-size: 21px;
+  font-weight: 800;
+  border: 0px;
+  border-radius: 5px;
+  
+  position: fixed;
+  bottom: 17px;
+  right: 27px;
+
+  width: 85px;
+  height: 36px;
+}
+
+.selected {
+  background-color: var(--sign-up-fill-3);
+}
+
+

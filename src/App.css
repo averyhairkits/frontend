@@ -31,6 +31,56 @@
 }
 
 * {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--text);
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+}
+
+.leftSection {
+  background-color: var(--purple1);
+  
+  display: flex;
+  flex-direction: column;
+
+  width: 400px;
+  height: 135vh;
+}
+
+h4 {
+  font-size: 23px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h5 {
+  font-size: 21px;
+  font-weight: 400;
+}
+
+h6 {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--purple1);
+}
+
+.navButton {
+  background-color: var(--purple1);
+  color: var(--white);
+  word-wrap: break-word;
+  border: 0px;
+  border-radius: 5px;
+  width: 37px;
+  height: 37px;
+  position: fixed;
+  top: 17px;
+  right: 17px;
+}
+
+.navIcon {
+  stroke: var(--white);
+  stroke-width: 3;
 }
