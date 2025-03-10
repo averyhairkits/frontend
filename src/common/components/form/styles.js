@@ -23,7 +23,7 @@ export const StyledInput = styled.input`
   padding: 8px;
   border: solid 1px var(--text);
   border-radius: 8px;
-  border-color: var(--lightgrey);
+  border-color: var(--medium-gray);
   width: 375px;
 `;
 

@@ -10,7 +10,7 @@ const ButtonBase = styled.button`
 `;
 
 const ButtonPrimary = styled(ButtonBase)`
-  background-color: var(--darkpurple);
+  background-color: var(--purple1);
   color: var(--white);
 `;
 

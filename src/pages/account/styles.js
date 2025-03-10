@@ -1,13 +1,13 @@
-import { Button } from 'common/components/Button';
+import logo from 'assets/icons/logosfinals/logotransparentbg.png';
 import styled from 'styled-components';
-import logo from '../../assets/icons/logosfinals/logotransparentbg.png';
+
+import { Button } from 'common/components/Button';
 
 export const StyledPage = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
 `;
-
 
 //********LEFTSIDE COMPONENTS********************************************************************************//
 
@@ -17,7 +17,7 @@ export const LeftSide = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--darkpurple);
+  background: var(--purple1);
   height: 100vh;
   width: 500px;
 
@@ -31,7 +31,6 @@ export const LeftSide = styled.div`
     width: 100%;
     gap: 20px;
     margin-bottom: 30px;
-  
   }
 
   .BigText {
@@ -42,7 +41,7 @@ export const LeftSide = styled.div`
     margin: 20px;
     max-width: 65%;
     font-family: 'Inter', sans-serif;
-}
+  }
 `;
 
 //********RIGHTSIDE COMPONENTS********************************************************************************//
@@ -67,14 +66,17 @@ export const ToggleContainer = styled.div`
 export const ToggleTab = styled.div`
   padding: 10px 20px;
   font-size: 1.5rem;
-  font-weight: ${({ active }) => (active ? "bold" : "regular")}; /* Bold when active */
-  color: ${({ active }) => (active ? "#4B0082" : "#aaa")}; /* Purple when active */
-  border-bottom: ${({ active }) => (active ? "3px solid #4B0082" : "none")};
+  font-weight: ${({ active }) =>
+    active ? 'bold' : 'regular'}; /* Bold when active */
+  color: ${({ active }) =>
+    active ? '#4B0082' : '#aaa'}; /* Purple when active */
+  border-bottom: ${({ active }) =>
+    active ? '3px solid var(--purple1)' : 'none'};
   cursor: pointer;
   transition: all 0.3s ease;
-  
+
   &:hover {
-    color: #4B0082;
+    color: var(--purple1);
   }
 `;
 
