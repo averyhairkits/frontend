@@ -85,5 +85,8 @@
   height: 36px;
 }
 
+.selected {
+  background-color: var(--sign-up-fill-3);
+}
 
 

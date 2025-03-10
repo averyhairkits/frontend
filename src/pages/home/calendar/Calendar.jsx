@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Icon } from 'assets/icons/icons.js';
 import PropTypes from 'prop-types';
@@ -97,13 +97,49 @@ HeaderGrid.propTypes = {
 
 const CalendarGrid = () => {
   const gridItems = Array.from({ length: 140 });
+  const [selectedCells, setSelectedCells] = useState(new Set());
+  const isDragging = useRef(false);
+
+  const toggleSelection = (index) => {
+    setSelectedCells((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
+  const handleMouseDown = (index) => {
+    isDragging.current = true;
+    toggleSelection(index);
+  };
+
+  const handleMouseEnter = (index) => {
+    if (isDragging.current) {
+      toggleSelection(index);
+    }
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+  };
 
   return (
-    <div className='calendarGrid'>
+    <div className='calendarGrid' onMouseUp={handleMouseUp}>
       {gridItems.map((_, i) => {
         const itemType =
           i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom';
-        return <div key={i} className={itemType}></div>;
+        return (
+          <div
+            key={i}
+            className={`${itemType} ${selectedCells.has(i) ? 'selected' : ''}`}
+            onMouseDown={() => handleMouseDown(i)}
+            onMouseEnter={() => handleMouseEnter(i)}
+          ></div>
+        );
       })}
     </div>
   );
