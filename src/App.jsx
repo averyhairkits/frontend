@@ -29,7 +29,7 @@ export default function App() {
             </Route>
             <Route path='/' element={<PublicOnlyRoute />}>
               <Route path='volunteer-home' element={<VolunteerHome />} />
-              <Route path='signup' element={<SignUp />} />
+              <Route path='login' element={<SignUp />} />
               <Route
                 path='forgot-password'
                 element={<RequestPasswordReset />}
