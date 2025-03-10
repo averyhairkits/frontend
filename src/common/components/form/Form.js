@@ -4,9 +4,7 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border: solid 2px var(--text);
   padding: 50px 40px;
-  border-radius: 10px;
   text-align: center;
 `;
 

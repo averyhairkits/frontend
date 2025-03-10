@@ -1,6 +1,84 @@
+import logo from 'assets/icons/logosfinals/logotransparentbg.png';
 import styled from 'styled-components';
 
 import { Button } from 'common/components/Button';
+
+export const StyledPage = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+`;
+
+//********LEFTSIDE COMPONENTS********************************************************************************//
+
+export const LeftSide = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--purple1);
+  height: 100vh;
+  width: 500px;
+
+  .Logo {
+    background-image: url(${logo});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: brightness(0) invert(1);
+    height: 40vh;
+    width: 100%;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .BigText {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    margin: 20px;
+    max-width: 65%;
+    font-family: 'Inter', sans-serif;
+  }
+`;
+
+//********RIGHTSIDE COMPONENTS********************************************************************************//
+export const RightSide = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  height: 100vh;
+  font-family: 'Inter', sans-serif;
+`;
+
+export const ToggleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  width: 100%;
+`;
+
+export const ToggleTab = styled.div`
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  font-weight: ${({ active }) =>
+    active ? 'bold' : 'regular'}; /* Bold when active */
+  color: ${({ active }) =>
+    active ? '#4B0082' : '#aaa'}; /* Purple when active */
+  border-bottom: ${({ active }) =>
+    active ? '3px solid var(--purple1)' : 'none'};
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: var(--purple1);
+  }
+`;
 
 export const StyledForm = styled.form`
   display: flex;
@@ -15,7 +93,7 @@ export const StyledForm = styled.form`
 export const StyledInput = styled.input`
   font-size: 1rem;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 1px;
   width: 375px;
 `;
 
@@ -30,13 +108,6 @@ export const IconContainer = styled.div`
   top: 8px;
   background-color: var(--white);
   cursor: pointer;
-`;
-
-export const StyledPage = styled.div`
-  flex: 1 0 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export const StyledButton = styled(Button.Primary)`

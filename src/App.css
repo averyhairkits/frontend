@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
 /* global color presets */
+
 :root {
   --primary-green: #45bf84;
   --secondary-lightgrey: #f3f3f3;

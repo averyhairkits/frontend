@@ -21,8 +21,9 @@ export const RedSpan = styled.span`
 export const StyledInput = styled.input`
   font-size: 1rem;
   padding: 8px;
-  border: solid 2px var(--text);
+  border: solid 1px var(--text);
   border-radius: 8px;
+  border-color: var(--medium-gray);
   width: 375px;
 `;
 
