@@ -13,7 +13,7 @@ const VolunteerHome = () => {
 
   return (
     <main>
-      <button className='navButton' onClick={() => navigate('/login')}>
+      <button className='navButton' onClick={() => navigate('/')}>
         <Icon.Logout className='navIcon' />
       </button>
       <Layout />

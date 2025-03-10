@@ -102,7 +102,7 @@ export default function SignUp() {
       alert(
         'Account created successfully! Please check your email to verify your account.'
       );
-      navigate('/login', {
+      navigate('/', {
         state: {
           message:
             'Account created successfully! Please check your email to verify your account.',
