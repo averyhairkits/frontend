@@ -28,18 +28,21 @@ div[style="color: red"] {
 
 .white-bg p, .white-bg ul, .white-bg li {
   color: var(--dark-gray);
-  margin: 0;
+  margin: 0px;
 }
 /* body-text */
 .white-bg p {
   font-size: 15px;
   font-weight: 500;
 }
+.white-bg ul {
+  padding-left: 25px;
+}
 /* bullet-point */
 .white-bg li {
   font-size: 12px;
   font-weight: 400px;
-  margin: 4px;
+  line-height: 25px;
 }
 .white-bg h3 {
   color: var(--purple1);
