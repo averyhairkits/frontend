@@ -2,12 +2,20 @@ import React, { useState } from 'react';
 
 import { Icon } from 'assets/icons/icons.js';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 
+import { useCalendarContext } from 'common/contexts/CalendarContext';
 import 'pages/home/LeftSide/Leftside.css';
 
 export default function Layout() {
-  const [date, setDate] = useState(new Date());
+  const { currentDate, todaysDate } = useCalendarContext();
+  const [date] = useState(currentDate);
+  const fourWeeksTime = 27 * 24 * 60 * 60 * 1000;
+  const underline1Dates = [
+    new Date(2025, 1, 10),
+    new Date(2025, 1, 11),
+    new Date(2025, 1, 13),
+  ];
+  const underline2Dates = [new Date(2025, 1, 11), new Date(2025, 1, 13)];
 
   return (
     <div className='leftSection'>
@@ -50,13 +58,30 @@ export default function Layout() {
       </div>
 
       <Calendar
-        onChange={setDate}
+        next2Label={null}
+        prev2Label={null}
+        formatShortWeekday={(locale, date) =>
+          date.toLocaleDateString(locale, { weekday: 'narrow' })
+        }
+        maxDetail='month'
+        minDetail='month'
+        minDate={todaysDate}
+        maxDate={new Date(todaysDate.getTime() + fourWeeksTime)}
         value={date}
+        prevLabel={<Icon.Back />}
+        nextLabel={<Icon.Next />}
         tileClassName={({ date }) => {
-          const highlightedDates = ['2025-02-10', '2025-02-11', '2025-02-13'];
-          return highlightedDates.includes(date.toISOString().split('T')[0])
-            ? 'highlight'
-            : null;
+          const isUnderline1 = underline1Dates.some(
+            (d) => d.getTime() === date.getTime()
+          );
+          const isUnderline2 = underline2Dates.some(
+            (d) => d.getTime() === date.getTime()
+          );
+
+          if (isUnderline1 && isUnderline2) return 'underlineBoth';
+          if (isUnderline1) return 'underline1';
+          if (isUnderline2) return 'underline2';
+          return '';
         }}
       />
     </div>

@@ -9,7 +9,7 @@ div[style="color: red"] {
   display: flex;
   flex-direction: column;
 
-  width: 340px;
+  width: 294px;
   height: 100vh;
   color: var(--white);
   padding: 22px;
@@ -55,7 +55,7 @@ div[style="color: red"] {
 
 .logo-container img {
   width: 150px; 
-  background-color: transparent;
+  background-color: none;
 }
 
 .log-entry {
@@ -64,50 +64,6 @@ div[style="color: red"] {
   gap: 20px;
 }
 
-/* Calendar Styles */
-
-/* Calendar */
-.react-calendar {
-  background: var(--white);
-  border-radius: 10px;
-  padding: 10px;
-  border: none;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  margin-top: 22px;
-}
-
-.react-calendar__navigation button {
-  color: var(--purple1);
-  font-size: 18px;
-}
-
-.react-calendar__month-view__weekdays {
-  color: var(--purple1);
-}
-
-.react-calendar__tile {
-  color: var(--purple1);
-  font-size: 16px;
-}
-
-.react-calendar__tile.highlight {
-  color: var(--purple1);
-  position: relative;
-  font-weight: bold;
-}
-
-/* Underline for highlighted dates */
-.react-calendar__tile.highlight::after {
-  content: "";
-  width: 80%;
-  height: 3px;
-  background: var(--purple1);
-  position: absolute;
-  bottom: 5px;
-  left: 10%;
-  border-radius: 2px;
-}
 .how-to-title {
   color: var(--purple1); 
   display: flex;
@@ -115,3 +71,148 @@ div[style="color: red"] {
   gap: 10px;
 }
 
+/* Calendar Styling */
+
+.react-calendar {
+  font-family: "Inter", sans-serif;
+  background-color: var(--white);
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin-top: 22px;
+  overflow: hidden;
+  line-height: 0.9em;
+}
+
+.react-calendar,
+.react-calendar *,
+.react-calendar *:before,
+.react-calendar *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.react-calendar button {
+  margin: 0;
+  border: 0;
+  outline: none;
+  background-color: var(--white);
+}
+
+.react-calendar button:enabled:hover {
+  cursor: pointer;
+}
+
+.react-calendar__navigation {
+  display: flex;
+  height: 44px;
+  margin-bottom: 1em;
+  background-color: var(--white);
+}
+
+.react-calendar__navigation button {
+  background-color: none;
+  color: var(--purple1);
+  font-size: 18px;
+}
+.react-calendar__navigation button:disabled {
+  background-color: var(--white);
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: none;
+}
+
+.react-calendar__navigation__label {
+  font-size: 19px !important; /* override */
+  font-weight: 700;
+}
+
+.react-calendar__month-view__weekdays {
+  color: var(--medium-gray);
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  font-weight: bold;
+  margin-top: -14px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0.5em;
+}
+
+.react-calendar__tile {
+  max-width: 100%;
+  padding: 10px 6.6667px;
+  background-color: none;
+  text-align: center;
+  font: inherit;
+  pointer-events: none;
+  color: var(--purple1);
+  font-size: 16px;
+  position: relative;
+}
+
+.react-calendar__tile:disabled {
+  background-color: var(--lightest-gray);
+  color: var(--purple1);
+}
+
+.react-calendar__tile:enabled {
+  background-color: var(--white);
+  color: var(--purple1);
+}
+
+.react-calendar__month-view__days__day--neighboringMonth:disabled {
+  color: var(--medium-gray);
+}
+
+.react-calendar__tile--active {
+  background-color: var(--purple1) !important; /*override enabled tile*/
+  color: var(--white) !important; /*override highlight color*/
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  outline: 5px solid var(--white) !important;
+  outline-offset: -4px;
+  font-weight: 600;
+}
+
+.react-calendar__tile.underline1::after,
+.react-calendar__tile.underline2::after,
+.react-calendar__tile.underlineBoth::before,
+.react-calendar__tile.underlineBoth::after {
+  content: "";
+  width: 19px;
+  height: 3px;
+  position: absolute;
+  left: 51%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.react-calendar__tile.underline1::after {
+  background-color: var(--solid-blue);
+  bottom: 9px;
+}
+
+.react-calendar__tile.underline2::after {
+  background-color: var(--purple2);
+  bottom: 5px;
+}
+
+.react-calendar__tile.underlineBoth::before {
+  background-color: var(--solid-blue);
+  bottom: 9px;
+}
+
+.react-calendar__tile.underlineBoth::after {
+  background-color: var(--purple2);
+  bottom: 3px;
+}

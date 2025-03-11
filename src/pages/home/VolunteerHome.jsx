@@ -16,7 +16,7 @@ const VolunteerHome = () => {
       <button className='navButton' onClick={() => navigate('/')}>
         <Icon.Logout className='navIcon' />
       </button>
-      <Layout />
+      <Layout /> {/* leftSection */}
       <Calendar /> {/* rightSection */}
     </main>
   );

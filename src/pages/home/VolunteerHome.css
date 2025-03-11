@@ -9,6 +9,7 @@
 
 .numVolunteersButton {
   background-color: var(--purple1);
+  cursor: pointer;
   word-wrap: break-word;
   border-radius: 10px;
   border: 0px;
@@ -50,6 +51,7 @@
 
 .numVolunteersOption {
   background-color: var(--white);
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,6 +85,10 @@
 
   width: 85px;
   height: 36px;
+}
+.saveButton.selected {
+  background-color: var(--purple1);
+  cursor: pointer;
 }
 
 .selected {

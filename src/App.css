@@ -32,7 +32,6 @@
 
 * {
   font-family: "Inter", sans-serif;
-  color: var(--text);
 }
 
 main {
@@ -65,6 +64,7 @@ h6 {
 
 .navButton {
   background-color: var(--purple1);
+  cursor: pointer;
   color: var(--white);
   word-wrap: break-word;
   border: 0px;

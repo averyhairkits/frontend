@@ -28,6 +28,7 @@
 .calendarNavButton {
   border: 0px;
   background-color: transparent;
+  cursor: pointer;
   color: var(--purple1);
   font-size: 30px;
   font-weight: 600;
