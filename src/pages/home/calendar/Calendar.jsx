@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 
 import { Icon } from 'assets/icons/icons.js';
 import PropTypes from 'prop-types';
@@ -9,6 +9,7 @@ import 'pages/home/VolunteerHome.css';
 import { CalendarNav } from 'pages/home/calendar/CalendarNav';
 import confirmedTimes from 'pages/home/calendar/confirmedTimes';
 import fullTimes from 'pages/home/calendar/fullTimes';
+import { useAvailability } from 'pages/home/calendar/useAvailability';
 import { useNumVolunteers } from 'pages/home/calendar/useNumVolunteers';
 
 const Times = () => {
@@ -97,7 +98,13 @@ HeaderGrid.propTypes = {
   weekdates: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
 };
 
-const CalendarGrid = ({ weekdates }) => {
+const CalendarGrid = ({
+  weekdates,
+  handleMouseDown,
+  handleMouseEnter,
+  handleMouseUp,
+  selectedCells,
+}) => {
   const gridItems = Array.from({ length: 140 });
   const gridItemTimes = [...gridItems];
   let dayOfWeek = 0;
@@ -115,40 +122,6 @@ const CalendarGrid = ({ weekdates }) => {
       halfHour % 2 === 0 ? 0 : 30
     );
   }
-
-  CalendarGrid.propTypes = {
-    weekdates: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
-  };
-
-  const [selectedCells, setSelectedCells] = useState(new Set());
-  const isDragging = useRef(false);
-
-  const toggleSelection = (index) => {
-    setSelectedCells((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(index)) {
-        newSet.delete(index);
-      } else {
-        newSet.add(index);
-      }
-      return newSet;
-    });
-  };
-
-  const handleMouseDown = (index) => {
-    isDragging.current = true;
-    toggleSelection(index);
-  };
-
-  const handleMouseEnter = (index) => {
-    if (isDragging.current) {
-      toggleSelection(index);
-    }
-  };
-
-  const handleMouseUp = () => {
-    isDragging.current = false;
-  };
 
   return (
     <div className='calendarGrid' onMouseUp={handleMouseUp}>
@@ -175,8 +148,41 @@ const CalendarGrid = ({ weekdates }) => {
   );
 };
 
+CalendarGrid.propTypes = {
+  weekdates: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
+  handleMouseDown: PropTypes.func.isRequired,
+  handleMouseEnter: PropTypes.func.isRequired,
+  handleMouseUp: PropTypes.func.isRequired,
+  handleSave: PropTypes.func.isRequired,
+  selectedCells: PropTypes.instanceOf(Set).isRequired,
+};
+
+const Save = ({ canSave, handleSave }) => {
+  return (
+    <button
+      onClick={handleSave}
+      className={`saveButton ${canSave ? 'clickable' : ''}`}
+    >
+      Save
+    </button>
+  );
+};
+
+Save.propTypes = {
+  canSave: PropTypes.bool.isRequired,
+  handleSave: PropTypes.func.isRequired,
+};
+
 export const Calendar = () => {
   const { weekdates } = useCalendarContext();
+  const {
+    handleMouseDown,
+    handleMouseEnter,
+    handleMouseUp,
+    selectedCells,
+    canSave,
+    handleSave,
+  } = useAvailability();
   return (
     <div className='calendar'>
       <CalendarNav />
@@ -187,10 +193,16 @@ export const Calendar = () => {
         </div>
         <div className='gridContainer'>
           <HeaderGrid weekdates={weekdates} />
-          <CalendarGrid weekdates={weekdates} />
+          <CalendarGrid
+            weekdates={weekdates}
+            handleMouseDown={handleMouseDown}
+            handleMouseEnter={handleMouseEnter}
+            handleMouseUp={handleMouseUp}
+            selectedCells={selectedCells}
+          />
         </div>
       </div>
-      <button className='saveButton'>Save</button>
+      <Save canSave={canSave} handleSave={handleSave} />
     </div>
   );
 };

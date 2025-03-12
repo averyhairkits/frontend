@@ -85,10 +85,12 @@
 
   width: 85px;
   height: 36px;
+  pointer-events: none;
 }
-.saveButton.selectable {
+.clickable {
   background-color: var(--purple1);
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .selected {
@@ -101,5 +103,6 @@
 
 .full {
   background-color: var(--light-gray);
+  pointer-events: none;
 }
 
