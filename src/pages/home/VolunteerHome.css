@@ -86,7 +86,7 @@
   width: 85px;
   height: 36px;
 }
-.saveButton.selected {
+.saveButton.selectable {
   background-color: var(--purple1);
   cursor: pointer;
 }
@@ -95,4 +95,11 @@
   background-color: var(--sign-up-fill-3);
 }
 
+.confirmed {
+  background-color: var(--purple2);
+}
+
+.full {
+  background-color: var(--light-gray);
+}
 

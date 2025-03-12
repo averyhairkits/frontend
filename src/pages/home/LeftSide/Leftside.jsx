@@ -5,17 +5,17 @@ import Calendar from 'react-calendar';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import 'pages/home/LeftSide/Leftside.css';
+import confirmedTimes from 'pages/home/calendar/confirmedTimes';
 
 export default function Layout() {
   const { currentDate, todaysDate } = useCalendarContext();
   const [date] = useState(currentDate);
   const fourWeeksTime = 27 * 24 * 60 * 60 * 1000;
-  const underline1Dates = [
+  const selectedDates = [
     new Date(2025, 1, 10),
     new Date(2025, 1, 11),
     new Date(2025, 1, 13),
   ];
-  const underline2Dates = [new Date(2025, 1, 11), new Date(2025, 1, 13)];
 
   return (
     <div className='leftSection'>
@@ -71,16 +71,16 @@ export default function Layout() {
         prevLabel={<Icon.Back />}
         nextLabel={<Icon.Next />}
         tileClassName={({ date }) => {
-          const isUnderline1 = underline1Dates.some(
-            (d) => d.getTime() === date.getTime()
+          const isSelectedDate = selectedDates.some(
+            (d) => d.toDateString() === date.toDateString()
           );
-          const isUnderline2 = underline2Dates.some(
-            (d) => d.getTime() === date.getTime()
-          );
+          const isConfirmedDate = confirmedTimes.some(
+            (d) => d.toDateString() === date.toDateString()
+          ); // doesn't account for confirmed but not selected yet
 
-          if (isUnderline1 && isUnderline2) return 'underlineBoth';
-          if (isUnderline1) return 'underline1';
-          if (isUnderline2) return 'underline2';
+          if (isSelectedDate && isConfirmedDate) return 'underlineBoth';
+          if (isSelectedDate) return 'underline1';
+          if (isConfirmedDate) return 'underline2';
           return '';
         }}
       />

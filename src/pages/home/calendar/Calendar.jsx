@@ -7,6 +7,8 @@ import { useCalendarContext } from 'common/contexts/CalendarContext';
 import 'pages/home/Home.css';
 import 'pages/home/VolunteerHome.css';
 import { CalendarNav } from 'pages/home/calendar/CalendarNav';
+import confirmedTimes from 'pages/home/calendar/confirmedTimes';
+import fullTimes from 'pages/home/calendar/fullTimes';
 import { useNumVolunteers } from 'pages/home/calendar/useNumVolunteers';
 
 const Times = () => {
@@ -95,8 +97,29 @@ HeaderGrid.propTypes = {
   weekdates: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
 };
 
-const CalendarGrid = () => {
+const CalendarGrid = ({ weekdates }) => {
   const gridItems = Array.from({ length: 140 });
+  const gridItemTimes = [...gridItems];
+  let dayOfWeek = 0;
+  for (let i = 0; i < 140; i++) {
+    Math.floor(i / 20) === 6
+      ? (dayOfWeek = 0)
+      : (dayOfWeek = Math.floor(i / 20));
+    let halfHour = Math.floor(i % 20);
+
+    gridItemTimes[i] = new Date(
+      weekdates[dayOfWeek].getFullYear(),
+      weekdates[dayOfWeek].getMonth(),
+      weekdates[dayOfWeek].getDate(),
+      9 + Math.floor(halfHour / 2),
+      halfHour % 2 === 0 ? 0 : 30
+    );
+  }
+
+  CalendarGrid.propTypes = {
+    weekdates: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
+  };
+
   const [selectedCells, setSelectedCells] = useState(new Set());
   const isDragging = useRef(false);
 
@@ -130,12 +153,19 @@ const CalendarGrid = () => {
   return (
     <div className='calendarGrid' onMouseUp={handleMouseUp}>
       {gridItems.map((_, i) => {
-        const itemType =
-          i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom';
+        const isConfirmedSession = confirmedTimes.some(
+          (d) => d.getTime() === gridItemTimes[i].getTime()
+        );
+        const isFull = fullTimes.some(
+          (d) => d.getTime() === gridItemTimes[i].getTime()
+        );
+        const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'} ${isFull ? 'full' : ''}`;
+
         return (
           <div
             key={i}
-            className={`${itemType} ${selectedCells.has(i) ? 'selected' : ''}`}
+            // only shows confirmed session if a confirmed cell is selected
+            className={`${itemType} ${selectedCells.has(i) && isConfirmedSession ? 'confirmed' : selectedCells.has(i) ? 'selected' : ''}`}
             onMouseDown={() => handleMouseDown(i)}
             onMouseEnter={() => handleMouseEnter(i)}
           ></div>
@@ -157,7 +187,7 @@ export const Calendar = () => {
         </div>
         <div className='gridContainer'>
           <HeaderGrid weekdates={weekdates} />
-          <CalendarGrid />
+          <CalendarGrid weekdates={weekdates} />
         </div>
       </div>
       <button className='saveButton'>Save</button>
