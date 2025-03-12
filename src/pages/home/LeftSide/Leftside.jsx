@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Icon } from 'assets/icons/icons.js';
 import Calendar from 'react-calendar';
@@ -8,8 +8,7 @@ import 'pages/home/LeftSide/Leftside.css';
 import confirmedTimes from 'pages/home/calendar/confirmedTimes';
 
 export default function Layout() {
-  const { currentDate, todaysDate } = useCalendarContext();
-  const [date] = useState(currentDate);
+  const { todaysDate } = useCalendarContext();
   const fourWeeksTime = 27 * 24 * 60 * 60 * 1000;
   const selectedDates = [
     new Date(2025, 1, 10),
@@ -67,7 +66,7 @@ export default function Layout() {
         minDetail='month'
         minDate={todaysDate}
         maxDate={new Date(todaysDate.getTime() + fourWeeksTime)}
-        value={date}
+        value={todaysDate}
         prevLabel={<Icon.Back />}
         nextLabel={<Icon.Next />}
         tileClassName={({ date }) => {

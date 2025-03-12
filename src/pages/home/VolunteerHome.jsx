@@ -3,6 +3,8 @@ import React from 'react';
 import { Icon } from 'assets/icons/icons.js';
 import { useNavigate } from 'react-router-dom';
 
+import { CalendarContextProvider } from 'common/contexts/CalendarContext';
+import { SavedTimesContextProvider } from 'common/contexts/savedTimesContext';
 import Layout from 'pages/home/LeftSide/Leftside';
 import { Calendar } from 'pages/home/calendar/Calendar';
 
@@ -16,8 +18,12 @@ const VolunteerHome = () => {
       <button className='navButton' onClick={() => navigate('/')}>
         <Icon.Logout className='navIcon' />
       </button>
-      <Layout /> {/* leftSection */}
-      <Calendar /> {/* rightSection */}
+      <CalendarContextProvider>
+        <SavedTimesContextProvider>
+          <Layout /> {/* leftSection */}
+          <Calendar /> {/* rightSection */}
+        </SavedTimesContextProvider>
+      </CalendarContextProvider>
     </main>
   );
 };

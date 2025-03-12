@@ -26,6 +26,7 @@ const weekRange = (date) => {
 const CalendarContext = createContext();
 
 const CalendarContextProvider = ({ children }) => {
+  // todaysDate and thisWeeksStart only change with the time in real life
   const todaysDate = new Date('2025-02-10T00:00:00'); // must always be a time that starts at T00:00:00
   const thisWeeksStart = new Date(todaysDate);
 
