@@ -4,6 +4,17 @@ export const useAvailability = () => {
   const [selectedCells, setSelectedCells] = useState(new Set());
   const isDragging = useRef(false);
   const [canSave, setCanSave] = useState(false);
+  const [prevSelectedCells, setPrevSelectedCells] = useState(
+    new Set(selectedCells)
+  );
+
+  const selectedCellsChanged = () => {
+    if (selectedCells.size !== prevSelectedCells.size) return true;
+    for (const val of prevSelectedCells) {
+      if (!selectedCells.has(val)) return true;
+    }
+    return false;
+  };
 
   const toggleSelection = (index) => {
     setSelectedCells((prev) => {
@@ -33,12 +44,13 @@ export const useAvailability = () => {
   };
 
   useEffect(() => {
-    selectedCells.size === 0 ? setCanSave(false) : setCanSave(true);
+    selectedCellsChanged() ? setCanSave(true) : setCanSave(false);
   }, [selectedCells]);
 
   const handleSave = () => {
     console.log('Saved');
     setCanSave(false);
+    setPrevSelectedCells(new Set(selectedCells));
   };
 
   useEffect(() => {
