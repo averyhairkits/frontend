@@ -23,6 +23,26 @@ const weekRange = (date) => {
   return weekDates;
 };
 
+const getGridItemTimes = (weekdates) => {
+  const gridItemTimes = Array.from({ length: 140 });
+  let dayOfWeek = 0;
+  for (let i = 0; i < 140; i++) {
+    Math.floor(i / 20) === 6
+      ? (dayOfWeek = 0)
+      : (dayOfWeek = Math.floor(i / 20));
+    let halfHour = Math.floor(i % 20);
+
+    gridItemTimes[i] = new Date(
+      weekdates[dayOfWeek].getFullYear(),
+      weekdates[dayOfWeek].getMonth(),
+      weekdates[dayOfWeek].getDate(),
+      9 + Math.floor(halfHour / 2),
+      halfHour % 2 === 0 ? 0 : 30
+    );
+  }
+  return gridItemTimes;
+};
+
 const CalendarContext = createContext();
 
 const CalendarContextProvider = ({ children }) => {
@@ -33,6 +53,7 @@ const CalendarContextProvider = ({ children }) => {
   setStartOfWeek(thisWeeksStart);
   const [currentDate, setCurrentDate] = useState(thisWeeksStart);
   const weekdates = weekRange(currentDate);
+  const gridItemTimes = getGridItemTimes(weekdates);
 
   return (
     <CalendarContext.Provider
@@ -42,6 +63,7 @@ const CalendarContextProvider = ({ children }) => {
         currentDate,
         setCurrentDate,
         weekdates,
+        gridItemTimes,
       }}
     >
       {children}

@@ -4,12 +4,12 @@ import { Icon } from 'assets/icons/icons.js';
 import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
+import { useAvailabilityContext } from 'common/contexts/useAvailabilityContext';
 import 'pages/home/Home.css';
 import 'pages/home/VolunteerHome.css';
 import { CalendarNav } from 'pages/home/calendar/CalendarNav';
 import confirmedTimes from 'pages/home/calendar/confirmedTimes';
 import fullTimes from 'pages/home/calendar/fullTimes';
-import { useAvailability } from 'pages/home/calendar/useAvailability';
 import { useNumVolunteers } from 'pages/home/calendar/useNumVolunteers';
 
 const Times = () => {
@@ -99,29 +99,13 @@ HeaderGrid.propTypes = {
 };
 
 const CalendarGrid = ({
-  weekdates,
   handleMouseDown,
   handleMouseEnter,
   handleMouseUp,
   selectedCells,
+  gridItemTimes,
 }) => {
   const gridItems = Array.from({ length: 140 });
-  const gridItemTimes = [...gridItems];
-  let dayOfWeek = 0;
-  for (let i = 0; i < 140; i++) {
-    Math.floor(i / 20) === 6
-      ? (dayOfWeek = 0)
-      : (dayOfWeek = Math.floor(i / 20));
-    let halfHour = Math.floor(i % 20);
-
-    gridItemTimes[i] = new Date(
-      weekdates[dayOfWeek].getFullYear(),
-      weekdates[dayOfWeek].getMonth(),
-      weekdates[dayOfWeek].getDate(),
-      9 + Math.floor(halfHour / 2),
-      halfHour % 2 === 0 ? 0 : 30
-    );
-  }
 
   return (
     <div className='calendarGrid' onMouseUp={handleMouseUp}>
@@ -132,6 +116,8 @@ const CalendarGrid = ({
         const isFull = fullTimes.some(
           (d) => d.getTime() === gridItemTimes[i].getTime()
         );
+
+        // remains constant regardless of selections
         const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'} ${isFull ? 'full' : ''}`;
 
         return (
@@ -149,12 +135,13 @@ const CalendarGrid = ({
 };
 
 CalendarGrid.propTypes = {
-  weekdates: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
   handleMouseDown: PropTypes.func.isRequired,
   handleMouseEnter: PropTypes.func.isRequired,
   handleMouseUp: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   selectedCells: PropTypes.instanceOf(Set).isRequired,
+  gridItemTimes: PropTypes.instanceOf(Array).isRequired,
+  savedTimes: PropTypes.instanceOf(Set).isRequired,
 };
 
 const Save = ({ canSave, handleSave }) => {
@@ -174,7 +161,7 @@ Save.propTypes = {
 };
 
 export const Calendar = () => {
-  const { weekdates } = useCalendarContext();
+  const { weekdates, gridItemTimes } = useCalendarContext();
   const {
     handleMouseDown,
     handleMouseEnter,
@@ -182,7 +169,7 @@ export const Calendar = () => {
     selectedCells,
     canSave,
     handleSave,
-  } = useAvailability();
+  } = useAvailabilityContext();
   return (
     <div className='calendar'>
       <CalendarNav />
@@ -194,11 +181,11 @@ export const Calendar = () => {
         <div className='gridContainer'>
           <HeaderGrid weekdates={weekdates} />
           <CalendarGrid
-            weekdates={weekdates}
             handleMouseDown={handleMouseDown}
             handleMouseEnter={handleMouseEnter}
             handleMouseUp={handleMouseUp}
             selectedCells={selectedCells}
+            gridItemTimes={gridItemTimes}
           />
         </div>
       </div>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { CalendarContextProvider } from 'common/contexts/CalendarContext';
 import { SavedTimesContextProvider } from 'common/contexts/savedTimesContext';
+import { AvailabilityContextProvider } from 'common/contexts/useAvailabilityContext';
 import Layout from 'pages/home/LeftSide/Leftside';
 import { Calendar } from 'pages/home/calendar/Calendar';
 
@@ -20,8 +21,10 @@ const VolunteerHome = () => {
       </button>
       <CalendarContextProvider>
         <SavedTimesContextProvider>
-          <Layout /> {/* leftSection */}
-          <Calendar /> {/* rightSection */}
+          <AvailabilityContextProvider>
+            <Layout /> {/* leftSection */}
+            <Calendar /> {/* rightSection */}
+          </AvailabilityContextProvider>
         </SavedTimesContextProvider>
       </CalendarContextProvider>
     </main>
