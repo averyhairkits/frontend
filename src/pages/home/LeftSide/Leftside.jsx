@@ -74,9 +74,10 @@ export default function LeftSide({ isAdmin }) {
         value={todaysDate}
         prevLabel={<Icon.Back />}
         nextLabel={<Icon.Next />}
-        tileClassName={(props) =>
-          getVolunteerTileClass({ ...props, savedTimes })
-        }
+        tileClassName={(props) => {
+          // replace '' with getAdminTileClass when implemented
+          return isAdmin ? '' : getVolunteerTileClass({ ...props, savedTimes });
+        }}
       />
     </div>
   );
