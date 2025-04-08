@@ -113,7 +113,7 @@ Save.propTypes = {
   handleSave: PropTypes.func.isRequired,
 };
 
-export const Calendar = () => {
+export const Calendar = ({ isAdmin }) => {
   const { weekdates, gridItemTimes } = useCalendarContext();
   const {
     handleMouseDown,
@@ -128,7 +128,13 @@ export const Calendar = () => {
       <CalendarNav />
       <div className='rightMainSection'>
         <div className='timeContainer'>
-          <NumVolunteers />
+          {/* numVolunteersContainer by itself takes up the space
+              that the button would normally do if it was visible */}
+          {isAdmin ? (
+            <div className='numVolunteersContainer'></div>
+          ) : (
+            <NumVolunteers />
+          )}
           <Times />
         </div>
         <div className='gridContainer'>
@@ -145,4 +151,8 @@ export const Calendar = () => {
       <Save canSave={canSave} handleSave={handleSave} />
     </div>
   );
+};
+
+Calendar.propTypes = {
+  isAdmin: PropTypes.bool.isRequired,
 };

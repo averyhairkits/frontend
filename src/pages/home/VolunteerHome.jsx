@@ -46,7 +46,7 @@ const VolunteerHome = ({ isAdmin }) => {
         <SavedTimesContextProvider>
           <AvailabilityContextProvider>
             <LeftSide isAdmin={isAdmin} /> {/* leftSection */}
-            <Calendar /> {/* rightSection */}
+            <Calendar isAdmin={isAdmin} /> {/* rightSection */}
           </AvailabilityContextProvider>
         </SavedTimesContextProvider>
       </CalendarContextProvider>
