@@ -11,6 +11,40 @@ import LeftLog from 'pages/home/LeftSide/LeftLog';
 import 'pages/home/LeftSide/Leftside.css';
 import confirmedTimes from 'pages/home/calendar/confirmedTimes';
 
+// Volunteer mini-calendar underline
+const getVolunteerTileClass = ({ date, savedTimes }) => {
+  const isSelectedDate = Array.from(savedTimes).some(
+    (d) => d.toDateString() === date.toDateString()
+  );
+
+  const isSelectedConfirmedDate = Array.from(savedTimes).some((d) =>
+    confirmedTimes.some(
+      (e) =>
+        // e, d, and date's dates are the same
+        e.toDateString() === date.toDateString() &&
+        date.toDateString() === d.toDateString() &&
+        // e, d have the same time slot on the same date
+        e.toLocaleTimeString() === d.toLocaleTimeString()
+    )
+  );
+
+  if (isSelectedConfirmedDate && isSelectedDate) return 'underlineBoth';
+  if (isSelectedConfirmedDate) return 'underline2';
+  if (isSelectedDate) return 'underline1';
+  return '';
+};
+
+// // Admin mini-calendar underline
+// const getAdminTileClass = ({ date, allSavedTimes, confirmedTimes }) => {
+//   const isConfirmedDate = confirmedTimes.some(
+//     (d) => d.toDateString() === date.toDateString()
+//   );
+
+//   if (has4MoreSelected && isConfirmedDate) return 'underlineBoth';
+//   if (isConfirmedDate) return 'underline2';
+//   if (has4MoreSelected) return 'underline1';
+// }
+
 export default function LeftSide({ isAdmin }) {
   const { todaysDate } = useCalendarContext();
   const fourWeeksTime = 27 * 24 * 60 * 60 * 1000;
@@ -24,6 +58,7 @@ export default function LeftSide({ isAdmin }) {
         </span>
         Avery&apos;s Helpful Hair Kits
       </div>
+
       {isAdmin ? <LeftLog /> : <LeftDescription />}
 
       <Calendar
@@ -39,38 +74,9 @@ export default function LeftSide({ isAdmin }) {
         value={todaysDate}
         prevLabel={<Icon.Back />}
         nextLabel={<Icon.Next />}
-        tileClassName={({ date }) => {
-          const isSelectedDate = Array.from(savedTimes).some(
-            (d) => d.toDateString() === date.toDateString()
-          );
-
-          const isSelectedConfirmedDate = Array.from(savedTimes).some((d) =>
-            confirmedTimes.some(
-              (e) =>
-                // e, d, and date's dates are the same
-                e.toDateString() === date.toDateString() &&
-                date.toDateString() === d.toDateString() &&
-                // e, d have the same time slot on the same date
-                e.toLocaleTimeString() === d.toLocaleTimeString()
-            )
-          );
-
-          // for admin
-
-          // const isConfirmedDate = confirmedTimes.some(
-          //   (d) => d.toDateString() === date.toDateString()
-          // );
-
-          // if (has>4Selected && isConfirmedDate) return 'underlineBoth';
-          // if (isConfirmedDate) return 'underline2';
-          // if (has>4Selected) return 'underline1';
-
-          // for volunteers
-          if (isSelectedConfirmedDate && isSelectedDate) return 'underlineBoth';
-          if (isSelectedConfirmedDate) return 'underline2';
-          if (isSelectedDate) return 'underline1';
-          return '';
-        }}
+        tileClassName={(props) =>
+          getVolunteerTileClass({ ...props, savedTimes })
+        }
       />
     </div>
   );
