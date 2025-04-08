@@ -148,7 +148,7 @@ export const Calendar = ({ isAdmin }) => {
           />
         </div>
       </div>
-      <Save canSave={canSave} handleSave={handleSave} />
+      {!isAdmin && <Save canSave={canSave} handleSave={handleSave} />}
     </div>
   );
 };
