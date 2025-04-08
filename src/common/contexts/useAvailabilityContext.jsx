@@ -9,7 +9,7 @@ import React, {
 import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
-import { useSavedTimesContext } from 'common/contexts/savedTimesContext';
+import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 
 const AvailabilityContext = createContext();
 
