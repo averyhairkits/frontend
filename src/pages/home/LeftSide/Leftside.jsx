@@ -65,7 +65,7 @@ export default function LeftSide({ isAdmin }) {
           // if (isConfirmedDate) return 'underline2';
           // if (has>4Selected) return 'underline1';
 
-          // for voluteers
+          // for volunteers
           if (isSelectedConfirmedDate && isSelectedDate) return 'underlineBoth';
           if (isSelectedConfirmedDate) return 'underline2';
           if (isSelectedDate) return 'underline1';

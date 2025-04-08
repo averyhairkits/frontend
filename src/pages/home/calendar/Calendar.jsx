@@ -8,8 +8,7 @@ import { useAvailabilityContext } from 'common/contexts/useAvailabilityContext';
 import 'pages/home/Home.css';
 import 'pages/home/VolunteerHome.css';
 import { CalendarNav } from 'pages/home/calendar/CalendarNav';
-import confirmedTimes from 'pages/home/calendar/confirmedTimes';
-import fullTimes from 'pages/home/calendar/fullTimes';
+import { VolunteerCalendarGrid } from 'pages/home/calendar/VolunteerCalendarGrid';
 import { useNumVolunteers } from 'pages/home/calendar/useNumVolunteers';
 
 const Times = () => {
@@ -98,52 +97,6 @@ HeaderGrid.propTypes = {
   weekdates: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
 };
 
-const CalendarGrid = ({
-  handleMouseDown,
-  handleMouseEnter,
-  handleMouseUp,
-  selectedCells,
-  gridItemTimes,
-}) => {
-  const gridItems = Array.from({ length: 140 });
-
-  return (
-    <div className='calendarGrid' onMouseUp={handleMouseUp}>
-      {gridItems.map((_, i) => {
-        const isConfirmedSession = confirmedTimes.some(
-          (d) => d.getTime() === gridItemTimes[i].getTime()
-        );
-        const isFull = fullTimes.some(
-          (d) => d.getTime() === gridItemTimes[i].getTime()
-        );
-
-        // remains constant regardless of selections
-        const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'} ${isFull ? 'full' : ''}`;
-
-        return (
-          <div
-            key={i}
-            // only shows confirmed session if a confirmed cell is selected
-            className={`${itemType} ${selectedCells.has(i) && isConfirmedSession ? 'confirmed' : selectedCells.has(i) ? 'selected' : ''}`}
-            onMouseDown={() => handleMouseDown(i)}
-            onMouseEnter={() => handleMouseEnter(i)}
-          ></div>
-        );
-      })}
-    </div>
-  );
-};
-
-CalendarGrid.propTypes = {
-  handleMouseDown: PropTypes.func.isRequired,
-  handleMouseEnter: PropTypes.func.isRequired,
-  handleMouseUp: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
-  selectedCells: PropTypes.instanceOf(Set).isRequired,
-  gridItemTimes: PropTypes.instanceOf(Array).isRequired,
-  savedTimes: PropTypes.instanceOf(Set).isRequired,
-};
-
 const Save = ({ canSave, handleSave }) => {
   return (
     <button
@@ -180,7 +133,7 @@ export const Calendar = () => {
         </div>
         <div className='gridContainer'>
           <HeaderGrid weekdates={weekdates} />
-          <CalendarGrid
+          <VolunteerCalendarGrid
             handleMouseDown={handleMouseDown}
             handleMouseEnter={handleMouseEnter}
             handleMouseUp={handleMouseUp}
