@@ -102,7 +102,7 @@ export default function SignUp() {
       alert(
         'Account created successfully! Please check your email to verify your account.'
       );
-      navigate('/login', {
+      navigate('/', {
         state: {
           message:
             'Account created successfully! Please check your email to verify your account.',
@@ -145,7 +145,9 @@ export default function SignUp() {
             <>
               <Input.Text title='Email' placeholder='example@mail.com' />
               <Input.Password title='Password' placeholder='password' />
-              <SubmitButton>Sign in</SubmitButton>
+              <SubmitButton onClick={() => navigate('/volunteer-home')}>
+                Sign in
+              </SubmitButton>
               <GoogleButton text='Sign in with Google' />
             </>
           ) : (
@@ -159,7 +161,9 @@ export default function SignUp() {
                 title='Confirm Password'
                 placeholder='re-enter password'
               />
-              <SubmitButton>Create Account</SubmitButton>
+              <SubmitButton onClick={() => navigate('/volunteer-home')}>
+                Create Account
+              </SubmitButton>
               <GoogleButton text='Sign up with Google' />
             </>
           )}

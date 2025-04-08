@@ -9,6 +9,7 @@
 
 .numVolunteersButton {
   background-color: var(--purple1);
+  cursor: pointer;
   word-wrap: break-word;
   border-radius: 10px;
   border: 0px;
@@ -50,6 +51,7 @@
 
 .numVolunteersOption {
   background-color: var(--white);
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,10 +85,24 @@
 
   width: 85px;
   height: 36px;
+  pointer-events: none;
+}
+.clickable {
+  background-color: var(--purple1);
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .selected {
   background-color: var(--sign-up-fill-3);
 }
 
+.confirmed {
+  background-color: var(--purple2);
+}
+
+.full {
+  background-color: var(--light-gray);
+  pointer-events: none;
+}
 

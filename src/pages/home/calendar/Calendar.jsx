@@ -1,12 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 
 import { Icon } from 'assets/icons/icons.js';
 import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
+import { useAvailabilityContext } from 'common/contexts/useAvailabilityContext';
 import 'pages/home/Home.css';
 import 'pages/home/VolunteerHome.css';
 import { CalendarNav } from 'pages/home/calendar/CalendarNav';
+import confirmedTimes from 'pages/home/calendar/confirmedTimes';
+import fullTimes from 'pages/home/calendar/fullTimes';
 import { useNumVolunteers } from 'pages/home/calendar/useNumVolunteers';
 
 const Times = () => {
@@ -95,47 +98,33 @@ HeaderGrid.propTypes = {
   weekdates: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
 };
 
-const CalendarGrid = () => {
+const CalendarGrid = ({
+  handleMouseDown,
+  handleMouseEnter,
+  handleMouseUp,
+  selectedCells,
+  gridItemTimes,
+}) => {
   const gridItems = Array.from({ length: 140 });
-  const [selectedCells, setSelectedCells] = useState(new Set());
-  const isDragging = useRef(false);
-
-  const toggleSelection = (index) => {
-    setSelectedCells((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(index)) {
-        newSet.delete(index);
-      } else {
-        newSet.add(index);
-      }
-      return newSet;
-    });
-  };
-
-  const handleMouseDown = (index) => {
-    isDragging.current = true;
-    toggleSelection(index);
-  };
-
-  const handleMouseEnter = (index) => {
-    if (isDragging.current) {
-      toggleSelection(index);
-    }
-  };
-
-  const handleMouseUp = () => {
-    isDragging.current = false;
-  };
 
   return (
     <div className='calendarGrid' onMouseUp={handleMouseUp}>
       {gridItems.map((_, i) => {
-        const itemType =
-          i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom';
+        const isConfirmedSession = confirmedTimes.some(
+          (d) => d.getTime() === gridItemTimes[i].getTime()
+        );
+        const isFull = fullTimes.some(
+          (d) => d.getTime() === gridItemTimes[i].getTime()
+        );
+
+        // remains constant regardless of selections
+        const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'} ${isFull ? 'full' : ''}`;
+
         return (
           <div
             key={i}
-            className={`${itemType} ${selectedCells.has(i) ? 'selected' : ''}`}
+            // only shows confirmed session if a confirmed cell is selected
+            className={`${itemType} ${selectedCells.has(i) && isConfirmedSession ? 'confirmed' : selectedCells.has(i) ? 'selected' : ''}`}
             onMouseDown={() => handleMouseDown(i)}
             onMouseEnter={() => handleMouseEnter(i)}
           ></div>
@@ -145,8 +134,42 @@ const CalendarGrid = () => {
   );
 };
 
+CalendarGrid.propTypes = {
+  handleMouseDown: PropTypes.func.isRequired,
+  handleMouseEnter: PropTypes.func.isRequired,
+  handleMouseUp: PropTypes.func.isRequired,
+  handleSave: PropTypes.func.isRequired,
+  selectedCells: PropTypes.instanceOf(Set).isRequired,
+  gridItemTimes: PropTypes.instanceOf(Array).isRequired,
+  savedTimes: PropTypes.instanceOf(Set).isRequired,
+};
+
+const Save = ({ canSave, handleSave }) => {
+  return (
+    <button
+      onClick={handleSave}
+      className={`saveButton ${canSave ? 'clickable' : ''}`}
+    >
+      Save
+    </button>
+  );
+};
+
+Save.propTypes = {
+  canSave: PropTypes.bool.isRequired,
+  handleSave: PropTypes.func.isRequired,
+};
+
 export const Calendar = () => {
-  const { weekdates } = useCalendarContext();
+  const { weekdates, gridItemTimes } = useCalendarContext();
+  const {
+    handleMouseDown,
+    handleMouseEnter,
+    handleMouseUp,
+    selectedCells,
+    canSave,
+    handleSave,
+  } = useAvailabilityContext();
   return (
     <div className='calendar'>
       <CalendarNav />
@@ -157,10 +180,16 @@ export const Calendar = () => {
         </div>
         <div className='gridContainer'>
           <HeaderGrid weekdates={weekdates} />
-          <CalendarGrid />
+          <CalendarGrid
+            handleMouseDown={handleMouseDown}
+            handleMouseEnter={handleMouseEnter}
+            handleMouseUp={handleMouseUp}
+            selectedCells={selectedCells}
+            gridItemTimes={gridItemTimes}
+          />
         </div>
       </div>
-      <button className='saveButton'>Save</button>
+      <Save canSave={canSave} handleSave={handleSave} />
     </div>
   );
 };

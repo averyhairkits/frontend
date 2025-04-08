@@ -60,10 +60,8 @@ export default function NavBar() {
         <Button.Secondary onClick={handleLogoutClick}>Log Out</Button.Secondary>
       ) : (
         <>
-          <Button.Primary onClick={() => navigate('/signup')}>
-            Sign Up
-          </Button.Primary>
-          <Button.Secondary onClick={() => navigate('/login')}>
+          <Button.Primary onClick={() => navigate('/')}>Sign Up</Button.Primary>
+          <Button.Secondary onClick={() => navigate('/')}>
             Login
           </Button.Secondary>
         </>

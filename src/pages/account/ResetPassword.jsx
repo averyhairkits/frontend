@@ -186,7 +186,7 @@ export default function ResetPassword() {
       console.log('Attempting password reset with token');
       await updatePassword(password, access_token);
 
-      navigate('/login', {
+      navigate('/', {
         state: {
           message:
             'Password has been reset successfully. Please login with your new password.',
