@@ -1,3 +1,4 @@
+// While volunteers select availability
 import React, {
   createContext,
   useContext,
@@ -23,6 +24,8 @@ const AvailabilityContextProvider = ({ children }) => {
   const isDragging = useRef(false);
   const { weekdates, gridItemTimes } = useCalendarContext();
 
+  // check if availability is different compared to last save for
+  // toggling save button clickability
   const selectedCellsChanged = () => {
     if (selectedCells.size !== prevSelectedCells.size) return true;
     for (const val of prevSelectedCells) {
@@ -31,17 +34,21 @@ const AvailabilityContextProvider = ({ children }) => {
     return false;
   };
 
+  // manage volunteers clicking on cells
   const toggleSelection = (index) => {
     setSelectedCells((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(index)) {
-        newSet.delete(index);
+        newSet.delete(index); // deselect cell if it was selected
       } else {
-        newSet.add(index);
+        newSet.add(index); // select cell if it was not selected
       }
       return newSet;
     });
   };
+
+  // handleMouseDown, handleMouseEnter, and handleMouseUp
+  // manage click and drag functions
 
   const handleMouseDown = (index) => {
     isDragging.current = true;
@@ -58,12 +65,14 @@ const AvailabilityContextProvider = ({ children }) => {
     isDragging.current = false;
   };
 
+  // clicking save button
   const handleSave = () => {
     console.log('Saved');
     setCanSave(false);
-    setPrevSelectedCells(new Set(selectedCells));
+    setPrevSelectedCells(new Set(selectedCells)); // saved cells are now fixed until next save
   };
 
+  // keep checking if current selected cells are different from last saved cells
   useEffect(() => {
     selectedCellsChanged() ? setCanSave(true) : setCanSave(false);
   }, [selectedCells]);
