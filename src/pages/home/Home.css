@@ -18,11 +18,9 @@
 
   text-align: center;
 
-  gap: 56px;
-
   height: 43px;
-  padding-right: 150px;
-  padding-left: 200px;
+  padding-right: 180px;
+  padding-left: 230px;
 }
 
 .calendarNavButton {
