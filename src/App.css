@@ -62,6 +62,17 @@ h6 {
   color: var(--purple1);
 }
 
+.navButtonsContainer {
+  display: flex;
+  flex-direction: row-reverse;
+  position: fixed;
+  top: 17px;
+  right: 17px;
+  width: 149px;
+  height: 37px;
+  gap: 19px;
+}
+
 .navButton {
   background-color: var(--purple1);
   cursor: pointer;
@@ -71,12 +82,8 @@ h6 {
   border-radius: 5px;
   width: 37px;
   height: 37px;
-  position: fixed;
-  top: 17px;
-  right: 17px;
 }
 
 .navIcon {
   stroke: var(--white);
-  stroke-width: 3;
 }

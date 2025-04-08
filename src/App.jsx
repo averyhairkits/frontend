@@ -23,7 +23,14 @@ export default function App() {
         <Routes>
           <Route element={<PrivateRoute />}></Route>
           <Route path='/' element={<PublicOnlyRoute />}>
-            <Route path='volunteer-home' element={<VolunteerHome />} />
+            <Route
+              path='volunteer-home'
+              element={<VolunteerHome isAdmin={false} />}
+            />
+            <Route
+              path='admin-home'
+              element={<VolunteerHome isAdmin={true} />}
+            />
             <Route path='/' element={<SignUp />} />
             <Route path='forgot-password' element={<RequestPasswordReset />} />
           </Route>

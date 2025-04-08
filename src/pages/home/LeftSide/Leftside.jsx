@@ -76,6 +76,7 @@ export default function Layout() {
           const isConfirmedDate = confirmedTimes.some(
             (d) => d.toDateString() === date.toDateString()
           ); // doesn't account for confirmed but not selected yet
+          // admin only needs underline2; volunteers need underlineBoth and underline1
 
           if (isSelectedDate && isConfirmedDate) return 'underlineBoth';
           if (isSelectedDate) return 'underline1';

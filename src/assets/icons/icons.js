@@ -2,6 +2,7 @@ import { ReactComponent as Back } from './back.svg';
 import { ReactComponent as eye } from './eye.svg';
 import { ReactComponent as eyeClosed } from './eyeclosed.svg';
 import { ReactComponent as Faq } from './faq.svg';
+import { ReactComponent as Home } from './home.svg';
 import { ReactComponent as HowTo } from './howto.svg';
 import { ReactComponent as Logout } from './logout.svg';
 import { ReactComponent as Next } from './next.svg';
@@ -10,6 +11,7 @@ import { ReactComponent as Person } from './person.svg';
 import { ReactComponent as Sunrise } from './sunrise.svg';
 import { ReactComponent as Sunset } from './sunset.svg';
 import { ReactComponent as Up } from './up.svg';
+import { ReactComponent as User } from './user.svg';
 
 /**
  * How to add new icons:
@@ -34,4 +36,6 @@ export const Icon = {
   Logout,
   HowTo,
   Faq,
+  Home,
+  User,
 };
