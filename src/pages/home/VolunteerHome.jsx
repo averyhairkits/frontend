@@ -12,30 +12,40 @@ import { Calendar } from 'pages/home/calendar/Calendar';
 
 import './Home.css';
 
-const VolunteerHome = ({ isAdmin }) => {
+const NavButtons = ({ isAdmin }) => {
   const navigate = useNavigate();
 
   return (
-    <main>
-      <nav className='navButtonsContainer'>
-        <button className='navButton' onClick={() => navigate('/')}>
-          <Icon.Logout className='navIcon' />
+    <nav className='navButtonsContainer'>
+      <button className='navButton' onClick={() => navigate('/')}>
+        <Icon.Logout className='navIcon' />
+      </button>
+      {isAdmin && (
+        <button className='navButton'>
+          <Icon.User className='navIcon' />
         </button>
-        {isAdmin && (
-          <button className='navButton'>
-            <Icon.User className='navIcon' />
-          </button>
-        )}
-        {isAdmin && (
-          <button className='navButton' onClick={() => navigate('/admin-home')}>
-            <Icon.Home className='navIcon' />
-          </button>
-        )}
-      </nav>
+      )}
+      {isAdmin && (
+        <button className='navButton' onClick={() => navigate('/admin-home')}>
+          <Icon.Home className='navIcon' />
+        </button>
+      )}
+    </nav>
+  );
+};
+
+NavButtons.propTypes = {
+  isAdmin: PropTypes.bool.isRequired,
+};
+
+const VolunteerHome = ({ isAdmin }) => {
+  return (
+    <main>
+      <NavButtons isAdmin={isAdmin} />
       <CalendarContextProvider>
         <SavedTimesContextProvider>
           <AvailabilityContextProvider>
-            <LeftSide /> {/* leftSection */}
+            <LeftSide isAdmin={isAdmin} /> {/* leftSection */}
             <Calendar /> {/* rightSection */}
           </AvailabilityContextProvider>
         </SavedTimesContextProvider>

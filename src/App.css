@@ -18,9 +18,11 @@
   --red: #dc4444;
   --solid-blue: #6b95ff;
   --purple2: #b300ea;
+  --purple2shadow: #a800db;
   --sign-up-fill-1: #e5edff;
   --sign-up-fill-2: #bfd1ff;
   --sign-up-fill-3: #99b6ff;
+  --sign-up-fill-3shadow: #7d9ef6;
   --sign-up-fill-4: #739aff;
   --sign-up-fill-5: #4d7fff;
   --sign-up-fill-6: #2664ff;
@@ -40,7 +42,7 @@ main {
 }
 
 h3 {
-  font-size: 19px;
+  font-size: 21px;
   font-weight: 600;
   margin: 0;
 }

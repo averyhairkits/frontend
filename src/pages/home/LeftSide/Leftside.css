@@ -24,6 +24,9 @@ div[style="color: red"] {
   border-radius: 10px;
   flex: 1;
   gap: 20px;
+  /* manage log overflow */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .white-bg p, .white-bg ul, .white-bg li {
@@ -32,7 +35,7 @@ div[style="color: red"] {
 }
 /* body-text */
 .white-bg p {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 500;
 }
 .white-bg ul {
@@ -40,8 +43,8 @@ div[style="color: red"] {
 }
 /* bullet-point */
 .white-bg li {
-  font-size: 12px;
-  font-weight: 400px;
+  font-size: 14px;
+  font-weight: 400;
   line-height: 25px;
 }
 .white-bg h3 {
@@ -132,7 +135,7 @@ div[style="color: red"] {
 }
 
 .react-calendar__navigation__label {
-  font-size: 19px !important; /* override */
+  font-size: 21px !important; /* override */
   font-weight: 700;
 }
 

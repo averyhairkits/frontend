@@ -98,7 +98,6 @@
   color: var(--dark-gray);
 }
 
-
 .calendarGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -116,9 +115,17 @@
 .calendarGridItemTop {
   border: 1px solid var(--purple1);
   border-bottom: 1px dashed var(--purple1);
+  background-color: var(--white);
+}
+.calendarGridItemTop:hover {
+  background-color: var(--lightest-gray);
 }
 
 .calendarGridItemBottom {
   border: 1px solid var(--purple1);
   border-top: 1px dashed var(--purple1);
+  background-color: var(--white);
+}
+.calendarGridItemBottom:hover {
+  background-color: var(--lightest-gray);
 }

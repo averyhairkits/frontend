@@ -1,4 +1,5 @@
 import { ReactComponent as Back } from './back.svg';
+import { ReactComponent as Clock } from './clock.svg';
 import { ReactComponent as eye } from './eye.svg';
 import { ReactComponent as eyeClosed } from './eyeclosed.svg';
 import { ReactComponent as Faq } from './faq.svg';
@@ -38,4 +39,5 @@ export const Icon = {
   Faq,
   Home,
   User,
+  Clock,
 };

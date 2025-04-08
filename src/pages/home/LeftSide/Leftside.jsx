@@ -1,13 +1,16 @@
 import React from 'react';
 
 import { Icon } from 'assets/icons/icons.js';
+import PropTypes from 'prop-types';
 import Calendar from 'react-calendar';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
+import LeftDescription from 'pages/home/LeftSide/LeftDescription';
+import LeftLog from 'pages/home/LeftSide/LeftLog';
 import 'pages/home/LeftSide/Leftside.css';
 import confirmedTimes from 'pages/home/calendar/confirmedTimes';
 
-export default function Layout() {
+export default function LeftSide({ isAdmin }) {
   const { todaysDate } = useCalendarContext();
   const fourWeeksTime = 27 * 24 * 60 * 60 * 1000;
   const selectedDates = [
@@ -24,37 +27,7 @@ export default function Layout() {
         </span>
         Avery&apos;s Helpful Hair Kits
       </div>
-
-      <div className='white-bg'>
-        <h3 className='how-to-title'>
-          <Icon.HowTo className='how-to-icon' /> How-To
-        </h3>
-        <div className='log-entry'>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            in scelerisque ipsum. Morbi a vulputate purus Duis vestibulum cursus
-            erat vel suscipit. Nullam facilisis magna et libero egestas, eu
-            fermentum.
-          </p>
-        </div>
-        <h3 className='how-to-title'>
-          <Icon.Faq className='Faq-icon' /> FAQS
-        </h3>
-        <div className='log-entry'>
-          <div>
-            <p>Lorem ipsum dolor sit amet?</p>
-            <ul>
-              <li>consectetur adipiscing elie</li>
-            </ul>
-          </div>
-          <div>
-            <p>Suspendisse in scelerisque ipsum?</p>
-            <ul>
-              <li>Morbi a vulputate purus</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      {isAdmin ? <LeftLog /> : <LeftDescription />}
 
       <Calendar
         next2Label={null}
@@ -76,7 +49,7 @@ export default function Layout() {
           const isConfirmedDate = confirmedTimes.some(
             (d) => d.toDateString() === date.toDateString()
           ); // doesn't account for confirmed but not selected yet
-          // admin only needs underline2; volunteers need underlineBoth and underline1
+          // admin needs underline1 (4 or more sign ups), underline2, underlineBoth; volunteers need underlineBoth and underline1
 
           if (isSelectedDate && isConfirmedDate) return 'underlineBoth';
           if (isSelectedDate) return 'underline1';
@@ -87,3 +60,7 @@ export default function Layout() {
     </div>
   );
 }
+
+LeftSide.propTypes = {
+  isAdmin: PropTypes.bool.isRequired,
+};

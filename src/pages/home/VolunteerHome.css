@@ -96,9 +96,15 @@
 .selected {
   background-color: var(--sign-up-fill-3);
 }
+.selected:hover {
+  background-color: var(--sign-up-fill-3shadow);
+}
 
 .confirmed {
   background-color: var(--purple2);
+}
+.confirmed:hover {
+  background-color: var(--purple2shadow);
 }
 
 .full {
