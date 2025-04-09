@@ -110,6 +110,8 @@
 
   overflow: hidden;
   flex: 1;
+
+  position: relative;
 }
 
 .calendarGridItemTop {

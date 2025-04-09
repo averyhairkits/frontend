@@ -7,6 +7,7 @@ import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useAvailabilityContext } from 'common/contexts/useAvailabilityContext';
 import 'pages/home/Home.css';
 import 'pages/home/VolunteerHome.css';
+import { AdminCalendarGrid } from 'pages/home/calendar/AdminCalendarGrid';
 import { CalendarNav } from 'pages/home/calendar/CalendarNav';
 import { VolunteerCalendarGrid } from 'pages/home/calendar/VolunteerCalendarGrid';
 import { useNumVolunteers } from 'pages/home/calendar/useNumVolunteers';
@@ -139,13 +140,20 @@ export const Calendar = ({ isAdmin }) => {
         </div>
         <div className='gridContainer'>
           <HeaderGrid weekdates={weekdates} />
-          <VolunteerCalendarGrid
-            handleMouseDown={handleMouseDown}
-            handleMouseEnter={handleMouseEnter}
-            handleMouseUp={handleMouseUp}
-            selectedCells={selectedCells}
-            gridItemTimes={gridItemTimes}
-          />
+          {isAdmin ? (
+            <AdminCalendarGrid
+              selectedCells={selectedCells}
+              gridItemTimes={gridItemTimes}
+            />
+          ) : (
+            <VolunteerCalendarGrid
+              handleMouseDown={handleMouseDown}
+              handleMouseEnter={handleMouseEnter}
+              handleMouseUp={handleMouseUp}
+              selectedCells={selectedCells}
+              gridItemTimes={gridItemTimes}
+            />
+          )}
         </div>
       </div>
       {!isAdmin && <Save canSave={canSave} handleSave={handleSave} />}

@@ -78,7 +78,7 @@
   font-weight: 800;
   border: 0px;
   border-radius: 5px;
-  
+
   position: fixed;
   bottom: 17px;
   right: 27px;
@@ -112,3 +112,8 @@
   pointer-events: none;
 }
 
+/* ADMIN HOME */
+.draggingBox {
+  position: absolute;
+  z-index: 2;
+}
