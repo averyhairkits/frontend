@@ -34,7 +34,7 @@ const AvailabilityContextProvider = ({ children }) => {
     return false;
   };
 
-  // manage volunteers clicking on cells
+  // manage volunteers selecting/deselecting cells
   const toggleSelection = (index) => {
     setSelectedCells((prev) => {
       const newSet = new Set(prev);

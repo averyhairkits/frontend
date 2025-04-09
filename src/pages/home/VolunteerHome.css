@@ -97,14 +97,14 @@
   background-color: var(--sign-up-fill-3);
 }
 .selected:hover {
-  background-color: var(--sign-up-fill-3shadow);
+  background-color: var(--sign-up-fill-3-highlight);
 }
 
 .confirmed {
   background-color: var(--purple2);
 }
 .confirmed:hover {
-  background-color: var(--purple2shadow);
+  background-color: var(--purple2-highlight);
 }
 
 .full {
