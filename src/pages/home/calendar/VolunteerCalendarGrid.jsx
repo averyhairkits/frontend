@@ -15,7 +15,11 @@ export const VolunteerCalendarGrid = ({
   const gridItems = Array.from({ length: 140 });
 
   return (
-    <div className='calendarGrid' onMouseUp={handleMouseUp}>
+    <div
+      className='calendarGrid'
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+    >
       {gridItems.map((_, i) => {
         const isConfirmedSession = confirmedTimes.some(
           (d) => d.getTime() === gridItemTimes[i].getTime()
