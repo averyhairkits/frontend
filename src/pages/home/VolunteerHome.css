@@ -114,8 +114,10 @@
 
 /* ADMIN HOME */
 .unsavedEvent {
+  background-color: var(--purple2);
   position: absolute;
   z-index: 2;
+  border-radius: 10px;
 }
 
 .event {

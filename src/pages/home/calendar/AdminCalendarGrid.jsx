@@ -28,6 +28,10 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
     });
   };
 
+  // right now, the event box doesn't become shorter unless you drag outside of selection.col
+  // ^ likely because the box is above the grid, so it blocks the pointer events
+  // it could be changed to have the box become longer and shorter based on the cursor's y-coor,
+  // then snap the final length to the nearest grid row, but it may be fine to leave as is
   const handleMouseMove = (i) => {
     if (selection.startRow === null) return;
     console.log('canSave:', canSave);
@@ -36,7 +40,9 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
   };
 
   const handleMouseUp = () => {
-    setCanSave(true);
+    // the condition is needed to prevent setting canSave to true if user clicks, 
+    // drags outside of grid, then drags back inside (on the same click and drag)
+    selection.startRow !== null && setCanSave(true);
     setSelectionStyle(getSelectionStyle(selection));
     setSelection({ col: null, endRow: null, startRow: null });
   };
@@ -62,13 +68,10 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
     const maxRow = Math.max(startRow, endRow);
 
     return {
-      left: `calc(${(100 / 7) * col}% + 1px)`, // Account for 1px gap
-      width: `calc(${100 / 7}% - 2px)`, // Subtract 2px for gaps
-      top: `calc(${(100 / 20) * minRow}% + 1px)`, // 20 rows
-      height: `calc(${(100 / 20) * (maxRow - minRow + 1)}% - 2px)`,
-      // does not work properly when put in .css file
-      backgroundColor: '#b300ea30',
-      border: '1px solid #b300ea80',
+      left: `calc(${(100 / 7) * col}%)`,
+      width: `calc(${100 / 7}% - 1px)`, // Subtract 1px for border gap
+      top: `calc(${(100 / 20) * minRow}%)`, 
+      height: `calc(${(100 / 20) * (maxRow - minRow + 1)}%)`,
     };
   };
 
