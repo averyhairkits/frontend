@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export const AdminCalendarGrid = ({ selectedCells, gridItemTimes }) => {
+export const AdminCalendarGrid = ({ gridItemTimes }) => {
   const [selection, setSelection] = useState({
     startRow: null,
     endRow: null,
     col: null,
   });
+  const [selectedCells, setSelectedCells] = useState(new Set());
+  const [canSave, setCanSave] = useState(false);
+  const [selectionStyle, setSelectionStyle] = useState();
 
   const gridItems = Array.from({ length: 140 });
 
@@ -16,24 +19,68 @@ export const AdminCalendarGrid = ({ selectedCells, gridItemTimes }) => {
     return { row, col };
   };
 
+  const toggleSelection = (i) => {
+    const {row} = getGridPosition(i);
+    
+    setSelectedCells((prev) => {
+      const newSet = new Set(prev);
+      const { startRow, endRow, col } = selection;
+      // if select direction switches
+      if ((endRow > row && startRow < endRow) ||
+          (endRow < row && startRow > endRow)) {
+        const startOverSet = new Set();
+        // convert row, col to grid index
+        startOverSet.add(col*20 + startRow);
+        return startOverSet;
+      }
+      if (!newSet.has(col*20 + row)) {
+        newSet.add(col*20 + row);
+      }
+      return newSet;
+    });
+  };
+
+  useEffect(() => {
+    console.log(selection.endRow);
+  }, [selection.endRow])
+
   const handleMouseDown = (i) => {
+
     const { row, col } = getGridPosition(i);
+    toggleSelection(i);
     setSelection({
       startRow: row,
       endRow: row,
       col,
     });
+  
   };
 
   const handleMouseMove = (i) => {
     if (selection.startRow === null) return;
+    console.log('canSave:', canSave);
     const { row } = getGridPosition(i);
+    toggleSelection(i);
     setSelection((prev) => ({ ...prev, endRow: row }));
   };
 
   const handleMouseUp = () => {
+    setCanSave(true);
+    setSelectionStyle(getSelectionStyle(selection));
     setSelection({ col: null, endRow: null, startRow: null });
   };
+
+  const handleLeave = () => {
+    setSelection({ col: null, endRow: null, startRow: null });
+  }
+
+  useEffect(() => {
+    console.log(canSave);
+  }, [canSave]);
+
+  useEffect(() => {
+    console.log('selectedCells: ', selectedCells);
+  }, [selectedCells]);
 
   // Calculate selection box style
   const getSelectionStyle = (selection) => {
@@ -58,8 +105,10 @@ export const AdminCalendarGrid = ({ selectedCells, gridItemTimes }) => {
     <div
       className='calendarGrid'
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
+      onMouseLeave={handleLeave}
+      style={{ pointerEvents: canSave ? 'none' : 'auto' }}
     >
+      {/* ^^ disable any more selections after one has been made (save is enabled) */}
       {gridItems.map((_, i) => {
         // remains constant regardless of selections
         const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'}`;
@@ -76,9 +125,9 @@ export const AdminCalendarGrid = ({ selectedCells, gridItemTimes }) => {
         );
       })}
 
-      {/* Floating selection box */}
-      {selection.startRow !== null && (
-        <div className='draggingBox' style={getSelectionStyle(selection)} />
+      {/* Define event differently when its dragging and when its done dragging (mouseUp) */}
+      {(selection.startRow !== null || canSave) && (
+        <div className='unsavedEvent' style={canSave ? selectionStyle : getSelectionStyle(selection)} />
       )}
     </div>
   );

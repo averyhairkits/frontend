@@ -113,7 +113,7 @@
 }
 
 /* ADMIN HOME */
-.draggingBox {
+.unsavedEvent {
   position: absolute;
   z-index: 2;
 }
