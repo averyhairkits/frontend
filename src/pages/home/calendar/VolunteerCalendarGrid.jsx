@@ -22,7 +22,7 @@ export const VolunteerCalendarGrid = ({
       onMouseLeave={handleMouseUp}
     >
       {gridItems.map((_, i) => {
-        const isConfirmedSession = confirmedTimes.some(
+        const isConfirmedSession = Array.from(confirmedTimes).some(
           (d) => {
             if (d.end.getTime() === gridItemTimes[i].getTime()) {
               hasStarted = false;

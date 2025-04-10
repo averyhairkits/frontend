@@ -18,7 +18,7 @@ const getVolunteerTileClass = ({ date, savedTimes }) => {
   );
 
   const isSelectedConfirmedDate = Array.from(savedTimes).some((d) =>
-    confirmedTimes.some(
+    Array.from(confirmedTimes).some(
       (e) =>
         // e, d, and date's dates are the same
         e.start.toDateString() === date.toDateString() &&
@@ -36,7 +36,7 @@ const getVolunteerTileClass = ({ date, savedTimes }) => {
 
 // // Admin mini-calendar underline
 // const getAdminTileClass = ({ date, allSavedTimes, confirmedTimes }) => {
-//   const isConfirmedDate = confirmedTimes.some(
+//   const isConfirmedDate = Array.from(confirmedTimes).some(
 //     (d) => d.toDateString() === date.toDateString()
 //   );
 

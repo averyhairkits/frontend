@@ -113,7 +113,7 @@
 }
 
 /* ADMIN HOME */
-.unsavedEvent {
+.event {
   background-color: var(--purple2);
   position: absolute;
   z-index: 2;

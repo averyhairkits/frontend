@@ -101,7 +101,7 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
 
       {/* Define event differently when its dragging and when its done dragging (mouseUp) */}
       {(selection.startRow !== null || canSave) && (
-        <div className='unsavedEvent' style={canSave ? selectionStyle : getSelectionStyle(selection)} />
+        <div className='event' style={canSave ? selectionStyle : getSelectionStyle(selection)} />
       )}
     </div>
   );
