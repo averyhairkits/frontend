@@ -21,10 +21,10 @@ const getVolunteerTileClass = ({ date, savedTimes }) => {
     confirmedTimes.some(
       (e) =>
         // e, d, and date's dates are the same
-        e.toDateString() === date.toDateString() &&
+        e.start.toDateString() === date.toDateString() &&
         date.toDateString() === d.toDateString() &&
         // e, d have the same time slot on the same date
-        e.toLocaleTimeString() === d.toLocaleTimeString()
+        e.start.toLocaleTimeString() === d.toLocaleTimeString()
     )
   );
 

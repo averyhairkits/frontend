@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import confirmedTimes from 'pages/home/calendar/confirmedTimes';
-
 export const AdminCalendarGrid = ({ selectedCells, gridItemTimes }) => {
   const [selection, setSelection] = useState({
     startRow: null,
@@ -38,7 +36,7 @@ export const AdminCalendarGrid = ({ selectedCells, gridItemTimes }) => {
   };
 
   // Calculate selection box style
-  const getSelectionStyle = () => {
+  const getSelectionStyle = (selection) => {
     const { startRow, endRow, col } = selection;
     if (startRow === null || col === null) return null;
 
@@ -63,10 +61,6 @@ export const AdminCalendarGrid = ({ selectedCells, gridItemTimes }) => {
       onMouseLeave={handleMouseUp}
     >
       {gridItems.map((_, i) => {
-        const isConfirmedSession = confirmedTimes.some(
-          (d) => d.getTime() === gridItemTimes[i].getTime()
-        );
-
         // remains constant regardless of selections
         const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'}`;
 
@@ -74,7 +68,7 @@ export const AdminCalendarGrid = ({ selectedCells, gridItemTimes }) => {
           <div
             key={i}
             // only shows confirmed session if a confirmed cell is selected
-            className={`${itemType} ${selectedCells.has(i) && isConfirmedSession ? 'confirmed' : selectedCells.has(i) ? 'selected' : ''}`}
+            className={`${itemType}`}
             onMouseDown={() => handleMouseDown(i)}
             onMouseEnter={() => handleMouseMove(i)}
             onMouseUp={handleMouseUp}
@@ -84,7 +78,7 @@ export const AdminCalendarGrid = ({ selectedCells, gridItemTimes }) => {
 
       {/* Floating selection box */}
       {selection.startRow !== null && (
-        <div className='draggingBox' style={getSelectionStyle()} />
+        <div className='draggingBox' style={getSelectionStyle(selection)} />
       )}
     </div>
   );

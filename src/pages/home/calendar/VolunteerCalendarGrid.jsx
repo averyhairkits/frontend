@@ -13,6 +13,7 @@ export const VolunteerCalendarGrid = ({
   gridItemTimes,
 }) => {
   const gridItems = Array.from({ length: 140 });
+  let hasStarted = false;
 
   return (
     <div
@@ -22,8 +23,22 @@ export const VolunteerCalendarGrid = ({
     >
       {gridItems.map((_, i) => {
         const isConfirmedSession = confirmedTimes.some(
-          (d) => d.getTime() === gridItemTimes[i].getTime()
+          (d) => {
+            if (d.end.getTime() === gridItemTimes[i].getTime()) {
+              hasStarted = false;
+              return true;
+            }
+            if (d.start.getTime() === gridItemTimes[i].getTime()) {
+              hasStarted = true;
+              return true;
+            }
+            if (hasStarted) {
+              return true;
+            }
+            return false;
+          }
         );
+
         const isFull = fullTimes.some(
           (d) => d.getTime() === gridItemTimes[i].getTime()
         );
