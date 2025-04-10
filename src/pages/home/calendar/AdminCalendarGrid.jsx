@@ -6,7 +6,7 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
     endRow: null,
     col: null,
   });
-  const [selectedCells, setSelectedCells] = useState(new Set());
+
   const [canSave, setCanSave] = useState(false);
   const [selectionStyle, setSelectionStyle] = useState();
 
@@ -19,48 +19,19 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
     return { row, col };
   };
 
-  const toggleSelection = (i) => {
-    const {row} = getGridPosition(i);
-    
-    setSelectedCells((prev) => {
-      const newSet = new Set(prev);
-      const { startRow, endRow, col } = selection;
-      // if select direction switches
-      if ((endRow > row && startRow < endRow) ||
-          (endRow < row && startRow > endRow)) {
-        const startOverSet = new Set();
-        // convert row, col to grid index
-        startOverSet.add(col*20 + startRow);
-        return startOverSet;
-      }
-      if (!newSet.has(col*20 + row)) {
-        newSet.add(col*20 + row);
-      }
-      return newSet;
-    });
-  };
-
-  useEffect(() => {
-    console.log(selection.endRow);
-  }, [selection.endRow])
-
   const handleMouseDown = (i) => {
-
     const { row, col } = getGridPosition(i);
-    toggleSelection(i);
     setSelection({
       startRow: row,
       endRow: row,
       col,
     });
-  
   };
 
   const handleMouseMove = (i) => {
     if (selection.startRow === null) return;
     console.log('canSave:', canSave);
     const { row } = getGridPosition(i);
-    toggleSelection(i);
     setSelection((prev) => ({ ...prev, endRow: row }));
   };
 
@@ -75,12 +46,12 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
   }
 
   useEffect(() => {
-    console.log(canSave);
-  }, [canSave]);
+    console.log('selection (start row, end row, column): ', selection);
+  }, [selection])
 
   useEffect(() => {
-    console.log('selectedCells: ', selectedCells);
-  }, [selectedCells]);
+    console.log('Can Save: ', canSave);
+  }, [canSave]);
 
   // Calculate selection box style
   const getSelectionStyle = (selection) => {
