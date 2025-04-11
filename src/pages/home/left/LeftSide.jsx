@@ -6,10 +6,10 @@ import Calendar from 'react-calendar';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
-import LeftDescription from 'pages/home/LeftSide/LeftDescription';
-import LeftLog from 'pages/home/LeftSide/LeftLog';
-import 'pages/home/LeftSide/Leftside.css';
-import confirmedTimes from 'pages/home/calendar/confirmedTimes';
+import LeftDescription from 'pages/home/left/LeftDescription';
+import LeftLog from 'pages/home/left/LeftLog';
+import 'pages/home/left/LeftSide.css';
+import confirmedTimes from 'pages/home/right/confirmedTimes';
 
 // Volunteer mini-calendar underline
 const getVolunteerTileClass = ({ date, savedTimes }) => {

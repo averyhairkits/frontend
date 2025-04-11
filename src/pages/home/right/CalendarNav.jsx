@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import 'pages/home/Home.css';
-import 'pages/home/VolunteerHome.css';
-import { useCalendarNav } from 'pages/home/calendar/useCalendarNav';
+import { useCalendarNav } from 'pages/home/right/useCalendarNav';
 
 export const CalendarNav = () => {
   const { handlePrevWeek, handleNextWeek } = useCalendarNav();

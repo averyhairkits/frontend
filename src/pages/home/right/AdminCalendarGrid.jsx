@@ -1,18 +1,22 @@
 import React from 'react';
-import { useAdminCalendarGrid } from 'pages/home/calendar/useAdminCalendarGrid';
+
+import { useAdminCalendarGrid } from 'pages/home/right/useAdminCalendarGrid';
+
+import './AdminHome.css';
 
 export const AdminCalendarGrid = ({ gridItemTimes }) => {
   const gridItems = Array.from({ length: 140 });
 
-  const { handleMouseUp,
+  const {
+    handleMouseUp,
     handleMouseLeave,
     canSave,
     handleMouseDown,
     handleMouseMove,
     selection,
     selectionStyle,
-    getSelectionStyle } = useAdminCalendarGrid({ gridItemTimes });
-  
+    getSelectionStyle,
+  } = useAdminCalendarGrid({ gridItemTimes });
 
   return (
     <div
@@ -40,7 +44,12 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
 
       {/* Define event differently when its dragging and when its done dragging (mouseUp) */}
       {(selection.startRow !== null || canSave) && (
-        <div className='event' style={canSave ? selectionStyle : getSelectionStyle(selection)} />
+        <div
+          className='event'
+          style={canSave ? selectionStyle : getSelectionStyle(selection)}
+        >
+          <div className='content'></div>
+        </div>
       )}
     </div>
   );

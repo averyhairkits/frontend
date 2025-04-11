@@ -11,7 +11,7 @@ import AuthCallback from 'pages/account/AuthCallback';
 import RequestPasswordReset from 'pages/account/RequestPasswordReset';
 import ResetPassword from 'pages/account/ResetPassword';
 import SignUp from 'pages/account/SignUpAndLogin';
-import VolunteerHome from 'pages/home/VolunteerHome';
+import VolunteerHome from 'pages/home/Home';
 import NotFound from 'pages/not-found/NotFound';
 
 import './App.css';

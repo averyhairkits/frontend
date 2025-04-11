@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import 'pages/home/Home.css';
-import 'pages/home/VolunteerHome.css';
-import { AdminCalendarGrid } from 'pages/home/calendar/AdminCalendarGrid';
-import { CalendarNav } from 'pages/home/calendar/CalendarNav';
-import { VolunteerCalendarGrid } from 'pages/home/calendar/VolunteerCalendarGrid';
-import { useVolunteerCalendar } from 'pages/home/calendar/useVolunteerCalendar';
-import { useNumVolunteers } from 'pages/home/calendar/useNumVolunteers';
+import { AdminCalendarGrid } from 'pages/home/right/AdminCalendarGrid';
+import { CalendarNav } from 'pages/home/right/CalendarNav';
+import { VolunteerCalendarGrid } from 'pages/home/right/VolunteerCalendarGrid';
+import { useNumVolunteers } from 'pages/home/right/useNumVolunteers';
+import { useVolunteerCalendar } from 'pages/home/right/useVolunteerCalendar';
+
+import './VolunteerHome.css';
 
 const Times = () => {
   const AllTimes = [
@@ -114,7 +115,7 @@ Save.propTypes = {
   handleSave: PropTypes.func.isRequired,
 };
 
-export const Calendar = ({ isAdmin }) => {
+const RightSide = ({ isAdmin }) => {
   const { weekdates, gridItemTimes } = useCalendarContext();
   const {
     handleMouseDown,
@@ -125,7 +126,7 @@ export const Calendar = ({ isAdmin }) => {
     handleSave,
   } = useVolunteerCalendar();
   return (
-    <div className='calendar'>
+    <div className='rightside'>
       <CalendarNav />
       <div className='rightMainSection'>
         <div className='timeContainer'>
@@ -161,6 +162,8 @@ export const Calendar = ({ isAdmin }) => {
   );
 };
 
-Calendar.propTypes = {
+RightSide.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
 };
+
+export default RightSide;

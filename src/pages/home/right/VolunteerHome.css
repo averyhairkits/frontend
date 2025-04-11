@@ -111,19 +111,3 @@
   background-color: var(--light-gray);
   pointer-events: none;
 }
-
-/* ADMIN HOME */
-.event {
-  background-color: var(--purple2);
-  position: absolute;
-  z-index: 2;
-  border-radius: 10px;
-}
-
-.event {
-  background-color: var(--purple2);
-
-}
-.event:hover {
-  background-color: var(--purple2);
-}

@@ -2,8 +2,8 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import confirmedTimes from 'pages/home/calendar/confirmedTimes';
-import fullTimes from 'pages/home/calendar/fullTimes';
+import confirmedTimes from 'pages/home/right/confirmedTimes';
+import fullTimes from 'pages/home/right/fullTimes';
 
 export const VolunteerCalendarGrid = ({
   handleMouseDown,
@@ -22,22 +22,20 @@ export const VolunteerCalendarGrid = ({
       onMouseLeave={handleMouseUp}
     >
       {gridItems.map((_, i) => {
-        const isConfirmedSession = Array.from(confirmedTimes).some(
-          (d) => {
-            if (d.end.getTime() === gridItemTimes[i].getTime()) {
-              hasStarted = false;
-              return true;
-            }
-            if (d.start.getTime() === gridItemTimes[i].getTime()) {
-              hasStarted = true;
-              return true;
-            }
-            if (hasStarted) {
-              return true;
-            }
-            return false;
+        const isConfirmedSession = Array.from(confirmedTimes).some((d) => {
+          if (d.end.getTime() === gridItemTimes[i].getTime()) {
+            hasStarted = false;
+            return true;
           }
-        );
+          if (d.start.getTime() === gridItemTimes[i].getTime()) {
+            hasStarted = true;
+            return true;
+          }
+          if (hasStarted) {
+            return true;
+          }
+          return false;
+        });
 
         const isFull = fullTimes.some(
           (d) => d.getTime() === gridItemTimes[i].getTime()
