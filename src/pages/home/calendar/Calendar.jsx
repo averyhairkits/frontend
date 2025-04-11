@@ -4,12 +4,12 @@ import { Icon } from 'assets/icons/icons.js';
 import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
-import { useAvailabilityContext } from 'common/contexts/useAvailabilityContext';
 import 'pages/home/Home.css';
 import 'pages/home/VolunteerHome.css';
 import { AdminCalendarGrid } from 'pages/home/calendar/AdminCalendarGrid';
 import { CalendarNav } from 'pages/home/calendar/CalendarNav';
 import { VolunteerCalendarGrid } from 'pages/home/calendar/VolunteerCalendarGrid';
+import { useVolunteerCalendar } from 'pages/home/calendar/useVolunteerCalendar';
 import { useNumVolunteers } from 'pages/home/calendar/useNumVolunteers';
 
 const Times = () => {
@@ -123,7 +123,7 @@ export const Calendar = ({ isAdmin }) => {
     selectedCells,
     canSave,
     handleSave,
-  } = useAvailabilityContext();
+  } = useVolunteerCalendar();
   return (
     <div className='calendar'>
       <CalendarNav />

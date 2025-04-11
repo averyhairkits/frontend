@@ -1,20 +1,10 @@
 // While volunteers select availability
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-
-import PropTypes from 'prop-types';
+import { useState, useEffect, useRef } from 'react';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 
-const AvailabilityContext = createContext();
-
-const AvailabilityContextProvider = ({ children }) => {
+export const useVolunteerCalendar = () => {
   const [selectedCells, setSelectedCells] = useState(new Set()); // contains one week
   const [canSave, setCanSave] = useState(false);
   const { savedTimes, setSavedTimes } = useSavedTimesContext(); // contains all times
@@ -119,35 +109,15 @@ const AvailabilityContextProvider = ({ children }) => {
     console.log("Can press 'save'? ", canSave);
   }, [canSave]);
 
-  return (
-    <AvailabilityContext.Provider
-      value={{
-        selectedCells,
-        setSelectedCells,
-        canSave,
-        handleMouseDown,
-        handleMouseEnter,
-        handleMouseUp,
-        handleSave,
-        setPrevSelectedCells,
-        prevSelectedCells,
-      }}
-    >
-      {children}
-    </AvailabilityContext.Provider>
-  );
-};
-
-AvailabilityContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-const useAvailabilityContext = () => {
-  return useContext(AvailabilityContext);
-};
-
-export {
-  AvailabilityContext,
-  AvailabilityContextProvider,
-  useAvailabilityContext,
+  return {
+    selectedCells,
+    setSelectedCells,
+    canSave,
+    handleMouseDown,
+    handleMouseEnter,
+    handleMouseUp,
+    handleSave,
+    setPrevSelectedCells,
+    prevSelectedCells,
+  };
 };
