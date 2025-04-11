@@ -69,7 +69,7 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
 
     return {
       left: `calc(${(100 / 7) * col}%)`,
-      width: `calc(${100 / 7}% - 1px)`, // Subtract 1px for border gap
+      width: `calc(${100 / 7}%)`, // Subtract 1px for border gap
       top: `calc(${(100 / 20) * minRow}%)`, 
       height: `calc(${(100 / 20) * (maxRow - minRow + 1)}%)`,
     };
