@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// keeping gridItemTimes input for when events are mapped to actual dates
 export const useAdminCalendarGrid = ({ gridItemTimes }) => {
   const [selection, setSelection] = useState({
       startRow: null,
