@@ -21,6 +21,8 @@ export const useCalendarNav = () => {
     newStart.setDate(newStart.getDate() + 7);
     setCurrentDate(newStart);
     setJustSaved(true);
+    // ^ counterintuitive but this prevents save from staying active if
+    // user navigates between pages after selecting but doesn't save
   };
 
   useEffect(() => {
