@@ -1,13 +1,13 @@
 // While volunteers select availability
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 
 export const useVolunteerCalendar = () => {
   const [selectedCells, setSelectedCells] = useState(new Set()); // contains one week
-  const [canSave, setCanSave] = useState(false);
-  const { savedTimes, setSavedTimes } = useSavedTimesContext(); // contains all times
+  const { savedTimes, setSavedTimes, setCanSave, justSaved, setJustSaved } =
+    useSavedTimesContext(); // contains all times
   const [prevSelectedCells, setPrevSelectedCells] = useState(
     new Set(savedTimes)
   ); // contains one week
@@ -41,6 +41,7 @@ export const useVolunteerCalendar = () => {
   // manage click and drag functions
 
   const handleMouseDown = (index) => {
+    setJustSaved(false);
     isDragging.current = true;
     toggleSelection(index);
   };
@@ -58,13 +59,14 @@ export const useVolunteerCalendar = () => {
   // clicking save button
   const handleSave = () => {
     console.log('Saved');
+    setJustSaved(true);
     setCanSave(false);
     setPrevSelectedCells(new Set(selectedCells)); // saved cells are now fixed until next save
   };
 
   // keep checking if current selected cells are different from last saved cells
   useEffect(() => {
-    selectedCellsChanged() ? setCanSave(true) : setCanSave(false);
+    !justSaved && selectedCellsChanged() ? setCanSave(true) : setCanSave(false);
   }, [selectedCells]);
 
   useEffect(() => {
@@ -105,14 +107,9 @@ export const useVolunteerCalendar = () => {
     );
   }, [weekdates, savedTimes]);
 
-  useEffect(() => {
-    console.log("Can press 'save'? ", canSave);
-  }, [canSave]);
-
   return {
     selectedCells,
     setSelectedCells,
-    canSave,
     handleMouseDown,
     handleMouseEnter,
     handleMouseUp,

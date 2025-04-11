@@ -4,6 +4,7 @@ import { Icon } from 'assets/icons/icons.js';
 import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
+import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 import 'pages/home/Home.css';
 import { AdminCalendarGrid } from 'pages/home/right/AdminCalendarGrid';
 import { CalendarNav } from 'pages/home/right/CalendarNav';
@@ -122,9 +123,11 @@ const RightSide = ({ isAdmin }) => {
     handleMouseEnter,
     handleMouseUp,
     selectedCells,
-    canSave,
     handleSave,
   } = useVolunteerCalendar();
+
+  const { canSave } = useSavedTimesContext();
+
   return (
     <div className='rightside'>
       <CalendarNav />

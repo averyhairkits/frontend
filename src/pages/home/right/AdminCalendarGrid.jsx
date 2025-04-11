@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import { useAdminCalendarGrid } from 'pages/home/right/useAdminCalendarGrid';
 
 import './AdminHome.css';
@@ -53,4 +55,8 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
       )}
     </div>
   );
+};
+
+AdminCalendarGrid.propTypes = {
+  gridItemTimes: PropTypes.array.isRequired,
 };
