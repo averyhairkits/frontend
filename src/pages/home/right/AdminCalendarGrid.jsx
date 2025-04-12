@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Icon } from 'assets/icons/icons';
 import PropTypes from 'prop-types';
 
 import { useAdminCalendarGrid } from 'pages/home/right/useAdminCalendarGrid';
@@ -50,7 +51,15 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
           className='event'
           style={canSave ? selectionStyle : getSelectionStyle(selection)}
         >
-          <div className='content'></div>
+          <div className='content'>
+            <h1>Hair Kit Packing Session</h1>
+            <h2>12:00 pm - 03:00 pm</h2>
+            <h3>Lorem ipsum dolor amet, consectetur adipiscing elit.</h3>
+            <div className='numVolunteersContainer'>
+              <Icon.User width='24px'></Icon.User>
+              <h4>3</h4>
+            </div>
+          </div>
         </div>
       )}
     </div>

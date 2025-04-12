@@ -8,7 +8,6 @@ import { ReactComponent as HowTo } from './howto.svg';
 import { ReactComponent as Logout } from './logout.svg';
 import { ReactComponent as Next } from './next.svg';
 import { ReactComponent as Noon } from './noon.svg';
-import { ReactComponent as Person } from './person.svg';
 import { ReactComponent as Sunrise } from './sunrise.svg';
 import { ReactComponent as Sunset } from './sunset.svg';
 import { ReactComponent as Up } from './up.svg';
@@ -32,7 +31,6 @@ export const Icon = {
   Sunset,
   Back,
   Next,
-  Person,
   Up,
   Logout,
   HowTo,

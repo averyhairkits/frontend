@@ -20,9 +20,10 @@ const getVolunteerTileClass = ({ date, savedTimes }) => {
   const isSelectedConfirmedDate = Array.from(savedTimes).some((d) =>
     Array.from(confirmedTimes).some(
       (e) =>
-        // d, and date's dates are the same, and their times are between
-        // a start and end date in confirmedTimes
+        // e.start, d, and date's dates are the same
+        e.start.toDateString === d.toDateString() &&
         date.toDateString() === d.toDateString() &&
+        // d & date's times are between a start and end date in confirmedTimes
         e.start.toLocaleTimeString() <= d.toLocaleTimeString() &&
         e.end.toLocaleTimeString() >= d.toLocaleTimeString()
     )

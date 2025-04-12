@@ -58,7 +58,7 @@ const NumVolunteers = () => {
         className='numVolunteersButton'
         onClick={handleNumVolunteersButton}
       >
-        <Icon.Person className='numVolunteersButtonContent' />
+        <Icon.User className='numVolunteersButtonContent' />
         {numVolunteers}
         <Icon.Up className='numVolunteersButtonContent' />
       </button>

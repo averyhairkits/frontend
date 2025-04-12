@@ -23,13 +23,12 @@
   font-size: 20px;
   font-weight: 600;
   text-align: center;
+  box-sizing: border-box;
+  padding: 0 8px 0 8px;
 }
 
 .numVolunteersButtonContent {
   stroke: var(--white);
-  width: 25px;
-  height: 25px;
-  stroke-width: 3;
 }
 
 .numVolunteersPopUp {
@@ -61,10 +60,16 @@
   font-size: 20px;
   font-weight: 600;
 }
+.numVolunteersOption:hover {
+  background-color: var(--lightest-gray);
+}
 
 .numVolunteersOption.selected {
   background-color: var(--purple1);
   color: var(--white);
+}
+.numVolunteersOption.selected:hover {
+  background-color: var(--purple1);
 }
 
 .calendarNavIcon.hidden {
