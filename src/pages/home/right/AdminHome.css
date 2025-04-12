@@ -10,6 +10,7 @@
   background-color: var(--purple2);
 }
 .event .content {
+  position: relative;
   width: 100%;
   height: 100%;
   color: var(--white); /* text color of children */
@@ -47,4 +48,17 @@
 .event h4 {
   font-size: 15px;
   font-weight: 800;
+}
+
+/* edit event pop up */
+.event .popUp {
+  position: absolute;
+  background-color: aqua;
+  border: 1px solid var(--medium-gray);
+  box-shadow: 2px 2px 4px 0 var(--medium-gray);
+  width: 343px;
+  height: 263px;
+  left: 125px;
+  top: -102px;
+  border-radius: 10px;
 }
