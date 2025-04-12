@@ -51,14 +51,18 @@
 }
 
 /* edit event pop up */
-.event .popUp {
+.event #popUp {
   position: absolute;
   background-color: aqua;
   border: 1px solid var(--medium-gray);
   box-shadow: 2px 2px 4px 0 var(--medium-gray);
   width: 343px;
   height: 263px;
-  left: 125px;
-  top: -102px;
+  left: 1%;
+  top: 40%;
   border-radius: 10px;
+}
+
+.event button {
+  pointer-events: all;
 }

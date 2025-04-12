@@ -19,7 +19,8 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
     selection,
     selectionStyle,
     getSelectionStyle,
-    canEdit,
+    isEditing,
+    handleCancel,
   } = useAdminCalendarGrid({ gridItemTimes });
 
   return (
@@ -61,7 +62,10 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
               <h4>3</h4>
             </div>
           </div>
-          {canEdit && <div className='popUp'></div>}
+          <dialog id='popUp'>
+            <button onClick={handleCancel}>Cancel</button>
+            <button>Save</button>
+          </dialog>
         </div>
       )}
     </div>

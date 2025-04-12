@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // keeping gridItemTimes input for when events are mapped to actual dates
 export const useAdminCalendarGrid = ({ gridItemTimes }) => {
@@ -11,7 +11,7 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
   const [canSave, setCanSave] = useState(false);
   const [selectionStyle, setSelectionStyle] = useState();
 
-  const [canEdit, setCanEdit] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   // Convert grid index to row and column
   const getGridPosition = (i) => {
@@ -46,7 +46,8 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
     selection.startRow !== null && setCanSave(true);
     setSelectionStyle(getSelectionStyle(selection));
     setSelection({ col: null, endRow: null, startRow: null });
-    setCanEdit(true);
+    setIsEditing(true);
+    document.getElementById('popUp').showModal();
   };
 
   const handleMouseLeave = () => {
@@ -79,8 +80,14 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
 
   // edit event pop up
   useEffect(() => {
-    console.log(`edit event pop up ${canEdit ? 'opens' : 'closes'}`);
-  }, [canEdit]);
+    console.log(`edit event pop up ${isEditing ? 'opened' : 'closed'}`);
+  }, [isEditing]);
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setCanSave(false);
+    document.getElementById('popUp').close();
+  };
 
   return {
     handleMouseUp,
@@ -91,6 +98,7 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
     selection,
     selectionStyle,
     getSelectionStyle,
-    canEdit,
+    isEditing,
+    handleCancel,
   };
 };
