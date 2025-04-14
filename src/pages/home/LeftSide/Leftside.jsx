@@ -31,10 +31,31 @@ export default function Layout() {
         </h3>
         <div className='log-entry'>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            in scelerisque ipsum. Morbi a vulputate purus Duis vestibulum cursus
-            erat vel suscipit. Nullam facilisis magna et libero egestas, eu
-            fermentum.
+            <ol>
+              <li>
+                Navigate between weeks using the forward and backward arrows.
+              </li>
+              <li>
+                Select your teams headcount from the dropdown in the top left.
+              </li>
+              <li>
+                Click and drag to choose the dates and time slots when
+                you&apos;ll reavailable.
+              </li>
+              <li>
+                Time slots with confirmed events that still have vacancies are
+                highlighted in purple.
+              </li>
+              <li> Click &quot;Save&quot; to finalize your availability. </li>
+              <li>
+                To cancel an appointment, deselect the relevant time slots using
+                the same click-and-drag method and click &quot;Save&quot;.
+              </li>
+              <li>
+                If a volunteering activity is scheduled during your available
+                times, you&apos;ll receive an email notification.
+              </li>
+            </ol>
           </p>
         </div>
         <h3 className='how-to-title'>
@@ -42,17 +63,17 @@ export default function Layout() {
         </h3>
         <div className='log-entry'>
           <div>
-            <p>Lorem ipsum dolor sit amet?</p>
+            <p>
+              Q: How will I know if a session I was scheduled for was cancelled?
+            </p>
             <ul>
-              <li>consectetur adipiscing elie</li>
+              <li>
+                A: You will be promptly informed by email and the notification
+                center in the top right.
+              </li>
             </ul>
           </div>
-          <div>
-            <p>Suspendisse in scelerisque ipsum?</p>
-            <ul>
-              <li>Morbi a vulputate purus</li>
-            </ul>
-          </div>
+          <div></div>
         </div>
       </div>
 

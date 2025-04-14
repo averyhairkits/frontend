@@ -219,3 +219,12 @@ div[style="color: red"] {
   background-color: var(--purple2);
   bottom: 3px;
 }
+.log-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  max-height: 100px; 
+  overflow-y: auto;
+  padding-right: 7px; 
+}
