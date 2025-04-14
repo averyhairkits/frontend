@@ -10,6 +10,7 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
 
   const [canSave, setCanSave] = useState(false);
   const [selectionStyle, setSelectionStyle] = useState();
+  const [popUpStyle, setPopUpStyle] = useState();
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -45,9 +46,9 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
     // drags outside of grid, then drags back inside (on the same click and drag)
     selection.startRow !== null && setCanSave(true);
     setSelectionStyle(getSelectionStyle(selection));
+    setPopUpStyle(getPopuUpStyle(selection));
     setSelection({ col: null, endRow: null, startRow: null });
     setIsEditing(true);
-    document.getElementById('popUp').showModal();
   };
 
   const handleMouseLeave = () => {
@@ -78,6 +79,22 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
     };
   };
 
+  const getPopuUpStyle = (selection) => {
+    const { startRow, endRow, col } = selection;
+
+    const minRow = Math.min(startRow, endRow);
+    const maxRow = Math.max(startRow, endRow);
+
+    return {
+      boxShadow: `${col <= 3 ? '2px' : '-2px'} 2px 4px 0 var(--medium-gray)`,
+      // position of pop up depends on location of its event
+      left: col <= 3 ? '10vw' : 'auto',
+      right: col > 3 ? '10vw' : 'auto',
+      top: minRow <= 3 ? '0%' : maxRow >= 17 ? 'auto' : '-5vh',
+      bottom: maxRow >= 17 ? '0%' : 'auto',
+    };
+  };
+
   // edit event pop up
   useEffect(() => {
     console.log(`edit event pop up ${isEditing ? 'opened' : 'closed'}`);
@@ -86,7 +103,6 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
   const handleCancel = () => {
     setIsEditing(false);
     setCanSave(false);
-    document.getElementById('popUp').close();
   };
 
   return {
@@ -100,5 +116,6 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
     getSelectionStyle,
     isEditing,
     handleCancel,
+    popUpStyle,
   };
 };

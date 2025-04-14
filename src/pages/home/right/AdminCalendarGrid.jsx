@@ -19,8 +19,9 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
     selection,
     selectionStyle,
     getSelectionStyle,
-    isEditing,
     handleCancel,
+    isEditing,
+    popUpStyle,
   } = useAdminCalendarGrid({ gridItemTimes });
 
   return (
@@ -30,28 +31,31 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
       onMouseLeave={handleMouseLeave}
       style={{ pointerEvents: canSave ? 'none' : 'auto' }}
     >
-      {/* ^^ disable any more selections after one has been made (save is enabled) */}
-      {gridItems.map((_, i) => {
-        // remains constant regardless of selections
-        const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'}`;
+      <div className='calendarGridMask'>
+        {/* ^^ disable any more selections after one has been made (save is enabled) */}
+        {gridItems.map((_, i) => {
+          // remains constant regardless of selections
+          const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'}`;
 
-        return (
-          <div
-            key={i}
-            // only shows confirmed session if a confirmed cell is selected
-            className={`${itemType}`}
-            onMouseDown={() => handleMouseDown(i)}
-            onMouseEnter={() => handleMouseMove(i)}
-            onMouseUp={handleMouseUp}
-          ></div>
-        );
-      })}
+          return (
+            <div
+              key={i}
+              // only shows confirmed session if a confirmed cell is selected
+              className={`${itemType}`}
+              onMouseDown={() => handleMouseDown(i)}
+              onMouseEnter={() => handleMouseMove(i)}
+              onMouseUp={handleMouseUp}
+            ></div>
+          );
+        })}
+      </div>
 
       {/* Define event differently when its dragging and when its done dragging (mouseUp) */}
       {(selection.startRow !== null || canSave) && (
         <div
           className='event'
           style={canSave ? selectionStyle : getSelectionStyle(selection)}
+          // canSave ? retrieve selectionStyle that's already been assigned, otherwise retrieve current style from current selection
         >
           <div className='content'>
             <h1>Hair Kit Packing Session</h1>
@@ -62,10 +66,12 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
               <h4>3</h4>
             </div>
           </div>
-          <dialog id='popUp'>
-            <button onClick={handleCancel}>Cancel</button>
-            <button>Save</button>
-          </dialog>
+          {isEditing && (
+            <div className='popUp' style={popUpStyle}>
+              <button onClick={handleCancel}>Cancel</button>
+              <button>Save</button>
+            </div>
+          )}
         </div>
       )}
     </div>

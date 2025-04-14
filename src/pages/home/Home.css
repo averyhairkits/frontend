@@ -108,10 +108,26 @@
   outline: 1.5px solid var(--purple1);
   outline-offset: -1px;
 
-  overflow: hidden;
+
   flex: 1;
 
   position: relative;
+}
+
+.calendarGridMask {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  grid-auto-flow: column;
+
+  border-radius: 10px;
+  outline: 1.5px solid var(--purple1);
+  outline-offset: -1px;
+
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+
+  overflow: hidden;
 }
 
 .calendarGridItemTop {

@@ -20,6 +20,7 @@ export const VolunteerCalendarGrid = ({
       className='calendarGrid'
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
+      style={{ overflow: 'hidden' }} // differ from admin calendarGrid
     >
       {gridItems.map((_, i) => {
         const isConfirmedSession = Array.from(confirmedTimes).some((d) => {
