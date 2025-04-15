@@ -25,6 +25,11 @@ export const useAdminCalendarGrid = () => {
     return { row, col };
   };
 
+  // convert row and column to grid index
+  const getIndex = (row, col) => {
+    return col * 20 + row;
+  };
+
   const handleMouseDown = (i) => {
     const { row, col } = getGridPosition(i);
     setSelection({
@@ -107,8 +112,11 @@ export const useAdminCalendarGrid = () => {
     const { startRow, endRow, col } = selection;
 
     const newConfirmedTime = {
-      start: gridItemTimes[col * 20 + startRow],
-      end: gridItemTimes[col * 20 + endRow],
+      title: '(New Event)',
+      start: gridItemTimes[getIndex(startRow, col)],
+      end: gridItemTimes[getIndex(endRow, col)],
+      description: '',
+      volunteers: [], // array of volunteers
     };
 
     const newConfirmedTimes = new Set([...confirmedTimes]);
@@ -132,6 +140,14 @@ export const useAdminCalendarGrid = () => {
       )
   );
 
+  const getEventTime = (row) => {
+    // all rows in different columns have the same time
+    return gridItemTimes[getIndex(row, 0)].toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
   return {
     handleMouseUp,
     canSave,
@@ -144,5 +160,6 @@ export const useAdminCalendarGrid = () => {
     getPopUpStyle,
     handleSave,
     filteredConfirmedTimes,
+    getEventTime,
   };
 };

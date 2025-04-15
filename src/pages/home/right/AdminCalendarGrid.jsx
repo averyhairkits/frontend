@@ -22,6 +22,7 @@ export const AdminCalendarGrid = () => {
     getPopUpStyle,
     handleSave,
     filteredConfirmedTimes,
+    getEventTime,
   } = useAdminCalendarGrid();
 
   return (
@@ -72,7 +73,10 @@ export const AdminCalendarGrid = () => {
           >
             <div className='content'>
               <h1>Hair Kit Packing Session</h1>
-              <h2>12:00 pm - 03:00 pm</h2>
+              <h2>
+                {getEventTime(aSelection.startRow)}-
+                {getEventTime(aSelection.endRow)}
+              </h2>
               <h3>Lorem ipsum dolor amet, consectetur adipiscing elit.</h3>
               <div className='numVolunteersContainer'>
                 <Icon.User width='24px'></Icon.User>
@@ -92,8 +96,11 @@ export const AdminCalendarGrid = () => {
           // otherwise retrieve current style from current selection
         >
           <div className='content'>
-            <h1>Hair Kit Packing Session</h1>
-            <h2>12:00 pm - 03:00 pm</h2>
+            <h1>(New Event)</h1>
+            <h2>
+              {getEventTime(selection.startRow)}-
+              {getEventTime(selection.endRow)}
+            </h2>
             <h3>Lorem ipsum dolor amet, consectetur adipiscing elit.</h3>
             <div className='numVolunteersContainer'>
               <Icon.User width='24px'></Icon.User>

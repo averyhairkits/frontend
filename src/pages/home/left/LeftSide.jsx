@@ -10,29 +10,28 @@ import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 import LeftDescription from 'pages/home/left/LeftDescription';
 import LeftLog from 'pages/home/left/LeftLog';
 import 'pages/home/left/LeftSide.css';
+import confirmedTimes from 'pages/home/right/confirmedTimes';
 
 // Volunteer mini-calendar underline
-const getVolunteerTileClass = ({ date, savedTimes, confirmedTimes }) => {
+const getVolunteerTileClass = ({ date, savedTimes }) => {
   const isSelectedDate = Array.from(savedTimes).some(
     (d) => d.toDateString() === date.toDateString()
   );
 
   const isSelectedConfirmedDate = Array.from(savedTimes).some((d) =>
-    Array.from(confirmedTimes).some(
-      (e) =>
+    Array.from(confirmedTimes).some((e) => {
+      return (
         // e.start, d, and date's dates are the same
         e.start.toDateString() === d.toDateString() &&
         date.toDateString() === d.toDateString() &&
         // d & date's times are between a start and end date in confirmedTimes
         e.start.toLocaleTimeString() <= d.toLocaleTimeString() &&
         e.end.toLocaleTimeString() >= d.toLocaleTimeString()
-    )
+      );
+    })
   );
-  console.log(isSelectedConfirmedDate);
-  console.log(date.toLocaleTimeString());
 
   if (isSelectedConfirmedDate && isSelectedDate) return 'underlineBoth';
-  if (isSelectedConfirmedDate) return 'underline2';
   if (isSelectedDate) return 'underline1';
   return '';
 };
@@ -82,7 +81,7 @@ export default function LeftSide({ isAdmin }) {
         tileClassName={(props) => {
           return isAdmin
             ? getAdminTileClass({ ...props, confirmedTimes })
-            : getVolunteerTileClass({ ...props, savedTimes, confirmedTimes });
+            : getVolunteerTileClass({ ...props, savedTimes });
         }}
       />
     </div>
