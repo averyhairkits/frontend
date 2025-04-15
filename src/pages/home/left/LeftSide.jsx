@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 import Calendar from 'react-calendar';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
+import { useConfirmedTimesContext } from 'common/contexts/ConfirmedTimesContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 import LeftDescription from 'pages/home/left/LeftDescription';
 import LeftLog from 'pages/home/left/LeftLog';
 import 'pages/home/left/LeftSide.css';
-import confirmedTimes from 'pages/home/right/confirmedTimes';
 
 // Volunteer mini-calendar underline
-const getVolunteerTileClass = ({ date, savedTimes }) => {
+const getVolunteerTileClass = ({ date, savedTimes, confirmedTimes }) => {
   const isSelectedDate = Array.from(savedTimes).some(
     (d) => d.toDateString() === date.toDateString()
   );
@@ -37,21 +37,23 @@ const getVolunteerTileClass = ({ date, savedTimes }) => {
   return '';
 };
 
-// // Admin mini-calendar underline
-// const getAdminTileClass = ({ date, allSavedTimes, confirmedTimes }) => {
-//   const isConfirmedDate = Array.from(confirmedTimes).some(
-//     (d) => d.toDateString() === date.toDateString()
-//   );
+// Admin mini-calendar underline
+const getAdminTileClass = ({ date, confirmedTimes }) => {
+  const isConfirmedDate = Array.from(confirmedTimes).some(
+    (d) => d.start.toDateString() === date.toDateString()
+  );
 
-//   if (has4MoreSelected && isConfirmedDate) return 'underlineBoth';
-//   if (isConfirmedDate) return 'underline2';
-//   if (has4MoreSelected) return 'underline1';
-// }
+  // if (has4MoreSelected && isConfirmedDate) return 'underlineBoth';
+  if (isConfirmedDate) return 'underline2';
+  // if (has4MoreSelected) return 'underline1';
+  return '';
+};
 
 export default function LeftSide({ isAdmin }) {
   const { todaysDate } = useCalendarContext();
   const fourWeeksTime = 27 * 24 * 60 * 60 * 1000;
   const { savedTimes } = useSavedTimesContext();
+  const { confirmedTimes } = useConfirmedTimesContext();
 
   return (
     <div className='leftSection'>
@@ -78,8 +80,9 @@ export default function LeftSide({ isAdmin }) {
         prevLabel={<Icon.Back />}
         nextLabel={<Icon.Next />}
         tileClassName={(props) => {
-          // replace '' with getAdminTileClass when implemented
-          return isAdmin ? '' : getVolunteerTileClass({ ...props, savedTimes });
+          return isAdmin
+            ? getAdminTileClass({ ...props, confirmedTimes })
+            : getVolunteerTileClass({ ...props, savedTimes, confirmedTimes });
         }}
       />
     </div>
