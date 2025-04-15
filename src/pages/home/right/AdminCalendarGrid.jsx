@@ -3,16 +3,12 @@ import React from 'react';
 import { Icon } from 'assets/icons/icons';
 import PropTypes from 'prop-types';
 
-import { useCalendarContext } from 'common/contexts/CalendarContext';
-import { useConfirmedTimesContext } from 'common/contexts/ConfirmedTimesContext';
 import { useAdminCalendarGrid } from 'pages/home/right/useAdminCalendarGrid';
 
 import './AdminHome.css';
 
 export const AdminCalendarGrid = () => {
   const gridItems = Array.from({ length: 140 });
-  const { confirmedTimes } = useConfirmedTimesContext();
-  const { weekdates } = useCalendarContext();
 
   const {
     handleMouseUp,
@@ -25,16 +21,8 @@ export const AdminCalendarGrid = () => {
     isEditing,
     getPopUpStyle,
     handleSave,
+    filteredConfirmedTimes,
   } = useAdminCalendarGrid();
-
-  console.log(weekdates);
-  const filteredConfirmedTimes = Array.from(confirmedTimes).filter(
-    (confirmedTime) =>
-      weekdates.some(
-        (weekdate) =>
-          confirmedTime.start.toDateString() === weekdate.toDateString()
-      )
-  );
 
   return (
     <div

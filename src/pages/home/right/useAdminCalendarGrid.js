@@ -16,7 +16,7 @@ export const useAdminCalendarGrid = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
-  const { gridItemTimes } = useCalendarContext();
+  const { weekdates, gridItemTimes } = useCalendarContext();
 
   // Convert grid index to row and column
   const getGridPosition = (i) => {
@@ -124,6 +124,14 @@ export const useAdminCalendarGrid = () => {
     console.log('Confirmed Times: ', confirmedTimes);
   }, [confirmedTimes]);
 
+  const filteredConfirmedTimes = Array.from(confirmedTimes).filter(
+    (confirmedTime) =>
+      weekdates.some(
+        (weekdate) =>
+          confirmedTime.start.toDateString() === weekdate.toDateString()
+      )
+  );
+
   return {
     handleMouseUp,
     canSave,
@@ -135,5 +143,6 @@ export const useAdminCalendarGrid = () => {
     handleCancel,
     getPopUpStyle,
     handleSave,
+    filteredConfirmedTimes,
   };
 };
