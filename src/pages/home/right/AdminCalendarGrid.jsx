@@ -7,28 +7,25 @@ import { useAdminCalendarGrid } from 'pages/home/right/useAdminCalendarGrid';
 
 import './AdminHome.css';
 
-export const AdminCalendarGrid = ({ gridItemTimes }) => {
+export const AdminCalendarGrid = () => {
   const gridItems = Array.from({ length: 140 });
 
   const {
     handleMouseUp,
-    handleMouseLeave,
     canSave,
     handleMouseDown,
     handleMouseMove,
     selection,
-    selectionStyle,
     getSelectionStyle,
     handleCancel,
     isEditing,
-    popUpStyle,
-  } = useAdminCalendarGrid({ gridItemTimes });
+    getPopUpStyle,
+  } = useAdminCalendarGrid();
 
   return (
     <div
       className='calendarGrid'
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseLeave}
       style={{ pointerEvents: canSave ? 'none' : 'auto' }}
     >
       <div className='calendarGridMask'>
@@ -54,7 +51,7 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
       {(selection.startRow !== null || canSave) && (
         <div
           className='event'
-          style={canSave ? selectionStyle : getSelectionStyle(selection)}
+          style={getSelectionStyle(selection)}
           // canSave ? retrieve selectionStyle that's already been assigned,
           // otherwise retrieve current style from current selection
         >
@@ -68,7 +65,7 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
             </div>
           </div>
           {isEditing && (
-            <div className='popUp' style={popUpStyle}>
+            <div className='popUp' style={getPopUpStyle(selection)}>
               <button onClick={handleCancel}>Cancel</button>
               <button>Save</button>
             </div>

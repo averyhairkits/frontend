@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 
+import { useCalendarContext } from 'common/contexts/CalendarContext';
+import { useConfirmedTimesContext } from 'common/contexts/ConfirmedTimesContext';
+
 // keeping gridItemTimes input for when events are mapped to actual dates
-export const useAdminCalendarGrid = ({ gridItemTimes }) => {
+export const useAdminCalendarGrid = () => {
   const [selection, setSelection] = useState({
     startRow: null,
     endRow: null,
@@ -9,10 +12,11 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
   });
 
   const [canSave, setCanSave] = useState(false);
-  const [selectionStyle, setSelectionStyle] = useState();
-  const [popUpStyle, setPopUpStyle] = useState();
 
   const [isEditing, setIsEditing] = useState(false);
+
+  const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
+  const { weekdates, gridItemTimes } = useCalendarContext();
 
   // Convert grid index to row and column
   const getGridPosition = (i) => {
@@ -45,14 +49,7 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
     // the condition is needed to prevent setting canSave to true if user clicks,
     // drags outside of grid, then drags back inside (on the same click and drag)
     selection.startRow !== null && setCanSave(true);
-    setSelectionStyle(getSelectionStyle(selection));
-    setPopUpStyle(getPopuUpStyle(selection));
-    setSelection({ col: null, endRow: null, startRow: null });
     setIsEditing(true);
-  };
-
-  const handleMouseLeave = () => {
-    setSelection({ col: null, endRow: null, startRow: null });
   };
 
   useEffect(() => {
@@ -79,7 +76,7 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
     };
   };
 
-  const getPopuUpStyle = (selection) => {
+  const getPopUpStyle = (selection) => {
     const { startRow, endRow, col } = selection;
 
     const minRow = Math.min(startRow, endRow);
@@ -103,24 +100,24 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
   const handleCancel = () => {
     setIsEditing(false);
     setCanSave(false);
+    setSelection({ col: null, endRow: null, startRow: null });
   };
 
   const handleSave = () => {
     setCanSave(true);
+    setSelection({ col: null, endRow: null, startRow: null });
   };
 
   return {
     handleMouseUp,
-    handleMouseLeave,
     canSave,
     handleMouseDown,
     handleMouseMove,
     selection,
-    selectionStyle,
     getSelectionStyle,
     isEditing,
     handleCancel,
-    popUpStyle,
+    getPopUpStyle,
     handleSave,
   };
 };

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 import { CalendarContextProvider } from 'common/contexts/CalendarContext';
+import { ConfirmedTimesContextProvider } from 'common/contexts/ConfirmedTimesContext';
 import { SavedTimesContextProvider } from 'common/contexts/SavedTimesContext';
 import LeftSide from 'pages/home/left/LeftSide';
 import RightSide from 'pages/home/right/RightSide';
@@ -43,8 +44,10 @@ const VolunteerHome = ({ isAdmin }) => {
       <NavButtons isAdmin={isAdmin} />
       <CalendarContextProvider>
         <SavedTimesContextProvider>
-          <LeftSide isAdmin={isAdmin} /> {/* leftSection */}
-          <RightSide isAdmin={isAdmin} /> {/* rightSection */}
+          <ConfirmedTimesContextProvider>
+            <LeftSide isAdmin={isAdmin} /> {/* leftSection */}
+            <RightSide isAdmin={isAdmin} /> {/* rightSection */}
+          </ConfirmedTimesContextProvider>
         </SavedTimesContextProvider>
       </CalendarContextProvider>
     </main>

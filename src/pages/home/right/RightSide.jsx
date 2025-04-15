@@ -145,10 +145,7 @@ const RightSide = ({ isAdmin }) => {
         <div className='gridContainer'>
           <HeaderGrid weekdates={weekdates} />
           {isAdmin ? (
-            <AdminCalendarGrid
-              selectedCells={selectedCells}
-              gridItemTimes={gridItemTimes}
-            />
+            <AdminCalendarGrid />
           ) : (
             <VolunteerCalendarGrid
               handleMouseDown={handleMouseDown}
