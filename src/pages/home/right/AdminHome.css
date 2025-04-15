@@ -58,6 +58,7 @@
   border-radius: 10px;
   width: 25vw;
   height: 30vh;
+  overflow: hidden;
 }
 
 .event button {

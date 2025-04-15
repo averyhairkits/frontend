@@ -105,6 +105,10 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
     setCanSave(false);
   };
 
+  const handleSave = () => {
+    setCanSave(true);
+  };
+
   return {
     handleMouseUp,
     handleMouseLeave,
@@ -117,5 +121,6 @@ export const useAdminCalendarGrid = ({ gridItemTimes }) => {
     isEditing,
     handleCancel,
     popUpStyle,
+    handleSave,
   };
 };

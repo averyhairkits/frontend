@@ -55,7 +55,8 @@ export const AdminCalendarGrid = ({ gridItemTimes }) => {
         <div
           className='event'
           style={canSave ? selectionStyle : getSelectionStyle(selection)}
-          // canSave ? retrieve selectionStyle that's already been assigned, otherwise retrieve current style from current selection
+          // canSave ? retrieve selectionStyle that's already been assigned,
+          // otherwise retrieve current style from current selection
         >
           <div className='content'>
             <h1>Hair Kit Packing Session</h1>
