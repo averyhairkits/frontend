@@ -77,10 +77,10 @@ export const AdminCalendarGrid = () => {
                 {getEventTime(aSelection.startRow)}-
                 {getEventTime(aSelection.endRow)}
               </h2>
-              <h3>Lorem ipsum dolor amet, consectetur adipiscing elit.</h3>
+              <h3>{session.description}</h3>
               <div className='numVolunteersContainer'>
                 <Icon.User width='24px'></Icon.User>
-                <h4>3</h4>
+                <h4>{session.volunteers.length}</h4>
               </div>
             </div>
           </div>
@@ -101,10 +101,9 @@ export const AdminCalendarGrid = () => {
               {getEventTime(selection.startRow)}-
               {getEventTime(selection.endRow)}
             </h2>
-            <h3>Lorem ipsum dolor amet, consectetur adipiscing elit.</h3>
             <div className='numVolunteersContainer'>
               <Icon.User width='24px'></Icon.User>
-              <h4>3</h4>
+              <h4>0</h4>
             </div>
           </div>
           {isEditing && (
