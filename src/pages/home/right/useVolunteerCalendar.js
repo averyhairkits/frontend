@@ -92,7 +92,7 @@ export const useVolunteerCalendar = () => {
     // filter savedTimes to only include times that are in weekDates
     const filteredSavedTimes = Array.from(savedTimes).filter((savedDate) =>
       weekdates.some(
-        (weekDate) => savedDate.toDateString() === weekDate.toDateString()
+        (weekdate) => savedDate.toDateString() === weekdate.toDateString()
       )
     );
     // selectedCells is a set of cell numbers based on gridItemTimes

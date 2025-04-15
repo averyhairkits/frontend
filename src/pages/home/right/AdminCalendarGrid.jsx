@@ -3,12 +3,16 @@ import React from 'react';
 import { Icon } from 'assets/icons/icons';
 import PropTypes from 'prop-types';
 
+import { useCalendarContext } from 'common/contexts/CalendarContext';
+import { useConfirmedTimesContext } from 'common/contexts/ConfirmedTimesContext';
 import { useAdminCalendarGrid } from 'pages/home/right/useAdminCalendarGrid';
 
 import './AdminHome.css';
 
 export const AdminCalendarGrid = () => {
   const gridItems = Array.from({ length: 140 });
+  const { confirmedTimes } = useConfirmedTimesContext();
+  const { weekdates } = useCalendarContext();
 
   const {
     handleMouseUp,
@@ -20,7 +24,17 @@ export const AdminCalendarGrid = () => {
     handleCancel,
     isEditing,
     getPopUpStyle,
+    handleSave,
   } = useAdminCalendarGrid();
+
+  console.log(weekdates);
+  const filteredConfirmedTimes = Array.from(confirmedTimes).filter(
+    (confirmedTime) =>
+      weekdates.some(
+        (weekdate) =>
+          confirmedTime.start.toDateString() === weekdate.toDateString()
+      )
+  );
 
   return (
     <div
@@ -47,6 +61,40 @@ export const AdminCalendarGrid = () => {
         })}
       </div>
 
+      {/* previously confirmed events */}
+      {filteredConfirmedTimes.map((session, i) => {
+        const aSelection = {
+          startRow:
+            (session.start.getHours() - 9) * 2 +
+            (session.start.getMinutes() === 0 ? 0 : 1), // add one row for half hour
+          endRow:
+            (session.end.getHours() - 9) * 2 +
+            (session.end.getMinutes() === 0 ? 0 : 1),
+          col: session.start.getDay() === 0 ? 6 : session.start.getDay() - 1,
+          // sunday's are 0 in getDay(), but are at the last column here
+        };
+
+        return (
+          <div
+            key={i}
+            className='event'
+            style={getSelectionStyle(aSelection)}
+            // canSave ? retrieve selectionStyle that's already been assigned,
+            // otherwise retrieve current style from current selection
+          >
+            <div className='content'>
+              <h1>Hair Kit Packing Session</h1>
+              <h2>12:00 pm - 03:00 pm</h2>
+              <h3>Lorem ipsum dolor amet, consectetur adipiscing elit.</h3>
+              <div className='numVolunteersContainer'>
+                <Icon.User width='24px'></Icon.User>
+                <h4>3</h4>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
       {/* Define event differently when its dragging and when its done dragging (mouseUp) */}
       {(selection.startRow !== null || canSave) && (
         <div
@@ -67,7 +115,7 @@ export const AdminCalendarGrid = () => {
           {isEditing && (
             <div className='popUp' style={getPopUpStyle(selection)}>
               <button onClick={handleCancel}>Cancel</button>
-              <button>Save</button>
+              <button onClick={handleSave}>Save</button>
             </div>
           )}
         </div>

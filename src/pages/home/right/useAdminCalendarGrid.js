@@ -16,7 +16,7 @@ export const useAdminCalendarGrid = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
-  const { weekdates, gridItemTimes } = useCalendarContext();
+  const { gridItemTimes } = useCalendarContext();
 
   // Convert grid index to row and column
   const getGridPosition = (i) => {
@@ -104,9 +104,25 @@ export const useAdminCalendarGrid = () => {
   };
 
   const handleSave = () => {
-    setCanSave(true);
+    const { startRow, endRow, col } = selection;
+
+    const newConfirmedTime = {
+      start: gridItemTimes[col * 20 + startRow],
+      end: gridItemTimes[col * 20 + endRow],
+    };
+
+    const newConfirmedTimes = new Set([...confirmedTimes]);
+    newConfirmedTimes.add(newConfirmedTime);
+
+    setConfirmedTimes(newConfirmedTimes);
+
     setSelection({ col: null, endRow: null, startRow: null });
+    setCanSave(false);
   };
+
+  useEffect(() => {
+    console.log('Confirmed Times: ', confirmedTimes);
+  }, [confirmedTimes]);
 
   return {
     handleMouseUp,
