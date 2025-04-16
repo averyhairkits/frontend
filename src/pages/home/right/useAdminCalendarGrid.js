@@ -15,6 +15,9 @@ export const useAdminCalendarGrid = () => {
 
   const [isEditing, setIsEditing] = useState(false);
 
+  const [eventTitle, setEventTitle] = useState('');
+  const [eventDescription, setEventDescription] = useState('');
+
   const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
   const { weekdates, gridItemTimes } = useCalendarContext();
 
@@ -112,10 +115,10 @@ export const useAdminCalendarGrid = () => {
     const { startRow, endRow, col } = selection;
 
     const newConfirmedTime = {
-      title: '(New Event)',
+      title: eventTitle,
       start: gridItemTimes[getIndex(startRow, col)],
       end: gridItemTimes[getIndex(endRow, col)],
-      description: '',
+      description: eventDescription,
       volunteers: [], // array of volunteers
     };
 
@@ -124,6 +127,8 @@ export const useAdminCalendarGrid = () => {
 
     setConfirmedTimes(newConfirmedTimes);
 
+    setEventTitle('');
+    setEventDescription('');
     setSelection({ col: null, endRow: null, startRow: null });
     setCanSave(false);
   };
@@ -132,6 +137,7 @@ export const useAdminCalendarGrid = () => {
     console.log('Confirmed Times: ', confirmedTimes);
   }, [confirmedTimes]);
 
+  // only get confirmed times in the current week
   const filteredConfirmedTimes = Array.from(confirmedTimes).filter(
     (confirmedTime) =>
       weekdates.some(
@@ -148,6 +154,23 @@ export const useAdminCalendarGrid = () => {
     });
   };
 
+  const getEventDate = (s, isDate) => {
+    return weekdates[s.col].toLocaleDateString(
+      'en-US',
+      isDate ? { month: '2-digit', day: '2-digit' } : { weekday: 'long' }
+    );
+  };
+
+  // event title input
+  const handleChangeTitle = (text) => {
+    setEventTitle(text.target.value);
+  };
+
+  // event description input
+  const handleChangeDescription = (text) => {
+    setEventDescription(text.target.value);
+  }
+
   return {
     handleMouseUp,
     canSave,
@@ -161,5 +184,8 @@ export const useAdminCalendarGrid = () => {
     handleSave,
     filteredConfirmedTimes,
     getEventTime,
+    getEventDate,
+    handleChangeTitle,
+    handleChangeDescription,
   };
 };

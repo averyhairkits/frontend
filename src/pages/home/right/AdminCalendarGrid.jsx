@@ -23,6 +23,9 @@ export const AdminCalendarGrid = () => {
     handleSave,
     filteredConfirmedTimes,
     getEventTime,
+    getEventDate,
+    handleChangeTitle,
+    handleChangeDescription,
   } = useAdminCalendarGrid();
 
   return (
@@ -72,7 +75,7 @@ export const AdminCalendarGrid = () => {
             // otherwise retrieve current style from current selection
           >
             <div className='content'>
-              <h1>Hair Kit Packing Session</h1>
+              <h1>{!session.title ? 'New Event' : session.title}</h1>
               <h2>
                 {getEventTime(aSelection.startRow)}-
                 {getEventTime(aSelection.endRow)}
@@ -108,8 +111,40 @@ export const AdminCalendarGrid = () => {
           </div>
           {isEditing && (
             <div className='popUp' style={getPopUpStyle(selection)}>
-              <button onClick={handleCancel}>Cancel</button>
-              <button onClick={handleSave}>Save</button>
+              <div className='cancelSave'>
+                <button className='cancel' onClick={handleCancel}>
+                  Cancel
+                </button>
+                <button className='save' onClick={handleSave}>
+                  Save
+                </button>
+              </div>
+              <input
+                className='titleInput'
+                type='text'
+                placeholder='Add Title...'
+                onChange={handleChangeTitle}
+              ></input>
+              <div className='item'>
+                <Icon.Clock className='icon' />
+                <p>{`${getEventDate(selection, true)}, 
+                ${getEventDate(selection, false)}, 
+                ${getEventTime(selection.startRow)}-
+              ${getEventTime(selection.endRow)}`}</p>
+              </div>
+              <div className='item'>
+                <Icon.Map className='icon' />
+                <p>2020 Greenwood Avenue, Evanston, IL 60201</p>
+              </div>
+              <div className='item'>
+                <Icon.Pen className='icon' />
+                <p>Description (Optional)</p>
+              </div>
+              <textarea
+                className='description'
+                placeholder='Add description...'
+                onChange={handleChangeDescription}
+              ></textarea>
             </div>
           )}
         </div>

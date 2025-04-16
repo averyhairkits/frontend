@@ -6,8 +6,10 @@ import { ReactComponent as Faq } from './faq.svg';
 import { ReactComponent as Home } from './home.svg';
 import { ReactComponent as HowTo } from './howto.svg';
 import { ReactComponent as Logout } from './logout.svg';
+import { ReactComponent as Map } from './map.svg';
 import { ReactComponent as Next } from './next.svg';
 import { ReactComponent as Noon } from './noon.svg';
+import { ReactComponent as Pen } from './pen.svg';
 import { ReactComponent as Sunrise } from './sunrise.svg';
 import { ReactComponent as Sunset } from './sunset.svg';
 import { ReactComponent as Up } from './up.svg';
@@ -38,4 +40,6 @@ export const Icon = {
   Home,
   User,
   Clock,
+  Map,
+  Pen,
 };
