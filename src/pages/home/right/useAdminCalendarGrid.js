@@ -93,8 +93,8 @@ export const useAdminCalendarGrid = () => {
     return {
       boxShadow: `${col <= 3 ? '2px' : '-2px'} 2px 4px 0 var(--medium-gray)`,
       // position of pop up depends on location of its event
-      left: col <= 3 ? '10vw' : 'auto',
-      right: col > 3 ? '10vw' : 'auto',
+      left: col <= 3 ? '110%' : 'auto',
+      right: col > 3 ? '110%' : 'auto',
       top: minRow <= 3 ? '0%' : maxRow >= 17 ? 'auto' : '-5vh',
       bottom: maxRow >= 17 ? '0%' : 'auto',
     };
