@@ -74,7 +74,7 @@ export const useVolunteerCalendar = () => {
     const newlySavedTimes = new Set();
     // add in times that have been saved for current week
     prevSelectedCells.forEach((val) => {
-      newlySavedTimes.add(new Date(gridItemTimes[val]));
+      newlySavedTimes.add(new Date(gridItemTimes[val].start));
     });
     // keep savedTimes the same, but remove all times that are in the current week, and add newlySavedTimes instead
     setSavedTimes([
@@ -100,7 +100,8 @@ export const useVolunteerCalendar = () => {
       new Set(
         filteredSavedTimes.map((savedTime) =>
           gridItemTimes.findIndex(
-            (gridItemTime) => gridItemTime.getTime() === savedTime.getTime()
+            (gridItemTime) =>
+              gridItemTime.start.getTime() === savedTime.getTime()
           )
         )
       )

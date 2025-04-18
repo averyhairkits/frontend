@@ -81,7 +81,6 @@ export const AdminCalendarGrid = () => {
             className={`${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'}`}
             onMouseDown={() => handleMouseDown(i)}
             onMouseEnter={() => handleMouseMove(i)}
-            onMouseUp={handleMouseUp}
           />
         ))}
       </div>

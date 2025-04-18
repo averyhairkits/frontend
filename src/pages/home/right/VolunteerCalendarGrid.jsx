@@ -24,11 +24,11 @@ export const VolunteerCalendarGrid = ({
     >
       {gridItems.map((_, i) => {
         const isConfirmedSession = Array.from(confirmedTimes).some((d) => {
-          if (d.end.getTime() === gridItemTimes[i].getTime()) {
+          if (d.end.getTime() === gridItemTimes[i].start.getTime()) {
             hasStarted = false;
             return true;
           }
-          if (d.start.getTime() === gridItemTimes[i].getTime()) {
+          if (d.start.getTime() === gridItemTimes[i].start.getTime()) {
             hasStarted = true;
             return true;
           }
@@ -39,7 +39,7 @@ export const VolunteerCalendarGrid = ({
         });
 
         const isFull = fullTimes.some(
-          (d) => d.getTime() === gridItemTimes[i].getTime()
+          (d) => d.getTime() === gridItemTimes[i].start.getTime()
         );
 
         // remains constant regardless of selections
@@ -65,6 +65,6 @@ VolunteerCalendarGrid.propTypes = {
   handleMouseUp: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   selectedCells: PropTypes.instanceOf(Set).isRequired,
-  gridItemTimes: PropTypes.instanceOf(Array).isRequired,
+  gridItemTimes: PropTypes.array.isRequired,
   savedTimes: PropTypes.instanceOf(Set).isRequired,
 };

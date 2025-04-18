@@ -29,13 +29,16 @@ const getGridItemTimes = (weekdates) => {
     const dayOfWeek = Math.floor(i / 20) % 7; // This ensures we cycle through 0-6 (Monday-Sunday)
     const halfHour = i % 20;
 
-    gridItemTimes[i] = new Date(
-      weekdates[dayOfWeek].getFullYear(),
-      weekdates[dayOfWeek].getMonth(),
-      weekdates[dayOfWeek].getDate(),
-      9 + Math.floor(halfHour / 2),
-      halfHour % 2 === 0 ? 0 : 30
-    );
+    gridItemTimes[i] = {
+      start: new Date(
+        weekdates[dayOfWeek].getFullYear(),
+        weekdates[dayOfWeek].getMonth(),
+        weekdates[dayOfWeek].getDate(),
+        9 + Math.floor(halfHour / 2),
+        halfHour % 2 === 0 ? 0 : 30
+      ),
+      numRegistered: 0,
+    };
   }
   console.log('gridItemTimes: ', gridItemTimes);
   return gridItemTimes;

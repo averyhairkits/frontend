@@ -79,8 +79,8 @@ export const useAdminCalendarGrid = () => {
 
     const newConfirmedTime = {
       title: title,
-      start: gridItemTimes[getIndex(startRow, col)],
-      end: gridItemTimes[getIndex(endRow, col)],
+      start: gridItemTimes[getIndex(startRow, col)].start,
+      end: gridItemTimes[getIndex(endRow, col)].start,
       description: description,
       volunteers: volunteers,
     };
@@ -92,7 +92,7 @@ export const useAdminCalendarGrid = () => {
   };
 
   const getEventTime = (row) => {
-    return gridItemTimes[getIndex(row, 0)].toLocaleTimeString([], {
+    return gridItemTimes[getIndex(row, 0)].start.toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
     });
