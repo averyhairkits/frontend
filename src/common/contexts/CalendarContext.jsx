@@ -25,6 +25,7 @@ const weekRange = (date) => {
 
 const getGridItemTimes = (weekdates) => {
   const gridItemTimes = Array.from({ length: 140 });
+
   for (let i = 0; i < 140; i++) {
     const dayOfWeek = Math.floor(i / 20) % 7; // This ensures we cycle through 0-6 (Monday-Sunday)
     const halfHour = i % 20;
@@ -37,9 +38,12 @@ const getGridItemTimes = (weekdates) => {
         9 + Math.floor(halfHour / 2),
         halfHour % 2 === 0 ? 0 : 30
       ),
-      numRegistered: 0,
+      numRegistered: Math.floor(Math.random() * 7),
+      // ^ random int from 0 - 6 for now until we
+      // can fetch actual number from backend
     };
   }
+
   console.log('gridItemTimes: ', gridItemTimes);
   return gridItemTimes;
 };

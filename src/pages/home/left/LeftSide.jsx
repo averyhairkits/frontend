@@ -73,8 +73,10 @@ export default function LeftSide({ isAdmin }) {
         }
         maxDetail='month'
         minDetail='month'
-        minDate={todaysDate}
-        maxDate={new Date(todaysDate.getTime() + fourWeeksTime)}
+        minDate={isAdmin ? null : todaysDate}
+        maxDate={
+          isAdmin ? null : new Date(todaysDate.getTime() + fourWeeksTime)
+        }
         value={todaysDate}
         prevLabel={<Icon.Back />}
         nextLabel={<Icon.Next />}

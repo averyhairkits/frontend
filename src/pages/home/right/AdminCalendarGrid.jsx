@@ -3,12 +3,13 @@ import React from 'react';
 import { Icon } from 'assets/icons/icons';
 import PropTypes from 'prop-types';
 
+import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useAdminCalendarGrid } from 'pages/home/right/useAdminCalendarGrid';
 
 import './AdminHome.css';
 
 export const AdminCalendarGrid = () => {
-  const gridItems = Array.from({ length: 140 });
+  const { gridItemTimes } = useCalendarContext();
   const {
     handleMouseUp,
     canSave,
@@ -75,12 +76,15 @@ export const AdminCalendarGrid = () => {
       style={{ pointerEvents: canSave ? 'none' : 'auto' }}
     >
       <div className='calendarGridMask'>
-        {gridItems.map((_, i) => (
+        {gridItemTimes.map((_, i) => (
           <div
             key={i}
             className={`${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'}`}
             onMouseDown={() => handleMouseDown(i)}
             onMouseEnter={() => handleMouseMove(i)}
+            style={{
+              backgroundColor: `var(--sign-up-fill-${gridItemTimes[i].numRegistered})`,
+            }}
           />
         ))}
       </div>

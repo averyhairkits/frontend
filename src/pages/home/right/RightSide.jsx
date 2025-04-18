@@ -130,7 +130,7 @@ const RightSide = ({ isAdmin }) => {
 
   return (
     <div className='rightside'>
-      <CalendarNav />
+      <CalendarNav isAdmin={isAdmin} />
       <div className='rightMainSection'>
         <div className='timeContainer'>
           {/* numVolunteersContainer by itself takes up the space
