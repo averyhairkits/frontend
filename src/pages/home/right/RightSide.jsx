@@ -118,13 +118,22 @@ Save.propTypes = {
 
 const RightSide = ({ isAdmin }) => {
   const { weekdates, gridItemTimes } = useCalendarContext();
+
+  const {
+    numVolunteers,
+    isOpen,
+    handleNumVolunteersButton,
+    handleOptionsPopUp,
+    optionsPopUpRef,
+  } = useNumVolunteers();
+
   const {
     handleMouseDown,
     handleMouseEnter,
     handleMouseUp,
     selectedCells,
     handleSave,
-  } = useVolunteerCalendar();
+  } = useVolunteerCalendar(numVolunteers);
 
   const { canSave } = useSavedTimesContext();
 
@@ -138,7 +147,13 @@ const RightSide = ({ isAdmin }) => {
           {isAdmin ? (
             <div className='numVolunteersContainer'></div>
           ) : (
-            <NumVolunteers />
+            <NumVolunteers
+              numVolunteers={numVolunteers}
+              isOpen={isOpen}
+              handleNumVolunteersButton={handleNumVolunteersButton}
+              handleOptionsPopUp={handleOptionsPopUp}
+              optionsPopUpRef={optionsPopUpRef}
+            />
           )}
           <Times />
         </div>

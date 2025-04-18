@@ -28,9 +28,9 @@ export function UserProvider({ children }) {
     try {
       const response = await fetch(buildUrl('/auth/me'), {
         credentials: 'include',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       });
 
       if (!response.ok) {

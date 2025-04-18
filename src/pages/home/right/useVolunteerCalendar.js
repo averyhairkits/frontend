@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 
-export const useVolunteerCalendar = () => {
+export const useVolunteerCalendar = (numVolunteers) => {
   const [selectedCells, setSelectedCells] = useState(new Set()); // contains one week
   const { savedTimes, setSavedTimes, setCanSave, justSaved, setJustSaved } =
     useSavedTimesContext(); // contains all times
@@ -57,11 +57,43 @@ export const useVolunteerCalendar = () => {
   };
 
   // clicking save button
-  const handleSave = () => {
+  const handleSave = async () => {
     console.log('Saved');
     setJustSaved(true);
     setCanSave(false);
     setPrevSelectedCells(new Set(selectedCells)); // saved cells are now fixed until next save
+
+    //convert selected cells to ISO timestamps
+    const selectedTimestamps = Array.from(selectedCells).map(
+      (index) => gridItemTimes[index].toISOString()
+    );
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:5050/api/new_request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          reqTimeStampList: selectedTimestamps,
+          request_size: numVolunteers,
+        }),
+      });
+  
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('Request failed:', error);
+        return;
+      }
+  
+      const result = await response.json();
+      console.log('Successfully submitted slot request:', result);
+    } catch (error) {
+      console.error('Network error:', error);
+    }
+
   };
 
   // keep checking if current selected cells are different from last saved cells
