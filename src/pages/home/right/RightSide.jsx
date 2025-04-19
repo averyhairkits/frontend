@@ -79,7 +79,7 @@ const NumVolunteers = () => {
   );
 };
 
-const HeaderGrid = ({ weekdates }) => {
+const HeaderGrid = ({ weekdates, todaysDate }) => {
   return (
     <div className='headerGrid'>
       {weekdates.map((date) => (
@@ -88,7 +88,15 @@ const HeaderGrid = ({ weekdates }) => {
         </h4>
       ))}
       {weekdates.map((date) => (
-        <h5 className='headerGridItem' key={date}>
+        <h5
+          className='headerGridItem'
+          id={
+            date.toLocaleDateString() === todaysDate.toLocaleDateString()
+              ? 'today'
+              : undefined
+          }
+          key={date}
+        >
           {date.toLocaleDateString(undefined, { day: '2-digit' })}
         </h5>
       ))}
@@ -98,6 +106,7 @@ const HeaderGrid = ({ weekdates }) => {
 
 HeaderGrid.propTypes = {
   weekdates: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
+  todaysDate: PropTypes.instanceOf(Date).isRequired,
 };
 
 const Save = ({ canSave, handleSave }) => {
@@ -117,7 +126,7 @@ Save.propTypes = {
 };
 
 const RightSide = ({ isAdmin }) => {
-  const { weekdates, gridItemTimes } = useCalendarContext();
+  const { weekdates, gridItemTimes, todaysDate } = useCalendarContext();
   const {
     handleMouseDown,
     handleMouseEnter,
@@ -143,7 +152,7 @@ const RightSide = ({ isAdmin }) => {
           <Times />
         </div>
         <div className='gridContainer'>
-          <HeaderGrid weekdates={weekdates} />
+          <HeaderGrid weekdates={weekdates} todaysDate={todaysDate} />
           {isAdmin ? (
             <AdminCalendarGrid />
           ) : (

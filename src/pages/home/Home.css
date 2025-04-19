@@ -80,7 +80,7 @@
 .gridContainer {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
   flex: 1;
 }
 
@@ -88,14 +88,25 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(2, 28px);
-
+  grid-row-gap: 5px;
   align-items: center;
 }
 
 .headerGridItem {
-  text-align: center;
-
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   color: var(--dark-gray);
+}
+
+#today {
+  width: 35px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  border-radius: 50%;
+  color: var(--white);
+  background-color: var(--purple1);
 }
 
 .calendarGrid {
