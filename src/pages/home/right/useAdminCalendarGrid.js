@@ -22,6 +22,28 @@ export const useAdminCalendarGrid = () => {
 
   const getIndex = (row, col) => col * 20 + row;
 
+  // only get confirmed times in the current week
+  const filteredConfirmedTimes = Array.from(confirmedTimes).filter(
+    (confirmedTime) =>
+      weekdates.some(
+        (weekdate) =>
+          confirmedTime.start.toDateString() === weekdate.toDateString()
+      )
+  );
+
+  const dateToRowCol = (date) => {
+    const selection = {
+      startRow:
+        (date.start.getHours() - 9) * 2 +
+        (date.start.getMinutes() === 0 ? 0 : 1),
+      endRow:
+        (date.end.getHours() - 9) * 2 + (date.end.getMinutes() === 0 ? 0 : 1),
+      col: date.start.getDay() === 0 ? 6 : date.start.getDay() - 1,
+    };
+
+    return selection;
+  };
+
   const handleMouseDown = (i) => {
     const { row, col } = getGridPosition(i);
     eventEditor.setSelection({
@@ -39,7 +61,20 @@ export const useAdminCalendarGrid = () => {
 
   const handleMouseUp = () => {
     eventData.startRow !== null && setCanSave(true);
-    setIsEditing(true);
+    const minRow = Math.min(eventData.startRow, eventData.endRow);
+    const maxRow = Math.max(eventData.startRow, eventData.endRow);
+
+    const hasOverlap = filteredConfirmedTimes.some((confirmedTime) => {
+      const confirmedSelection = dateToRowCol(confirmedTime);
+
+      return (
+        confirmedSelection.col === eventData.col &&
+        confirmedSelection.startRow <= maxRow &&
+        confirmedSelection.endRow >= minRow
+      );
+    });
+
+    hasOverlap ? handleCancel() : setIsEditing(true);
   };
 
   const getSelectionStyle = ({ startRow, endRow, col }) => {
@@ -105,15 +140,6 @@ export const useAdminCalendarGrid = () => {
     );
   };
 
-  // only get confirmed times in the current week
-  const filteredConfirmedTimes = Array.from(confirmedTimes).filter(
-    (confirmedTime) =>
-      weekdates.some(
-        (weekdate) =>
-          confirmedTime.start.toDateString() === weekdate.toDateString()
-      )
-  );
-
   useEffect(() => {
     console.log('event (start row, end row, column): ', eventData);
   }, [eventData]);
@@ -134,6 +160,7 @@ export const useAdminCalendarGrid = () => {
   return {
     handleMouseUp,
     canSave,
+    dateToRowCol,
     handleMouseDown,
     handleMouseMove,
     eventData,

@@ -13,6 +13,7 @@ export const AdminCalendarGrid = () => {
   const {
     handleMouseUp,
     canSave,
+    dateToRowCol,
     handleMouseDown,
     handleMouseMove,
     eventData,
@@ -91,15 +92,7 @@ export const AdminCalendarGrid = () => {
 
       {/* Previously confirmed events */}
       {filteredConfirmedTimes.map((session, i) => {
-        const aSelection = {
-          startRow:
-            (session.start.getHours() - 9) * 2 +
-            (session.start.getMinutes() === 0 ? 0 : 1),
-          endRow:
-            (session.end.getHours() - 9) * 2 +
-            (session.end.getMinutes() === 0 ? 0 : 1),
-          col: session.start.getDay() === 0 ? 6 : session.start.getDay() - 1,
-        };
+        const aSelection = dateToRowCol(session);
 
         return (
           <div key={i} className='event' style={getSelectionStyle(aSelection)}>
