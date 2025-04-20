@@ -29,15 +29,18 @@ const getGridItemTimes = (weekdates) => {
   for (let i = 0; i < 140; i++) {
     const dayOfWeek = Math.floor(i / 20) % 7; // This ensures we cycle through 0-6 (Monday-Sunday)
     const halfHour = i % 20;
+    const start = new Date(
+      weekdates[dayOfWeek].getFullYear(),
+      weekdates[dayOfWeek].getMonth(),
+      weekdates[dayOfWeek].getDate(),
+      9 + Math.floor(halfHour / 2),
+      halfHour % 2 === 0 ? 0 : 30
+    );
+    const end = new Date(start.getTime() + 30 * 60 * 1000); // add 30 minutes after start
 
     gridItemTimes[i] = {
-      start: new Date(
-        weekdates[dayOfWeek].getFullYear(),
-        weekdates[dayOfWeek].getMonth(),
-        weekdates[dayOfWeek].getDate(),
-        9 + Math.floor(halfHour / 2),
-        halfHour % 2 === 0 ? 0 : 30
-      ),
+      start: start,
+      end: end,
       numRegistered: Math.floor(Math.random() * 7),
       // ^ random int from 0 - 6 for now until we
       // can fetch actual number from backend

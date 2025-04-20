@@ -29,46 +29,51 @@ export const AdminCalendarGrid = () => {
     handleChangeDescription,
   } = useAdminCalendarGrid();
 
-  const renderEventPopup = (eventData) => (
-    <div className='popUp' style={getPopUpStyle(eventData)}>
-      <div className='cancelSave'>
-        <button className='cancel' onClick={handleCancel}>
-          Cancel
-        </button>
-        <button className='save' onClick={handleSave}>
-          Save
-        </button>
-      </div>
-      <input
-        className='titleInput'
-        type='text'
-        placeholder='Add Title...'
-        value={eventData.title}
-        onChange={handleChangeTitle}
-      />
-      <div className='item'>
-        <Icon.Clock className='icon' />
-        <p>{`${getEventDate(eventData, true)}, 
+  const renderEventPopup = (eventData) => {
+    const minRow = Math.min(eventData.startRow, eventData.endRow);
+    const maxRow = Math.max(eventData.startRow, eventData.endRow);
+
+    return (
+      <div className='popUp' style={getPopUpStyle(eventData)}>
+        <div className='cancelSave'>
+          <button className='cancel' onClick={handleCancel}>
+            Cancel
+          </button>
+          <button className='save' onClick={handleSave}>
+            Save
+          </button>
+        </div>
+        <input
+          className='titleInput'
+          type='text'
+          placeholder='Add Title...'
+          value={eventData.title}
+          onChange={handleChangeTitle}
+        />
+        <div className='item'>
+          <Icon.Clock className='icon' />
+          <p>{`${getEventDate(eventData, true)}, 
         ${getEventDate(eventData, false)}, 
-        ${getEventTime(eventData.startRow)}-
-        ${getEventTime(eventData.endRow)}`}</p>
+        ${getEventTime(minRow, true)}-
+        ${getEventTime(maxRow, false)}`}</p>
+        </div>
+        <div className='item'>
+          <Icon.Map className='icon' />
+          <p>2020 Greenwood Avenue, Evanston, IL 60201</p>
+        </div>
+        <div className='item'>
+          <Icon.Pen className='icon' />
+          <p>Description (Optional)</p>
+        </div>
+        <textarea
+          className='description'
+          placeholder='Add description...'
+          value={eventData.description}
+          onChange={handleChangeDescription}
+        />
       </div>
-      <div className='item'>
-        <Icon.Map className='icon' />
-        <p>2020 Greenwood Avenue, Evanston, IL 60201</p>
-      </div>
-      <div className='item'>
-        <Icon.Pen className='icon' />
-        <p>Description (Optional)</p>
-      </div>
-      <textarea
-        className='description'
-        placeholder='Add description...'
-        value={eventData.description}
-        onChange={handleChangeDescription}
-      />
-    </div>
-  );
+    );
+  };
 
   return (
     <div
@@ -93,14 +98,15 @@ export const AdminCalendarGrid = () => {
       {/* Previously confirmed events */}
       {filteredConfirmedTimes.map((session, i) => {
         const aSelection = dateToRowCol(session);
+        const minRow = Math.min(aSelection.startRow, aSelection.endRow);
+        const maxRow = Math.max(aSelection.startRow, aSelection.endRow);
 
         return (
           <div key={i} className='event' style={getSelectionStyle(aSelection)}>
             <div className='content'>
               <h1>{session.title || 'New Event'}</h1>
               <h2>
-                {getEventTime(aSelection.startRow)}-
-                {getEventTime(aSelection.endRow)}
+                {getEventTime(minRow, true)}-{getEventTime(maxRow, false)}
               </h2>
               <h3>{session.description}</h3>
               <div className='numVolunteersContainer'>
@@ -118,8 +124,15 @@ export const AdminCalendarGrid = () => {
           <div className='content'>
             <h1>{eventData.title || '(New Event)'}</h1>
             <h2>
-              {getEventTime(eventData.startRow)}-
-              {getEventTime(eventData.endRow)}
+              {getEventTime(
+                Math.min(eventData.startRow, eventData.endRow),
+                true
+              )}
+              -
+              {getEventTime(
+                Math.max(eventData.startRow, eventData.endRow),
+                false
+              )}
             </h2>
             <div className='numVolunteersContainer'>
               <Icon.User width='24px' />

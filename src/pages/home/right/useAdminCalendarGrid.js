@@ -37,7 +37,9 @@ export const useAdminCalendarGrid = () => {
         (date.start.getHours() - 9) * 2 +
         (date.start.getMinutes() === 0 ? 0 : 1),
       endRow:
-        (date.end.getHours() - 9) * 2 + (date.end.getMinutes() === 0 ? 0 : 1),
+        (date.end.getHours() - 9) * 2 +
+        (date.end.getMinutes() === 0 ? 0 : 1) -
+        1, // -1 to stop at end of last row
       col: date.start.getDay() === 0 ? 6 : date.start.getDay() - 1,
     };
 
@@ -87,7 +89,7 @@ export const useAdminCalendarGrid = () => {
       left: `calc(${(100 / 7) * col}%)`,
       width: `calc(${100 / 7}%)`,
       top: `calc(${(100 / 20) * minRow}%)`,
-      height: `calc(${(100 / 20) * (maxRow - minRow + 1)}%)`,
+      height: `calc(${(100 / 20) * (maxRow === minRow ? 1 : 1 + maxRow - minRow)}%)`,
     };
   };
 
@@ -111,11 +113,13 @@ export const useAdminCalendarGrid = () => {
 
   const handleSave = () => {
     const { title, description, startRow, endRow, col, volunteers } = eventData;
+    const minRow = Math.min(startRow, endRow);
+    const maxRow = Math.max(startRow, endRow);
 
     const newConfirmedTime = {
       title: title,
-      start: gridItemTimes[getIndex(startRow, col)].start,
-      end: gridItemTimes[getIndex(endRow, col)].start,
+      start: gridItemTimes[getIndex(minRow, col)].start,
+      end: gridItemTimes[getIndex(maxRow, col)].end,
       description: description,
       volunteers: volunteers,
     };
@@ -126,8 +130,15 @@ export const useAdminCalendarGrid = () => {
     setCanSave(false);
   };
 
-  const getEventTime = (row) => {
-    return gridItemTimes[getIndex(row, 0)].start.toLocaleTimeString([], {
+  const getEventTime = (row, isStart) => {
+    if (isStart) {
+      return gridItemTimes[getIndex(row, 0)].start.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    }
+
+    return gridItemTimes[getIndex(row, 0)].end.toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
     });
