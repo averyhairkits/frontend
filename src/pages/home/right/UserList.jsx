@@ -8,6 +8,28 @@ import LeftSide from 'pages/home/left/LeftSide';
 
 import './UserList.css';
 
+const Header = () => {
+  const headings = ['Name', 'Email', 'Registered On'];
+
+  return (
+    <thead>
+      <tr>
+        {headings.map((heading) => (
+          <th key={heading}>
+            <div className='headData '>
+              <h3>{heading}</h3>
+              <div>
+                <Icon.SortUp />
+                <Icon.SortDown />
+              </div>
+            </div>
+          </th>
+        ))}
+      </tr>
+    </thead>
+  );
+};
+
 const Rows = () => {
   const table = Array.from({ length: 18 }, () => Array(3).fill('Lorem Ipsum'));
 
@@ -47,37 +69,7 @@ const UserList = () => {
         <h6>Registered Volunteers</h6>
         <div className='tableContainer'>
           <table>
-            <thead>
-              <tr>
-                <th>
-                  <div className='headData'>
-                    <h3>Name</h3>
-                    <div>
-                      <Icon.SortUp />
-                      <Icon.SortDown />
-                    </div>
-                  </div>
-                </th>
-                <th>
-                  <div className='headData'>
-                    <h3>Email</h3>
-                    <div>
-                      <Icon.SortUp />
-                      <Icon.SortDown />
-                    </div>
-                  </div>
-                </th>
-                <th>
-                  <div className='headData'>
-                    <h3>Registered On</h3>
-                    <div>
-                      <Icon.SortUp />
-                      <Icon.SortDown />
-                    </div>
-                  </div>
-                </th>
-              </tr>
-            </thead>
+            <Header />
             <Rows />
           </table>
         </div>
