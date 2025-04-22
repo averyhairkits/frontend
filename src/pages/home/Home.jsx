@@ -38,7 +38,7 @@ NavButtons.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
 };
 
-const VolunteerHome = ({ isAdmin }) => {
+const Home = ({ isAdmin }) => {
   return (
     <main>
       <NavButtons isAdmin={isAdmin} />
@@ -54,8 +54,8 @@ const VolunteerHome = ({ isAdmin }) => {
   );
 };
 
-VolunteerHome.propTypes = {
+Home.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
 };
 
-export default VolunteerHome;
+export default Home;

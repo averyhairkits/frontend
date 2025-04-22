@@ -11,7 +11,8 @@ import AuthCallback from 'pages/account/AuthCallback';
 import RequestPasswordReset from 'pages/account/RequestPasswordReset';
 import ResetPassword from 'pages/account/ResetPassword';
 import SignUp from 'pages/account/SignUpAndLogin';
-import VolunteerHome from 'pages/home/Home';
+import Home from 'pages/home/Home';
+import UserList from 'pages/home/right/UserList';
 import NotFound from 'pages/not-found/NotFound';
 
 import './App.css';
@@ -23,14 +24,9 @@ export default function App() {
         <Routes>
           <Route element={<PrivateRoute />}></Route>
           <Route path='/' element={<PublicOnlyRoute />}>
-            <Route
-              path='volunteer-home'
-              element={<VolunteerHome isAdmin={false} />}
-            />
-            <Route
-              path='admin-home'
-              element={<VolunteerHome isAdmin={true} />}
-            />
+            <Route path='volunteer-home' element={<Home isAdmin={false} />} />
+            <Route path='admin-home' element={<Home isAdmin={true} />} />
+            <Route path='user-list' element={<UserList />} />
             <Route path='/' element={<SignUp />} />
             <Route path='forgot-password' element={<RequestPasswordReset />} />
           </Route>
