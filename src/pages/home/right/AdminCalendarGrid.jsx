@@ -54,7 +54,7 @@ export const AdminCalendarGrid = () => {
           <Icon.Clock className='icon' />
           <p>{`${getEventDate(eventData, true)}, 
         ${getEventDate(eventData, false)}, 
-        ${getEventTime(minRow, true)}-
+        ${getEventTime(minRow, true)} -
         ${getEventTime(maxRow, false)}`}</p>
         </div>
         <div className='item'>
@@ -106,7 +106,7 @@ export const AdminCalendarGrid = () => {
             <div className='content'>
               <h1>{session.title || 'New Event'}</h1>
               <h2>
-                {getEventTime(minRow, true)}-{getEventTime(maxRow, false)}
+                {getEventTime(minRow, true)} - {getEventTime(maxRow, false)}
               </h2>
               <h3>{session.description}</h3>
               <div className='numVolunteersContainer'>
