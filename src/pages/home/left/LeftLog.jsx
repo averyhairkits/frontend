@@ -8,7 +8,7 @@ export default function LeftLog() {
       <h3 className='how-to-title'>
         <Icon.Clock className='how-to-icon' /> Cancellation Log
       </h3>
-      <div className='log-entry'>
+      <div className='details'>
         <div>
           <p>Melissa M. canceled the following sessions:</p>
           <ul>

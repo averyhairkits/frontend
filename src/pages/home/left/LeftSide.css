@@ -25,11 +25,11 @@ div[style="color: red"] {
   flex: 1;
   gap: 20px;
   /* manage log overflow */
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
+  justify-content: space-between;
 }
 
-.white-bg p, .white-bg ul, .white-bg li {
+.white-bg p, .white-bg ul, .white-bg ol, .white-bg li {
   color: var(--dark-gray);
   margin: 0px;
 }
@@ -46,19 +46,30 @@ div[style="color: red"] {
   gap: 1px;
 }
 
-.white-bg ul {
+.white-bg ul, .white-bg ol {
   padding-left: 25px;
 }
 /* bullet-point */
 .white-bg li {
   font-size: 14px;
   font-weight: 400px;
-  line-height: 1;
+  line-height: 1.5;
 }
 .white-bg h3 {
   color: var(--purple1);
 }
-
+.white-bg .details::-webkit-scrollbar {
+  width: 10px;
+}
+.white-bg .details::-webkit-scrollbar-track {
+  background: none;
+  border-radius: 5px;
+}
+.white-bg .details::-webkit-scrollbar-thumb {
+  background-color: var(--light-gray);
+  border-radius: 5px;
+  border: none;
+}
 
 .title {
   display: flex;
@@ -73,10 +84,20 @@ div[style="color: red"] {
   background-color: none;
 }
 
+.details {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .log-entry {
+  background-color: bisque;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 100%;
 }
 
 .log-entry .instructions {
