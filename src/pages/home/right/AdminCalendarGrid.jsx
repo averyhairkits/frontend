@@ -78,7 +78,6 @@ export const AdminCalendarGrid = () => {
   return (
     <div
       className='calendarGrid'
-      onMouseUp={handleMouseUp}
       style={{ pointerEvents: canSave ? 'none' : 'auto' }}
     >
       <div className='calendarGridMask'>
@@ -88,6 +87,7 @@ export const AdminCalendarGrid = () => {
             className={`${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'}`}
             onMouseDown={() => handleMouseDown(i)}
             onMouseEnter={() => handleMouseMove(i)}
+            onMouseUp={handleMouseUp}
             style={{
               backgroundColor: `var(--sign-up-fill-${gridItemTimes[i].size})`,
             }}
