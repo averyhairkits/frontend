@@ -30,33 +30,32 @@ export default function Layout() {
           <Icon.HowTo className='how-to-icon' /> How-To
         </h3>
         <div className='log-entry'>
-          <p>
-            <ol>
-              <li>
-                Navigate between weeks using the forward and backward arrows.
-              </li>
-              <li>
-                Select your teams headcount from the dropdown in the top left.
-              </li>
-              <li>
-                Click and drag to choose the dates and time slots when
-                you&apos;ll reavailable.
-              </li>
-              <li>
-                Time slots with confirmed events that still have vacancies are
-                highlighted in purple.
-              </li>
-              <li> Click &quot;Save&quot; to finalize your availability. </li>
-              <li>
-                To cancel an appointment, deselect the relevant time slots using
-                the same click-and-drag method and click &quot;Save&quot;.
-              </li>
-              <li>
-                If a volunteering activity is scheduled during your available
-                times, you&apos;ll receive an email notification.
-              </li>
-            </ol>
-          </p>
+          <div className='instructions'>
+            <p>
+              1. Navigate between weeks using the forward and backward arrows.
+            </p>
+            <p>
+              2. Select your team&apos;s headcount from the dropdown in the top
+              left.
+            </p>
+            <p>
+              3. Click and drag to choose the dates and time slots when
+              you&apos;ll be available.
+            </p>
+            <p>
+              4. Time slots with confirmed events that still have vacancies are
+              highlighted in purple.
+            </p>
+            <p>5. Click &quot;Save&quot; to finalize your availability.</p>
+            <p>
+              6. To cancel an appointment, deselect the relevant time slots
+              using the same click-and-drag method and click &quot;Save.&quot;
+            </p>
+            <p>
+              7. If a volunteering activity is scheduled during your available
+              times, you&apos;ll receive an email notification.
+            </p>
+          </div>
         </div>
         <h3 className='how-to-title'>
           <Icon.Faq className='Faq-icon' /> FAQS

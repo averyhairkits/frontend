@@ -33,20 +33,29 @@ div[style="color: red"] {
 /* body-text */
 .white-bg p {
   font-size: 15px;
+  text-align: left;
   font-weight: 500;
+  line-height: 1.2;
 }
+
+.white-bg span {
+  display: grid;
+  gap: 1px;
+}
+
 .white-bg ul {
   padding-left: 25px;
 }
 /* bullet-point */
 .white-bg li {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400px;
-  line-height: 25px;
+  line-height: 1;
 }
 .white-bg h3 {
   color: var(--purple1);
 }
+
 
 .title {
   display: flex;
@@ -65,6 +74,19 @@ div[style="color: red"] {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.log-entry .instructions {
+  display: grid;
+  gap: 5px;
+}
+
+
+.log-entry .i {
+  padding-top: 0px;
+  margin-top: 0px;
+  padding-left: 0px;
+  margin-left: 0px;
 }
 
 .how-to-title {
