@@ -1,0 +1,58 @@
+h3 {
+  color: var(--purple1);
+}
+
+.rightside {
+  padding-bottom: 35px;
+}
+
+.tableContainer {
+  max-height: 85vh; 
+  overflow-y: auto;
+  border-radius: 10px;
+  border: 1px solid var(--purple1);
+}
+
+th h3 {
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.name {
+  text-transform: capitalize;
+}
+
+.email {
+  text-transform: lowercase;
+}
+
+thead {
+  background-color: var(--purple1);
+  height: 50px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+thead h3 {
+  color: var(--white);
+}
+
+table {
+  height: 100%;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background-color: var(--purple1);
+}
+
+th, td {
+  box-sizing: border-box;
+  padding: 13px;
+}
+
+.headData {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}

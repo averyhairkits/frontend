@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import {
   PrivateRoute,
   PublicOnlyRoute,
 } from 'common/components/routes/ProtectedRoutes';
+import { CalendarContextProvider } from 'common/contexts/CalendarContext';
+import { ConfirmedTimesContextProvider } from 'common/contexts/ConfirmedTimesContext';
+import { SavedTimesContextProvider } from 'common/contexts/SavedTimesContext';
 import { UserProvider } from 'common/contexts/UserContext';
 import AuthCallback from 'pages/account/AuthCallback';
 import RequestPasswordReset from 'pages/account/RequestPasswordReset';
@@ -24,9 +27,22 @@ export default function App() {
         <Routes>
           <Route element={<PrivateRoute />}></Route>
           <Route path='/' element={<PublicOnlyRoute />}>
-            <Route path='volunteer-home' element={<Home isAdmin={false} />} />
-            <Route path='admin-home' element={<Home isAdmin={true} />} />
-            <Route path='user-list' element={<UserList />} />
+            <Route
+              element={
+                <CalendarContextProvider>
+                  <SavedTimesContextProvider>
+                    <ConfirmedTimesContextProvider>
+                      <Outlet />
+                    </ConfirmedTimesContextProvider>
+                  </SavedTimesContextProvider>
+                </CalendarContextProvider>
+              }
+            >
+              <Route path='volunteer-home' element={<Home isAdmin={false} />} />
+
+              <Route path='admin-home' element={<Home isAdmin={true} />} />
+              <Route path='user-list' element={<UserList />} />
+            </Route>
             <Route path='/' element={<SignUp />} />
             <Route path='forgot-password' element={<RequestPasswordReset />} />
           </Route>
