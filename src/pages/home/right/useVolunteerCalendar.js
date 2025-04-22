@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 
+const buildUrl = (endpoint) =>
+  `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
+
 export const useVolunteerCalendar = ({ numVolunteers }) => {
   const { savedTimes, setSavedTimes, setCanSave, justSaved, setJustSaved } =
     useSavedTimesContext(); // contains all times
@@ -60,10 +63,12 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
 
   // clicking save button
   const handleSave = () => {
-    console.log('Saved');
+    
     setJustSaved(true);
     setCanSave(false);
     setPrevSelectedCells(new Map(selectedCells)); // saved cells are now fixed until next save
+
+    console.log()
   };
 
   // keep checking if current selected cells are different from last saved cells
@@ -93,6 +98,7 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     setSavedTimes(new Set([...filteredOldTimes, ...newlySavedTimes]));
   }, [prevSelectedCells]);
 
+
   useEffect(() => {
     // filter savedTimes to only include times that are in weekDates
     const filteredSavedTimes = Array.from(savedTimes).filter((savedTime) =>
@@ -112,7 +118,32 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     });
 
     setSelectedCells(newMap);
+
+    if (justSaved) {
+      const timesArray = Array.from(savedTimes);
+      console.log('✅ Final timesArray (ready to POST):', timesArray);
+  
+      const submitSavedTimes = async () => {
+        try {
+          const res = await fetch(buildUrl('/api/new_request'), {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ slots: timesArray }),
+          });
+  
+          if (!res.ok) throw new Error('Failed to save');
+          console.log('Saved successfully!');
+        } catch (err) {
+          console.error('Error saving times:', err);
+        }
+      };
+      submitSavedTimes();
+    }
   }, [weekdates, savedTimes]);
+
+
 
   return {
     selectedCells,
