@@ -1,4 +1,5 @@
 .event {
+  pointer-events: none;
   background-color: var(--purple2);
   position: absolute;
   z-index: 2;
@@ -6,11 +7,8 @@
   box-shadow: 0 3px 0 0 var(--event-shadow);
 }
 
-.event {
-  background-color: var(--purple2);
-  pointer-events: none;
-}
 .event .content {
+  pointer-events: auto;
   position: relative;
   width: 100%;
   height: 100%;
