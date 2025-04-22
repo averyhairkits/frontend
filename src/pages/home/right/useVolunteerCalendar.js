@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 
-export const useVolunteerCalendar = () => {
-  const [selectedCells, setSelectedCells] = useState(new Set()); // contains one week
+export const useVolunteerCalendar = ({ numVolunteers }) => {
   const { savedTimes, setSavedTimes, setCanSave, justSaved, setJustSaved } =
     useSavedTimesContext(); // contains all times
   const [prevSelectedCells, setPrevSelectedCells] = useState(
@@ -14,12 +13,15 @@ export const useVolunteerCalendar = () => {
   const isDragging = useRef(false);
   const { weekdates, gridItemTimes } = useCalendarContext();
 
+  const [selectedCells, setSelectedCells] = useState(new Map()); // contains one week
+
   // check if availability is different compared to last save for
   // toggling save button clickability
   const selectedCellsChanged = () => {
     if (selectedCells.size !== prevSelectedCells.size) return true;
-    for (const val of prevSelectedCells) {
-      if (!selectedCells.has(val)) return true;
+    for (const [index, numPeople] of prevSelectedCells) {
+      if (!selectedCells.has(index) || selectedCells.get(index) !== numPeople)
+        return true;
     }
     return false;
   };
@@ -27,13 +29,13 @@ export const useVolunteerCalendar = () => {
   // manage volunteers selecting/deselecting cells
   const toggleSelection = (index) => {
     setSelectedCells((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(index)) {
-        newSet.delete(index); // deselect cell if it was selected
+      const newMap = new Map(prev);
+      if (newMap.has(index)) {
+        newMap.delete(index);
       } else {
-        newSet.add(index); // select cell if it was not selected
+        newMap.set(index, numVolunteers); // default numPeople is 1
       }
-      return newSet;
+      return newMap;
     });
   };
 
@@ -61,7 +63,7 @@ export const useVolunteerCalendar = () => {
     console.log('Saved');
     setJustSaved(true);
     setCanSave(false);
-    setPrevSelectedCells(new Set(selectedCells)); // saved cells are now fixed until next save
+    setPrevSelectedCells(new Map(selectedCells)); // saved cells are now fixed until next save
   };
 
   // keep checking if current selected cells are different from last saved cells
@@ -73,39 +75,43 @@ export const useVolunteerCalendar = () => {
     // newlySavedTimes is a set of time objects that are selected & saved for the current week
     const newlySavedTimes = new Set();
     // add in times that have been saved for current week
-    prevSelectedCells.forEach((val) => {
-      newlySavedTimes.add(new Date(gridItemTimes[val].start));
+    prevSelectedCells.forEach((numPeople, index) => {
+      newlySavedTimes.add({
+        time: new Date(gridItemTimes[index].start),
+        numPeople: numPeople,
+      });
     });
     // keep savedTimes the same, but remove all times that are in the current week, and add newlySavedTimes instead
-    setSavedTimes([
-      ...Array.from(savedTimes).filter(
-        (savedDate) =>
-          !weekdates.some(
-            (weekDate) => savedDate.toDateString() === weekDate.toDateString()
-          )
-      ),
-      ...newlySavedTimes,
-    ]);
+    const filteredOldTimes = Array.from(savedTimes).filter(
+      (savedDate) =>
+        !weekdates.some(
+          (weekDate) =>
+            savedDate.time.toDateString() === weekDate.toDateString()
+        )
+    );
+
+    setSavedTimes(new Set([...filteredOldTimes, ...newlySavedTimes]));
   }, [prevSelectedCells]);
 
   useEffect(() => {
     // filter savedTimes to only include times that are in weekDates
-    const filteredSavedTimes = Array.from(savedTimes).filter((savedDate) =>
+    const filteredSavedTimes = Array.from(savedTimes).filter((savedTime) =>
       weekdates.some(
-        (weekdate) => savedDate.toDateString() === weekdate.toDateString()
+        (weekdate) => savedTime.time.toDateString() === weekdate.toDateString()
       )
     );
-    // selectedCells is a set of cell numbers based on gridItemTimes
-    setSelectedCells(
-      new Set(
-        filteredSavedTimes.map((savedTime) =>
-          gridItemTimes.findIndex(
-            (gridItemTime) =>
-              gridItemTime.start.getTime() === savedTime.getTime()
-          )
-        )
-      )
-    );
+
+    // selectedCells is a map of cell numbers and num people based on gridItemTimes
+    const newMap = new Map();
+    filteredSavedTimes.forEach((savedTime) => {
+      const index = gridItemTimes.findIndex(
+        (gridItemTime) =>
+          gridItemTime.start.getTime() === savedTime.time.getTime()
+      );
+      if (index !== -1) newMap.set(index, savedTime.numPeople);
+    });
+
+    setSelectedCells(newMap);
   }, [weekdates, savedTimes]);
 
   return {

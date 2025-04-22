@@ -98,12 +98,28 @@
   pointer-events: auto;
 }
 
-.selected {
+.selected1 {
+  background-color: var(--sign-up-fill-1);
+}
+.selected1:hover {
+  background-color: var(--sign-up-fill-1-highlight);
+}
+
+.selected2 {
+  background-color: var(--sign-up-fill-2);
+}
+.selected2:hover {
+  background-color: var(--sign-up-fill-2-highlight);
+}
+
+.selected3 {
   background-color: var(--sign-up-fill-3);
 }
-.selected:hover {
+.selected3:hover {
   background-color: var(--sign-up-fill-3-highlight);
 }
+
+
 
 .confirmed {
   background-color: var(--purple2);

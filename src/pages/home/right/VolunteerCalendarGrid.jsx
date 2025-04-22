@@ -49,7 +49,7 @@ export const VolunteerCalendarGrid = ({
           <div
             key={i}
             // only shows confirmed session if a confirmed cell is selected
-            className={`${itemType} ${selectedCells.has(i) && isConfirmedSession ? 'confirmed' : selectedCells.has(i) ? 'selected' : ''}`}
+            className={`${itemType} ${selectedCells.has(i) && isConfirmedSession ? 'confirmed' : selectedCells.has(i) ? `selected${selectedCells.get(i)}` : ''}`}
             onMouseDown={() => handleMouseDown(i)}
             onMouseEnter={() => handleMouseEnter(i)}
           ></div>
@@ -66,5 +66,5 @@ VolunteerCalendarGrid.propTypes = {
   handleSave: PropTypes.func.isRequired,
   selectedCells: PropTypes.instanceOf(Set).isRequired,
   gridItemTimes: PropTypes.array.isRequired,
-  savedTimes: PropTypes.instanceOf(Set).isRequired,
+  numVolunteers: PropTypes.number.isRequired,
 };

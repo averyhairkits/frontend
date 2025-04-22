@@ -89,7 +89,7 @@ export const AdminCalendarGrid = () => {
             onMouseDown={() => handleMouseDown(i)}
             onMouseEnter={() => handleMouseMove(i)}
             style={{
-              backgroundColor: `var(--sign-up-fill-${gridItemTimes[i].numRegistered})`,
+              backgroundColor: `var(--sign-up-fill-${gridItemTimes[i].size})`,
             }}
           />
         ))}

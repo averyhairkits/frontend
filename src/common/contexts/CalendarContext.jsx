@@ -41,7 +41,7 @@ const getGridItemTimes = (weekdates) => {
     gridItemTimes[i] = {
       start: start,
       end: end,
-      numRegistered: Math.floor(Math.random() * 7),
+      size: Math.floor(Math.random() * 7),
       // ^ random int from 0 - 6 for now until we
       // can fetch actual number from backend
     };
