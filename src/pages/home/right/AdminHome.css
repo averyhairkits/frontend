@@ -1,0 +1,150 @@
+.event {
+  background-color: var(--purple2);
+  position: absolute;
+  z-index: 2;
+  border-radius: 10px;
+  box-shadow: 0 3px 0 0 var(--event-shadow);
+}
+
+.event .content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  color: var(--white); /* text color of children */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  white-space: normal;
+  overflow-wrap: break-word;
+  padding: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.event .content::-webkit-scrollbar {
+  width: 10px;
+}
+.event .content::-webkit-scrollbar-track {
+  background: #ffffff00;
+  border-radius: 5px;
+}
+
+.event .content::-webkit-scrollbar-thumb {
+  background-color: var(--purple2-highlight);
+  border-radius: 5px;
+  border: none;
+}
+/* event title */
+.event h1 {
+  font-size: 12px;
+  font-weight: 700;
+}
+/* event time */
+.event h2 {
+  font-size: 10px;
+  font-weight: 400;
+}
+.event .numVolunteersContainer {
+  all: unset;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+/* event description */
+.event h3 {
+  font-size: 11px;
+  font-weight: 600;
+}
+/* event # of volunteers (bolded symbol) */
+.event h4 {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* edit event pop up */
+.event .popUp {
+  position: absolute;
+  background-color: var(--white);
+  border: 1px solid var(--medium-gray);
+  border-radius: 10px;
+  width: 25vw;
+  height: 30vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 11px;
+  pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 7px;
+}
+
+.event button {
+  pointer-events: all;
+}
+
+.cancelSave {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.popUp button {
+  background: none;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+}
+
+.cancel {
+  color: var(--medium-gray);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.save {
+  color: var(--purple1);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.titleInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 19px;
+  border-bottom: 1px solid var(--medium-gray);
+  color: var(--medium-gray);
+  line-height: 1.5;
+}
+
+.popUp .item {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.popUp p {
+  font-size: 11px;
+  color: var(--dark-gray);
+}
+
+.description {
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+  width: 100%;
+  height: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 7px;
+}
+
+.popUp .icon {
+  stroke: var(--dark-gray);
+  stroke-width: 2.5;
+  width: 15px;
+  height: 15px;
+}
