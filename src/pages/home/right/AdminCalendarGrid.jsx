@@ -120,7 +120,10 @@ export const AdminCalendarGrid = () => {
 
       {/* New event or editing existing event */}
       {(eventData.startRow !== null || canSave) && (
-        <div className='event' style={getSelectionStyle(eventData)}>
+        <div
+          className='event'
+          style={{ ...getSelectionStyle(eventData), pointerEvents: 'none' }}
+        >
           <div className='content' style={{ pointerEvents: 'none' }}>
             <h1>{eventData.title || '(New Event)'}</h1>
             <h2>
