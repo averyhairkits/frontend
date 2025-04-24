@@ -45,9 +45,15 @@ table {
   background-color: var(--purple1);
 }
 
+table button {
+  all: unset;
+  cursor: pointer;
+}
+
 th, td {
   box-sizing: border-box;
   padding: 13px;
+  overflow-x: scroll;
 }
 
 .headData {

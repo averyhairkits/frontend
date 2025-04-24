@@ -1,15 +1,17 @@
 import React from 'react';
 
 import { Icon } from 'assets/icons/icons';
+import PropTypes from 'prop-types';
 
 import 'pages/home/Home.css';
 import NavButtons from 'pages/home/NavButtons';
 import LeftSide from 'pages/home/left/LeftSide';
+import useUserList from 'pages/home/right/useUserList';
 
 import './UserList.css';
 
-const Header = () => {
-  const headings = ['Name', 'Email', 'Registered On'];
+const Header = ({ sortHandlers }) => {
+  const headings = ['Name', 'Email', 'Date Registered'];
 
   return (
     <thead>
@@ -19,8 +21,26 @@ const Header = () => {
             <div className='headData '>
               <h3>{heading}</h3>
               <div>
-                <Icon.SortUp />
-                <Icon.SortDown />
+                <button
+                  onClick={() => {
+                    if (heading === 'Name') sortHandlers.handleNameAsc();
+                    else if (heading === 'Email') sortHandlers.handleEmailAsc();
+                    else if (heading === 'Date Registered')
+                      sortHandlers.handleDateRegisteredAsc();
+                  }}
+                >
+                  <Icon.SortUp />
+                </button>
+                <button
+                  onClick={() => {
+                    if (heading === 'Name') sortHandlers.handleNameDsc();
+                    else if (heading === 'Email') sortHandlers.handleEmailDsc();
+                    else if (heading === 'Date Registered')
+                      sortHandlers.handleDateRegisteredDsc();
+                  }}
+                >
+                  <Icon.SortDown />
+                </button>
               </div>
             </div>
           </th>
@@ -30,29 +50,39 @@ const Header = () => {
   );
 };
 
-const Rows = () => {
-  const table = Array.from({ length: 18 }, () => Array(3).fill('Lorem Ipsum'));
+Header.propTypes = {
+  sortHandlers: PropTypes.shape({
+    handleNameAsc: PropTypes.func.isRequired,
+    handleNameDsc: PropTypes.func.isRequired,
+    handleEmailAsc: PropTypes.func.isRequired,
+    handleEmailDsc: PropTypes.func.isRequired,
+    handleDateRegisteredAsc: PropTypes.func.isRequired,
+    handleDateRegisteredDsc: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
+const Rows = ({ sortedAllUsers }) => {
+  console.log('sortedAllusers: ', sortedAllUsers);
   return (
     <tbody>
-      {table.map((row, r) => {
+      {sortedAllUsers.map((user, i) => {
         return (
           <tr
-            key={r}
+            key={i}
             style={{
               backgroundColor:
-                r % 2 === 0 ? 'var(--white)' : 'var(--lightest-gray)',
+                i % 2 === 0 ? 'var(--white)' : 'var(--lightest-gray)',
             }}
           >
-            {row.map((val, c) => {
-              return (
-                <td key={c}>
-                  <h3 className={c === 0 ? 'name' : c === 1 ? 'email' : ''}>
-                    {val}
-                  </h3>
-                </td>
-              );
-            })}
+            <td>
+              <h3 className='name'>{user.name}</h3>
+            </td>
+            <td>
+              <h3 className='email'>{user.email}</h3>
+            </td>
+            <td>
+              <h3>{user.dateRegistered.toLocaleDateString()}</h3>
+            </td>
           </tr>
         );
       })}
@@ -60,7 +90,14 @@ const Rows = () => {
   );
 };
 
+Rows.propTypes = {
+  sortedAllUsers: PropTypes.array.isRequired,
+};
+
 const UserList = () => {
+  const { sortedAllUsers, ...sortHandlers } = useUserList();
+  console.log('sortedAllusers: ', sortedAllUsers);
+
   return (
     <main>
       <NavButtons isAdmin={true} />
@@ -69,8 +106,8 @@ const UserList = () => {
         <h6>Registered Volunteers</h6>
         <div className='tableContainer'>
           <table>
-            <Header />
-            <Rows />
+            <Header sortHandlers={sortHandlers} />
+            <Rows sortedAllUsers={sortedAllUsers} />
           </table>
         </div>
       </div>
