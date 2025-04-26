@@ -58,6 +58,13 @@ div[style="color: red"] {
 .white-bg h3 {
   color: var(--purple1);
 }
+.white-bg .details {
+  overflow: hidden;
+}
+.white-bg .details:hover {
+  overflow-y: auto;
+}
+
 .white-bg .details::-webkit-scrollbar {
   width: 10px;
 }

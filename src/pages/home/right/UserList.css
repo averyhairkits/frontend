@@ -53,7 +53,10 @@ table button {
 th, td {
   box-sizing: border-box;
   padding: 13px;
-  overflow-x: scroll;
+  overflow-x: hidden;
+}
+th:hover, td:hover {
+  overflow-x: auto;
 }
 
 .headData {
