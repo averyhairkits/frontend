@@ -17,7 +17,10 @@ const Header = ({ sortHandlers }) => {
     <thead>
       <tr>
         {headings.map((heading) => (
-          <th key={heading}>
+          <th
+            key={heading}
+            className={heading === 'Email' ? 'emailColumn' : ''}
+          >
             <div className='headData '>
               <h3>{heading}</h3>
               <div>
