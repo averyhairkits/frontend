@@ -1,34 +1,14 @@
+import { useUser } from 'common/contexts/UserContext';
 import { useEffect, useMemo, useState } from 'react';
 
-const allUsers = [
-  {
-    id: 1,
-    name: 'Another Person',
-    email: 'alongemailcuzwhynot@gmail.com',
-    dateRegistered: new Date('2025-02-04'),
-  },
-  {
-    id: 2,
-    name: 'John Day',
-    email: 'johnday@yahoo.com',
-    dateRegistered: new Date('2025-02-01'),
-  },
-  {
-    id: 3,
-    name: 'Some Person',
-    email: 'example@ymail.com',
-    dateRegistered: new Date('2025-10-25'),
-  },
-  {
-    id: 4,
-    name: 'Melissa Met',
-    email: 'melissaaddress@mail.com',
-    dateRegistered: new Date('2025-08-14'),
-  },
-];
 
 export const useUserList = () => {
   const [sortType, setSortType] = useState('nameAsc');
+  const { allUsers, fetchAllUsers } = useUser();
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
 
   const sortedAllUsers = useMemo(() => {
     const sortedUsers = [...allUsers];
