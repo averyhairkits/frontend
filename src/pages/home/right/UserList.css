@@ -59,6 +59,10 @@ th:hover, td:hover {
   overflow-x: auto;
 }
 
+th.emailColumn {
+  width: 50%;
+}
+
 .headData {
   display: flex;
   flex-direction: row;
