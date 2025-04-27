@@ -18,9 +18,13 @@
   --red: #dc4444;
   --solid-blue: #6b95ff;
   --purple2: #b300ea;
+  --purple2-highlight: #c025f0;
   --sign-up-fill-1: #e5edff;
+  --sign-up-fill-1-highlight: #eff4ff;
   --sign-up-fill-2: #bfd1ff;
+  --sign-up-fill-2-highlight: #cddbff;
   --sign-up-fill-3: #99b6ff;
+  --sign-up-fill-3-highlight: #a3bdfe;
   --sign-up-fill-4: #739aff;
   --sign-up-fill-5: #4d7fff;
   --sign-up-fill-6: #2664ff;
@@ -32,6 +36,8 @@
 
 * {
   font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 main {
@@ -40,7 +46,7 @@ main {
 }
 
 h3 {
-  font-size: 19px;
+  font-size: 21px;
   font-weight: 600;
   margin: 0;
 }
@@ -62,6 +68,17 @@ h6 {
   color: var(--purple1);
 }
 
+.navButtonsContainer {
+  display: flex;
+  flex-direction: row-reverse;
+  position: fixed;
+  top: 17px;
+  right: 17px;
+  width: 149px;
+  height: 37px;
+  gap: 19px;
+}
+
 .navButton {
   background-color: var(--purple1);
   cursor: pointer;
@@ -71,12 +88,8 @@ h6 {
   border-radius: 5px;
   width: 37px;
   height: 37px;
-  position: fixed;
-  top: 17px;
-  right: 17px;
 }
 
 .navIcon {
   stroke: var(--white);
-  stroke-width: 3;
 }

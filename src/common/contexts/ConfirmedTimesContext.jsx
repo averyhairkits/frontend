@@ -1,0 +1,39 @@
+// After admin saves a confirmed event
+import React, { createContext, useContext, useEffect, useState } from 'react';
+
+import PropTypes from 'prop-types';
+
+const ConfirmedTimesContext = createContext();
+
+const ConfirmedTimesContextProvider = ({ children }) => {
+  const [confirmedTimes, setConfirmedTimes] = useState(new Set());
+
+  useEffect(() => {
+    console.log('Updated all confirmed times: ', confirmedTimes);
+  }, [confirmedTimes]);
+
+  return (
+    <ConfirmedTimesContext.Provider
+      value={{
+        confirmedTimes,
+        setConfirmedTimes,
+      }}
+    >
+      {children}
+    </ConfirmedTimesContext.Provider>
+  );
+};
+
+ConfirmedTimesContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+const useConfirmedTimesContext = () => {
+  return useContext(ConfirmedTimesContext);
+};
+
+export {
+  ConfirmedTimesContext,
+  ConfirmedTimesContextProvider,
+  useConfirmedTimesContext,
+};

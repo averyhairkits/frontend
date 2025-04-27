@@ -23,13 +23,12 @@
   font-size: 20px;
   font-weight: 600;
   text-align: center;
+  box-sizing: border-box;
+  padding: 0 8px 0 8px;
 }
 
 .numVolunteersButtonContent {
   stroke: var(--white);
-  width: 25px;
-  height: 25px;
-  stroke-width: 3;
 }
 
 .numVolunteersPopUp {
@@ -61,10 +60,16 @@
   font-size: 20px;
   font-weight: 600;
 }
+.numVolunteersOption:hover {
+  background-color: var(--lightest-gray);
+}
 
 .numVolunteersOption.selected {
   background-color: var(--purple1);
   color: var(--white);
+}
+.numVolunteersOption.selected:hover {
+  background-color: var(--purple1);
 }
 
 .calendarNavIcon.hidden {
@@ -78,7 +83,7 @@
   font-weight: 800;
   border: 0px;
   border-radius: 5px;
-  
+
   position: fixed;
   bottom: 17px;
   right: 27px;
@@ -93,16 +98,37 @@
   pointer-events: auto;
 }
 
-.selected {
+.selected1 {
+  background-color: var(--sign-up-fill-1);
+}
+.selected1:hover {
+  background-color: var(--sign-up-fill-1-highlight);
+}
+
+.selected2 {
+  background-color: var(--sign-up-fill-2);
+}
+.selected2:hover {
+  background-color: var(--sign-up-fill-2-highlight);
+}
+
+.selected3 {
   background-color: var(--sign-up-fill-3);
 }
+.selected3:hover {
+  background-color: var(--sign-up-fill-3-highlight);
+}
+
+
 
 .confirmed {
   background-color: var(--purple2);
+}
+.confirmed:hover {
+  background-color: var(--purple2-highlight);
 }
 
 .full {
   background-color: var(--light-gray);
   pointer-events: none;
 }
-
