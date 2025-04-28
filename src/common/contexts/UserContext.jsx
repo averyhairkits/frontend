@@ -17,6 +17,7 @@ UserProvider.propTypes = {
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [allUsers, setAllUsers] = useState([]);
 
   const buildUrl = (endpoint) =>
     `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
@@ -158,6 +159,24 @@ export function UserProvider({ children }) {
     }
   };
 
+  const fetchAllUsers = async () => {
+    try {
+      const res = await fetch(buildUrl('/api/get_users'));
+      const data = await res.json();
+      const formatted = data.map(user => ({
+        id: user.id,
+        name: `${user.firstname} ${user.lastname}`,
+        email: user.email,
+        dateRegistered: new Date(user.created_at),
+      }));
+      console.log('✅ All users fetched:', formatted);
+      setAllUsers(formatted);
+    } catch (err) {
+      console.error('Error fetching all users:', err);
+    }
+  };
+  
+
   useEffect(() => {
     checkAuth();
   }, []);
@@ -172,6 +191,8 @@ export function UserProvider({ children }) {
     googleAuth,
     requestPasswordReset,
     updatePassword,
+    allUsers,
+    fetchAllUsers,
   };
 
   return (

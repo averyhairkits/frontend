@@ -10,6 +10,8 @@ import { ReactComponent as Map } from './map.svg';
 import { ReactComponent as Next } from './next.svg';
 import { ReactComponent as Noon } from './noon.svg';
 import { ReactComponent as Pen } from './pen.svg';
+import { ReactComponent as SortDown } from './sortDown.svg';
+import { ReactComponent as SortUp } from './sortUp.svg';
 import { ReactComponent as Sunrise } from './sunrise.svg';
 import { ReactComponent as Sunset } from './sunset.svg';
 import { ReactComponent as Up } from './up.svg';
@@ -42,4 +44,6 @@ export const Icon = {
   Clock,
   Map,
   Pen,
+  SortUp,
+  SortDown,
 };

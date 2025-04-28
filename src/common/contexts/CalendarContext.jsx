@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
-
 import PropTypes from 'prop-types';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 function setStartOfWeek(date) {
   if (date.getDay() === 0) {
@@ -23,7 +22,8 @@ const weekRange = (date) => {
   return weekDates;
 };
 
-const getGridItemTimes = (weekdates) => {
+
+const getGridItemTimes = (weekdates, slots = []) => {
   const gridItemTimes = Array.from({ length: 140 });
 
   for (let i = 0; i < 140; i++) {
@@ -38,12 +38,14 @@ const getGridItemTimes = (weekdates) => {
     );
     const end = new Date(start.getTime() + 30 * 60 * 1000); // add 30 minutes after start
 
+    const matchingSlot = slots.find(
+      (slot) => new Date(slot.slot_time).getTime() === start.getTime()
+    );
+
     gridItemTimes[i] = {
       start: start,
       end: end,
-      size: Math.floor(Math.random() * 7),
-      // ^ random int from 0 - 6 for now until we
-      // can fetch actual number from backend
+      size: matchingSlot ? matchingSlot.current_size : 0,
     };
   }
 
@@ -61,7 +63,35 @@ const CalendarContextProvider = ({ children }) => {
   setStartOfWeek(thisWeeksStart);
   const [currentDate, setCurrentDate] = useState(thisWeeksStart);
   const weekdates = weekRange(currentDate);
-  const gridItemTimes = getGridItemTimes(weekdates);
+  const [gridItemTimes, setGridItemTimes] = useState([]);
+  const [slots, setSlots] = useState([]);
+
+
+  useEffect(() => {
+    const fetchSlots = async () => {
+      try {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get_slots`);
+        const data = await res.json();
+
+        const flatSlots = data.weeks.flatMap((week) =>
+          week.slots.map((slot) => ({
+            ...slot,
+            slot_time: new Date(slot.slot_time),
+          }))
+        );
+        setSlots(flatSlots);
+
+        const computedGrid = getGridItemTimes(weekdates, flatSlots);
+        setGridItemTimes(computedGrid);
+        console.log('✅ Slots fetched and grid set:', computedGrid);
+      } catch (err) {
+        console.error('Error fetching slots:', err);
+      }
+    };
+
+    fetchSlots();
+  }, [currentDate]);
+
 
   return (
     <CalendarContext.Provider

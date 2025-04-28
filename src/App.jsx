@@ -1,17 +1,21 @@
 import React from 'react';
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 
 import {
   PrivateRoute,
   PublicOnlyRoute,
 } from 'common/components/routes/ProtectedRoutes';
+import { CalendarContextProvider } from 'common/contexts/CalendarContext';
+import { ConfirmedTimesContextProvider } from 'common/contexts/ConfirmedTimesContext';
+import { SavedTimesContextProvider } from 'common/contexts/SavedTimesContext';
 import { UserProvider } from 'common/contexts/UserContext';
 import AuthCallback from 'pages/account/AuthCallback';
 import RequestPasswordReset from 'pages/account/RequestPasswordReset';
 import ResetPassword from 'pages/account/ResetPassword';
 import SignUp from 'pages/account/SignUpAndLogin';
-import VolunteerHome from 'pages/home/Home';
+import Home from 'pages/home/Home';
+import UserList from 'pages/home/right/UserList';
 import NotFound from 'pages/not-found/NotFound';
 
 import './App.css';
@@ -24,13 +28,21 @@ export default function App() {
           <Route element={<PrivateRoute />}></Route>
           <Route path='/' element={<PublicOnlyRoute />}>
             <Route
-              path='volunteer-home'
-              element={<VolunteerHome isAdmin={false} />}
-            />
-            <Route
-              path='admin-home'
-              element={<VolunteerHome isAdmin={true} />}
-            />
+              element={
+                <CalendarContextProvider>
+                  <SavedTimesContextProvider>
+                    <ConfirmedTimesContextProvider>
+                      <Outlet />
+                    </ConfirmedTimesContextProvider>
+                  </SavedTimesContextProvider>
+                </CalendarContextProvider>
+              }
+            >
+              <Route path='volunteer-home' element={<Home isAdmin={false} />} />
+
+              <Route path='admin-home' element={<Home isAdmin={true} />} />
+              <Route path='user-list' element={<UserList />} />
+            </Route>
             <Route path='/' element={<SignUp />} />
             <Route path='forgot-password' element={<RequestPasswordReset />} />
           </Route>
