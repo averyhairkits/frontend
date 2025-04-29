@@ -55,7 +55,7 @@ const getGridItemTimes = (weekdates, slots = []) => {
 
 const CalendarContext = createContext();
 
-const CalendarContextProvider = ({ children }) => {
+const CalendarContextProvider = ({ children, mode }) => {
   // todaysDate and thisWeeksStart only change with the time in real life
   const todaysDate = new Date('2025-02-10T00:00:00'); // must always be a time that starts at T00:00:00
   const thisWeeksStart = new Date(todaysDate);
@@ -69,23 +69,30 @@ const CalendarContextProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchSlots = async () => {
-      try {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get_slots`);
-        const data = await res.json();
+      if (mode === 'admin') {
+        try {
+          const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get_slots`);
+          const data = await res.json();
 
-        const flatSlots = data.weeks.flatMap((week) =>
-          week.slots.map((slot) => ({
-            ...slot,
-            slot_time: new Date(slot.slot_time),
-          }))
-        );
-        setSlots(flatSlots);
+          const flatSlots = data.weeks.flatMap((week) =>
+            week.slots.map((slot) => ({
+              ...slot,
+              slot_time: new Date(slot.slot_time),
+            }))
+          );
+          setSlots(flatSlots);
 
-        const computedGrid = getGridItemTimes(weekdates, flatSlots);
+          const computedGrid = getGridItemTimes(weekdates, slots);
+          setGridItemTimes(computedGrid);
+          console.log('admin view lots fetched and grid set:', computedGrid);
+        } catch (err) {
+          console.error('Error fetching slots:', err);
+        }
+      }
+      else {
+        const computedGrid = getGridItemTimes(weekdates, []); // no slots for volunteer's calendars
         setGridItemTimes(computedGrid);
-        console.log('✅ Slots fetched and grid set:', computedGrid);
-      } catch (err) {
-        console.error('Error fetching slots:', err);
+        console.log('admin view lots fetched and grid set:', computedGrid);
       }
     };
 
@@ -111,6 +118,7 @@ const CalendarContextProvider = ({ children }) => {
 
 CalendarContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
+  mode: PropTypes.oneOf(['admin', 'volunteer']).isRequired,
 };
 
 const useCalendarContext = () => {

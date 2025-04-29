@@ -23,6 +23,11 @@ export const VolunteerCalendarGrid = ({
       style={{ overflow: 'hidden' }} // differ from admin calendarGrid
     >
       {gridItems.map((_, i) => {
+        if (!gridItemTimes[i] || !gridItemTimes[i].start) {
+          console.log("gridItemsTimes not found");
+          return false;
+        }
+
         const isConfirmedSession = Array.from(confirmedTimes).some((d) => {
           if (d.end.getTime() === gridItemTimes[i].start.getTime()) {
             hasStarted = false;
