@@ -22,6 +22,7 @@ export const VolunteerCalendarGrid = ({
       onMouseLeave={handleMouseUp}
       style={{ overflow: 'hidden' }} // differ from admin calendarGrid
     >
+
       {gridItems.map((_, i) => {
         if (!gridItemTimes[i] || !gridItemTimes[i].start) {
           console.log("gridItemsTimes not found");

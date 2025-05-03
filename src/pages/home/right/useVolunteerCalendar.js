@@ -3,8 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
+import { useUser } from 'common/contexts/UserContext';
 
 export const useVolunteerCalendar = ({ numVolunteers }) => {
+  const buildUrl = (endpoint) =>
+    `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
+
   const { savedTimes, setSavedTimes, setCanSave, justSaved, setJustSaved } =
     useSavedTimesContext(); // contains all times
   const [prevSelectedCells, setPrevSelectedCells] = useState(
@@ -14,6 +18,8 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
   const { weekdates, gridItemTimes } = useCalendarContext();
 
   const [selectedCells, setSelectedCells] = useState(new Map()); // contains one week
+  
+  const { user } = useUser();
 
   // check if availability is different compared to last save for
   // toggling save button clickability
@@ -58,13 +64,48 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     isDragging.current = false;
   };
 
-  // clicking save button
-  const handleSave = () => {
+  const handleSave = async () => {
     console.log('Saved');
     setJustSaved(true);
     setCanSave(false);
-    setPrevSelectedCells(new Map(selectedCells)); // saved cells are now fixed until next save
+    setPrevSelectedCells(new Set(selectedCells)); // saved cells are now fixed until next save
+
+    //convert selected cells to ISO timestamps
+    const selectedTimestamps = Array.from(selectedCells).map((index) => {
+      const item = gridItemTimes[index];
+      if (!item || !item.start) return null;
+      return item.start.toISOString();
+    }).filter(Boolean);
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(buildUrl('/api/new_request'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          reqTimeStampList: selectedTimestamps,
+          request_size: numVolunteers,
+          user,
+        }),
+      });
+  
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('Request failed:', error);
+        return;
+      }
+  
+      const result = await response.json();
+      console.log('Successfully submitted slot request:', result);
+    } catch (error) {
+      console.error('Network error:', error);
+    }
+
   };
+
 
   // keep checking if current selected cells are different from last saved cells
   useEffect(() => {
@@ -76,11 +117,14 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     const newlySavedTimes = new Set();
     // add in times that have been saved for current week
     prevSelectedCells.forEach((numPeople, index) => {
+      const item = gridItemTimes[index];
+      if (!item || !item.start) return;
       newlySavedTimes.add({
-        time: new Date(gridItemTimes[index].start),
+        time: new Date(item.start),
         numPeople: numPeople,
       });
     });
+    
     // keep savedTimes the same, but remove all times that are in the current week, and add newlySavedTimes instead
     const filteredOldTimes = Array.from(savedTimes).filter(
       (savedDate) =>

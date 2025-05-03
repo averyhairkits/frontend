@@ -82,7 +82,7 @@ const CalendarContextProvider = ({ children, mode }) => {
           );
           setSlots(flatSlots);
 
-          const computedGrid = getGridItemTimes(weekdates, slots);
+          const computedGrid = getGridItemTimes(weekdates, flatSlots);
           setGridItemTimes(computedGrid);
           console.log('admin view lots fetched and grid set:', computedGrid);
         } catch (err) {
