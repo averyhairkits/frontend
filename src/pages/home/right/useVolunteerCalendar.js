@@ -68,14 +68,15 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     console.log('Saved');
     setJustSaved(true);
     setCanSave(false);
-    setPrevSelectedCells(new Set(selectedCells)); // saved cells are now fixed until next save
+    setPrevSelectedCells(new Map(selectedCells)); // saved cells are now fixed until next save
+  
 
     //convert selected cells to ISO timestamps
-    const selectedTimestamps = Array.from(selectedCells).map((index) => {
+    const selectedTimestamps = Array.from(selectedCells.keys()).map((index) => {
       const item = gridItemTimes[index];
-      if (!item || !item.start) return null;
-      return item.start.toISOString();
+      return item?.start?.toISOString(); // safely get ISO string
     }).filter(Boolean);
+
 
     try {
       const token = localStorage.getItem('token');
@@ -88,7 +89,7 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
         body: JSON.stringify({
           reqTimeStampList: selectedTimestamps,
           request_size: numVolunteers,
-          user,
+          user_id: user.id,
         }),
       });
   
@@ -97,7 +98,6 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
         console.error('Request failed:', error);
         return;
       }
-  
       const result = await response.json();
       console.log('Successfully submitted slot request:', result);
     } catch (error) {

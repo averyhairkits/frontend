@@ -40,7 +40,7 @@ const getGridItemTimes = (weekdates, slots = []) => {
 
     const matchingSlot = slots.find(
       (slot) => new Date(slot.slot_time).getTime() === start.getTime()
-    );
+    ); //searching for matching slot in slots
 
     gridItemTimes[i] = {
       start: start,
@@ -57,9 +57,8 @@ const CalendarContext = createContext();
 
 const CalendarContextProvider = ({ children, mode }) => {
   // todaysDate and thisWeeksStart only change with the time in real life
-  //OLD CODE const todaysDate = new Date('2025-05-10T00:00:00'); // must always be a time that starts at T00:00:00
   const todaysDate = new Date();
-  todaysDate.setHours(0, 0, 0, 0);
+  todaysDate.setHours(0, 0, 0, 0); // must always be a time that starts at T00:00:00
   const thisWeeksStart = new Date(todaysDate);
 
   setStartOfWeek(thisWeeksStart);
@@ -67,7 +66,6 @@ const CalendarContextProvider = ({ children, mode }) => {
   const weekdates = weekRange(currentDate);
   const [gridItemTimes, setGridItemTimes] = useState([]);
   const [slots, setSlots] = useState([]);
-
 
   useEffect(() => {
     const fetchSlots = async () => {

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 const SavedTimesContext = createContext();
 
 const SavedTimesContextProvider = ({ children }) => {
-  const [savedTimes, setSavedTimes] = useState(new Set());
+  const [savedTimes, setSavedTimes] = useState(new Map());
   const [canSave, setCanSave] = useState(false);
 
   // justSaved is used to determine whether to activate the save
