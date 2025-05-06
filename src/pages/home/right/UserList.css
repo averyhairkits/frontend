@@ -60,7 +60,10 @@ th:hover, td:hover {
 }
 
 th.emailColumn {
-  width: 50%;
+  width: 40%;
+}
+th.adminColumn {
+  width: 10%;
 }
 
 .headData {
@@ -70,12 +73,13 @@ th.emailColumn {
   justify-content: space-between;
 }
 
-.grantAdminButton {
+.admin {
   display: flex;
-  text-align:center;
-  padding: 10px 15px;
   justify-content: center;
-  color: white;
-  background-color: var(--purple1);
-  border-radius: 12px;
+}
+
+input[type="checkbox"] {
+  width: 25%;
+  aspect-ratio: 1 / 1;
+  accent-color: var(--purple1);
 }

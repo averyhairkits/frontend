@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+
+import PropTypes from 'prop-types';
 
 function setStartOfWeek(date) {
   if (date.getDay() === 0) {
@@ -21,7 +22,6 @@ const weekRange = (date) => {
   }
   return weekDates;
 };
-
 
 const getGridItemTimes = (weekdates, slots = []) => {
   const gridItemTimes = Array.from({ length: 140 });
@@ -71,7 +71,9 @@ const CalendarContextProvider = ({ children, mode }) => {
     const fetchSlots = async () => {
       if (mode === 'admin') {
         try {
-          const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get_slots`);
+          const res = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/api/get_slots`
+          );
           const data = await res.json();
 
           const flatSlots = data.weeks.flatMap((week) =>
@@ -88,8 +90,7 @@ const CalendarContextProvider = ({ children, mode }) => {
         } catch (err) {
           console.error('Error fetching slots:', err);
         }
-      }
-      else {
+      } else {
         const computedGrid = getGridItemTimes(weekdates, []); // no slots for volunteer's calendars
         setGridItemTimes(computedGrid);
         console.log('admin view lots fetched and grid set:', computedGrid);
@@ -98,7 +99,6 @@ const CalendarContextProvider = ({ children, mode }) => {
 
     fetchSlots();
   }, [currentDate]);
-
 
   return (
     <CalendarContext.Provider

@@ -11,7 +11,7 @@ import useUserList from 'pages/home/right/useUserList';
 import './UserList.css';
 
 const Header = ({ sortHandlers }) => {
-  const headings = ['Name', 'Email', 'Created At', ""];
+  const headings = ['Name', 'Email', 'Created At', 'Admin'];
 
   return (
     <thead>
@@ -19,35 +19,43 @@ const Header = ({ sortHandlers }) => {
         {headings.map((heading) => (
           <th
             key={heading}
-            className={heading === 'Email' ? 'emailColumn' : ''}
+            className={
+              heading === 'Email'
+                ? 'emailColumn'
+                : heading === 'Admin'
+                  ? 'adminColumn'
+                  : ''
+            }
           >
-          {heading !== '' && (
             <div className='headData '>
               <h3>{heading}</h3>
-              <div>
-                <button
-                  onClick={() => {
-                    if (heading === 'Name') sortHandlers.handleNameAsc();
-                    else if (heading === 'Email') sortHandlers.handleEmailAsc();
-                    else if (heading === 'Date Registered')
-                      sortHandlers.handleDateRegisteredAsc();
-                  }}
-                >
-                  <Icon.SortUp />
-                </button>
-                <button
-                  onClick={() => {
-                    if (heading === 'Name') sortHandlers.handleNameDsc();
-                    else if (heading === 'Email') sortHandlers.handleEmailDsc();
-                    else if (heading === 'Date Registered')
-                      sortHandlers.handleDateRegisteredDsc();
-                  }}
-                >
-                  <Icon.SortDown />
-                </button>
-              </div>
+              {heading !== 'Admin' && (
+                <div>
+                  <button
+                    onClick={() => {
+                      if (heading === 'Name') sortHandlers.handleNameAsc();
+                      else if (heading === 'Email')
+                        sortHandlers.handleEmailAsc();
+                      else if (heading === 'Date Registered')
+                        sortHandlers.handleDateRegisteredAsc();
+                    }}
+                  >
+                    <Icon.SortUp />
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (heading === 'Name') sortHandlers.handleNameDsc();
+                      else if (heading === 'Email')
+                        sortHandlers.handleEmailDsc();
+                      else if (heading === 'Date Registered')
+                        sortHandlers.handleDateRegisteredDsc();
+                    }}
+                  >
+                    <Icon.SortDown />
+                  </button>
+                </div>
+              )}
             </div>
-            )}
           </th>
         ))}
       </tr>
@@ -80,11 +88,11 @@ const Rows = ({ sortedAllUsers }) => {
           body: JSON.stringify({ email: user.email }),
         }
       );
-  
+
       if (!response.ok) {
         throw new Error('Failed to grant admin');
       }
-  
+
       alert(`Not authorized`);
     } catch (error) {
       console.error(error);
@@ -112,10 +120,8 @@ const Rows = ({ sortedAllUsers }) => {
             <td>
               <h3>{new Date(user.dateRegistered).toLocaleDateString()}</h3>
             </td>
-            <td>
-              <button className='grantAdminButton' onClick={() => handleGrant(user)}>
-                grant Admin
-              </button>
+            <td className='admin'>
+              <input onClick={() => handleGrant(user)} type='checkbox' />
             </td>
           </tr>
         );
