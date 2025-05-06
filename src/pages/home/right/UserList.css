@@ -69,3 +69,13 @@ th.emailColumn {
   align-items: center;
   justify-content: space-between;
 }
+
+.grantAdminButton {
+  display: flex;
+  text-align:center;
+  padding: 10px 15px;
+  justify-content: center;
+  color: white;
+  background-color: var(--purple1);
+  border-radius: 12px;
+}

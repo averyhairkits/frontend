@@ -11,7 +11,7 @@ import useUserList from 'pages/home/right/useUserList';
 import './UserList.css';
 
 const Header = ({ sortHandlers }) => {
-  const headings = ['Name', 'Email', 'Date Registered'];
+  const headings = ['Name', 'Email', 'Created At', ""];
 
   return (
     <thead>
@@ -21,6 +21,7 @@ const Header = ({ sortHandlers }) => {
             key={heading}
             className={heading === 'Email' ? 'emailColumn' : ''}
           >
+          {heading !== '' && (
             <div className='headData '>
               <h3>{heading}</h3>
               <div>
@@ -46,6 +47,7 @@ const Header = ({ sortHandlers }) => {
                 </button>
               </div>
             </div>
+            )}
           </th>
         ))}
       </tr>
@@ -66,6 +68,30 @@ Header.propTypes = {
 
 const Rows = ({ sortedAllUsers }) => {
   console.log('sortedAllusers: ', sortedAllUsers);
+  const handleGrant = async (user) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/auth/grant_admin`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: user.email }),
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('Failed to grant admin');
+      }
+  
+      alert(`Not authorized`);
+    } catch (error) {
+      console.error(error);
+      alert(`Error: ${error.message}`);
+    }
+  };
+
   return (
     <tbody>
       {sortedAllUsers.map((user, i) => {
@@ -84,7 +110,12 @@ const Rows = ({ sortedAllUsers }) => {
               <h3 className='email'>{user.email}</h3>
             </td>
             <td>
-              <h3>{user.dateRegistered.toLocaleDateString()}</h3>
+              <h3>{new Date(user.dateRegistered).toLocaleDateString()}</h3>
+            </td>
+            <td>
+              <button className='grantAdminButton' onClick={() => handleGrant(user)}>
+                grant Admin
+              </button>
             </td>
           </tr>
         );
@@ -100,7 +131,6 @@ Rows.propTypes = {
 const UserList = () => {
   const { sortedAllUsers, ...sortHandlers } = useUserList();
   console.log('sortedAllusers: ', sortedAllUsers);
-
   return (
     <main>
       <NavButtons isAdmin={true} />
