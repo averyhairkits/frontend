@@ -87,7 +87,8 @@ export default function SignUp() {
 
     try {
       await login(formState.email, formState.password);
-      navigate('/', { replace: true });
+      navigate('/volunteer-home');
+      //navigate('/', { replace: true });
     } catch (error) {
       setError(error.message || 'Failed to login. Please try again.');
     } finally {
