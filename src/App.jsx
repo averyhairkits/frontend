@@ -32,9 +32,9 @@ export default function App() {
           
 
           {/* LATER MAKE PRIVATE TEMPORARILY MADE ALL PATHS PUBLIC */}
-          <Route path='/' element={<PrivateRoute />}> </Route>
+          {/* <Route path='/' element={<PrivateRoute />}> </Route> */}
 
-          <Route path='/'>
+          <Route path='/' element={<PrivateRoute />}> </Route>
             <Route element={
                 <CalendarContextProvider mode="volunteer">
                   <SavedTimesContextProvider>
