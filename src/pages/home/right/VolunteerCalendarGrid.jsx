@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import confirmedTimes from 'pages/home/right/confirmedTimes';
-import fullTimes from 'pages/home/right/fullTimes';
 
 export const VolunteerCalendarGrid = ({
   handleMouseDown,
@@ -44,20 +43,24 @@ export const VolunteerCalendarGrid = ({
           return false;
         });
 
-        const isFull = fullTimes.some(
-          (d) => d.getTime() === gridItemTimes[i].start.getTime()
-        );
+        // const isFull = fullTimes.some(
+        //   (d) => d.getTime() === gridItemTimes[i].start.getTime()
+        // );
+
+        const isOverbooked = gridItemTimes[i]?.isOverbooked;
 
         // remains constant regardless of selections
-        const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'} ${isFull ? 'full' : ''}`;
+        // const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'} ${isFull ? 'full' : ''}`;
+
+        const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'} 
+        ${isOverbooked ? 'overbooked' : ''}`.trim();
 
         return (
           <div
             key={i}
-            // only shows confirmed session if a confirmed cell is selected
             className={`${itemType} ${selectedCells.has(i) && isConfirmedSession ? 'confirmed' : selectedCells.has(i) ? `selected${selectedCells.get(i)}` : ''}`}
-            onMouseDown={() => handleMouseDown(i)}
-            onMouseEnter={() => handleMouseEnter(i)}
+            onMouseDown={() => !isOverbooked && handleMouseDown(i)}
+            onMouseEnter={() => !isOverbooked && handleMouseEnter(i)}
           ></div>
         );
       })}
@@ -70,7 +73,7 @@ VolunteerCalendarGrid.propTypes = {
   handleMouseEnter: PropTypes.func.isRequired,
   handleMouseUp: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
-  selectedCells: PropTypes.instanceOf(Set).isRequired,
+  selectedCells: PropTypes.instanceOf(Map).isRequired,
   gridItemTimes: PropTypes.array.isRequired,
   numVolunteers: PropTypes.number.isRequired,
 };
