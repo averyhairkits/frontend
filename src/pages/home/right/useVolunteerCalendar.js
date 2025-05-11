@@ -106,6 +106,7 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     } catch (error) {
       console.error('Network error:', error);
     }
+  };
 
 
   // keep checking if current selected cells are different from last saved cells
