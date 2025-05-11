@@ -17,6 +17,7 @@ import SignUp from 'pages/account/SignUpAndLogin';
 import Home from 'pages/home/Home';
 import UserList from 'pages/home/right/UserList';
 import NotFound from 'pages/not-found/NotFound';
+import RoleRedirect from './RoleRedirect';
 
 import './App.css';
 
@@ -27,6 +28,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<PublicOnlyRoute />}>
             <Route path='' element={<SignUp />} />
+            <Route path='login' element={<SignUp />} />
             <Route path='forgot-password' element={<RequestPasswordReset />} />
           </Route>
 
@@ -35,34 +37,35 @@ export default function App() {
 
 
           <Route path='/' element={<PrivateRoute />}>
-            <Route element={
-                <CalendarContextProvider mode="volunteer">
-                  <SavedTimesContextProvider>
-                    <ConfirmedTimesContextProvider>
-                      <Outlet />
-                    </ConfirmedTimesContextProvider>
-                  </SavedTimesContextProvider>
-                </CalendarContextProvider>
-              }
-            >
-              <Route path='volunteer-home' element={<Home isAdmin={false} />} />
-            </Route>
+            <Route index element={<RoleRedirect />} />
+              <Route element={
+                  <CalendarContextProvider mode="volunteer">
+                    <SavedTimesContextProvider>
+                      <ConfirmedTimesContextProvider>
+                        <Outlet />
+                      </ConfirmedTimesContextProvider>
+                    </SavedTimesContextProvider>
+                  </CalendarContextProvider>
+                }
+              >
+                <Route path='volunteer-home' element={<Home isAdmin={false} />} />
+              </Route>
 
-            <Route
-              element={
-                <CalendarContextProvider mode='admin'>
-                  <SavedTimesContextProvider>
-                    <ConfirmedTimesContextProvider>
-                      <Outlet />
-                    </ConfirmedTimesContextProvider>
-                  </SavedTimesContextProvider>
-                </CalendarContextProvider>
-              }
-            >
-              <Route path='admin-home' element={<Home isAdmin={true} />} />
-              <Route path='user-list' element={<UserList />} />
+              <Route
+                element={
+                  <CalendarContextProvider mode='admin'>
+                    <SavedTimesContextProvider>
+                      <ConfirmedTimesContextProvider>
+                        <Outlet />
+                      </ConfirmedTimesContextProvider>
+                    </SavedTimesContextProvider>
+                  </CalendarContextProvider>
+                }
+              >
+                <Route path='admin-home' element={<Home isAdmin={true} />} />
+                <Route path='user-list' element={<UserList />} />
+              </Route>
             </Route>
-          </Route>
 
           <Route path='*' element={<NotFound />} />
         </Routes>
