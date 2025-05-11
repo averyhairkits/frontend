@@ -33,15 +33,10 @@ export default function App() {
           <Route path='auth/callback' element={<AuthCallback />} />
           <Route path='auth/reset-password' element={<ResetPassword />} />
 
-          {/* LATER MAKE PRIVATE TEMPORARILY MADE ALL PATHS PUBLIC */}
-          <Route path='/' element={<PrivateRoute />}>
-            {' '}
-          </Route>
 
-          <Route path='/'>
-            <Route
-              element={
-                <CalendarContextProvider mode='volunteer'>
+          <Route path='/' element={<PrivateRoute />}>
+            <Route element={
+                <CalendarContextProvider mode="volunteer">
                   <SavedTimesContextProvider>
                     <ConfirmedTimesContextProvider>
                       <Outlet />
