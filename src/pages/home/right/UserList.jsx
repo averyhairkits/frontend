@@ -11,7 +11,7 @@ import useUserList from 'pages/home/right/useUserList';
 import './UserList.css';
 
 const Header = ({ sortHandlers }) => {
-  const headings = ['Name', 'Email', 'Date Registered'];
+  const headings = ['Name', 'Email', 'Created At', 'Admin'];
 
   return (
     <thead>
@@ -19,32 +19,42 @@ const Header = ({ sortHandlers }) => {
         {headings.map((heading) => (
           <th
             key={heading}
-            className={heading === 'Email' ? 'emailColumn' : ''}
+            className={
+              heading === 'Email'
+                ? 'emailColumn'
+                : heading === 'Admin'
+                  ? 'adminColumn'
+                  : ''
+            }
           >
             <div className='headData '>
               <h3>{heading}</h3>
-              <div>
-                <button
-                  onClick={() => {
-                    if (heading === 'Name') sortHandlers.handleNameAsc();
-                    else if (heading === 'Email') sortHandlers.handleEmailAsc();
-                    else if (heading === 'Date Registered')
-                      sortHandlers.handleDateRegisteredAsc();
-                  }}
-                >
-                  <Icon.SortUp />
-                </button>
-                <button
-                  onClick={() => {
-                    if (heading === 'Name') sortHandlers.handleNameDsc();
-                    else if (heading === 'Email') sortHandlers.handleEmailDsc();
-                    else if (heading === 'Date Registered')
-                      sortHandlers.handleDateRegisteredDsc();
-                  }}
-                >
-                  <Icon.SortDown />
-                </button>
-              </div>
+              {heading !== 'Admin' && (
+                <div>
+                  <button
+                    onClick={() => {
+                      if (heading === 'Name') sortHandlers.handleNameAsc();
+                      else if (heading === 'Email')
+                        sortHandlers.handleEmailAsc();
+                      else if (heading === 'Date Registered')
+                        sortHandlers.handleDateRegisteredAsc();
+                    }}
+                  >
+                    <Icon.SortUp />
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (heading === 'Name') sortHandlers.handleNameDsc();
+                      else if (heading === 'Email')
+                        sortHandlers.handleEmailDsc();
+                      else if (heading === 'Date Registered')
+                        sortHandlers.handleDateRegisteredDsc();
+                    }}
+                  >
+                    <Icon.SortDown />
+                  </button>
+                </div>
+              )}
             </div>
           </th>
         ))}
@@ -66,6 +76,30 @@ Header.propTypes = {
 
 const Rows = ({ sortedAllUsers }) => {
   console.log('sortedAllusers: ', sortedAllUsers);
+  const handleGrant = async (user) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/auth/grant_admin`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: user.email }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to grant admin');
+      }
+
+      alert(`Not authorized`);
+    } catch (error) {
+      console.error(error);
+      alert(`Error: ${error.message}`);
+    }
+  };
+
   return (
     <tbody>
       {sortedAllUsers.map((user, i) => {
@@ -84,7 +118,10 @@ const Rows = ({ sortedAllUsers }) => {
               <h3 className='email'>{user.email}</h3>
             </td>
             <td>
-              <h3>{user.dateRegistered.toLocaleDateString()}</h3>
+              <h3>{new Date(user.dateRegistered).toLocaleDateString()}</h3>
+            </td>
+            <td className='admin'>
+              <input onClick={() => handleGrant(user)} type='checkbox' />
             </td>
           </tr>
         );
@@ -100,7 +137,6 @@ Rows.propTypes = {
 const UserList = () => {
   const { sortedAllUsers, ...sortHandlers } = useUserList();
   console.log('sortedAllusers: ', sortedAllUsers);
-
   return (
     <main>
       <NavButtons isAdmin={true} />

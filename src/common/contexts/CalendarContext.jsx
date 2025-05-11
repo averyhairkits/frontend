@@ -1,6 +1,7 @@
-import PropTypes from 'prop-types';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useUser } from './UserContext';
+
+import PropTypes from 'prop-types';
 
 function setStartOfWeek(date) {
   if (date.getDay() === 0) {
@@ -22,7 +23,6 @@ const weekRange = (date) => {
   }
   return weekDates;
 };
-
 
 const getGridItemTimes = (weekdates, overbookedTimes, slots = []) => {
   const gridItemTimes = Array.from({ length: 140 });
@@ -71,17 +71,13 @@ const CalendarContextProvider = ({ children, mode }) => {
   const [slots, setSlots] = useState([]);
 
   const { user } = useUser();
-  console.log("USER IS HERE", user);
 
   useEffect(() => {
     const fetchSlots = async () => {
-      console.log("HERE IS THE USER STUFF,", user);
-      console.log("mode is", mode);
       if (!user?.id) return;
 
       if (mode === 'admin') {
         try {
-          console.log("running admin calendar now");
           const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get_slots`);
           const data = await res.json();
 
@@ -132,7 +128,6 @@ const CalendarContextProvider = ({ children, mode }) => {
 
     fetchSlots();
   }, [currentDate]);
-
 
   return (
     <CalendarContext.Provider

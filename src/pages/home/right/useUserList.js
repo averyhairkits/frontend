@@ -1,6 +1,6 @@
-import { useUser } from 'common/contexts/UserContext';
 import { useEffect, useMemo, useState } from 'react';
 
+import { useUser } from 'common/contexts/UserContext';
 
 export const useUserList = () => {
   const [sortType, setSortType] = useState('nameAsc');

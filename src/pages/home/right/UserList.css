@@ -60,7 +60,10 @@ th:hover, td:hover {
 }
 
 th.emailColumn {
-  width: 50%;
+  width: 40%;
+}
+th.adminColumn {
+  width: 10%;
 }
 
 .headData {
@@ -68,4 +71,15 @@ th.emailColumn {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+
+.admin {
+  display: flex;
+  justify-content: center;
+}
+
+input[type="checkbox"] {
+  width: 25%;
+  aspect-ratio: 1 / 1;
+  accent-color: var(--purple1);
 }
