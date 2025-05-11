@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+
+import PropTypes from 'prop-types';
 
 function setStartOfWeek(date) {
   if (date.getDay() === 0) {
@@ -22,7 +23,6 @@ const weekRange = (date) => {
   return weekDates;
 };
 
-
 const getGridItemTimes = (weekdates, slots = []) => {
   const gridItemTimes = Array.from({ length: 140 });
 
@@ -40,7 +40,7 @@ const getGridItemTimes = (weekdates, slots = []) => {
 
     const matchingSlot = slots.find(
       (slot) => new Date(slot.slot_time).getTime() === start.getTime()
-    );
+    ); //searching for matching slot in slots
 
     gridItemTimes[i] = {
       start: start,
@@ -55,9 +55,10 @@ const getGridItemTimes = (weekdates, slots = []) => {
 
 const CalendarContext = createContext();
 
-const CalendarContextProvider = ({ children }) => {
+const CalendarContextProvider = ({ children, mode }) => {
   // todaysDate and thisWeeksStart only change with the time in real life
-  const todaysDate = new Date('2025-02-10T00:00:00'); // must always be a time that starts at T00:00:00
+  const todaysDate = new Date();
+  todaysDate.setHours(0, 0, 0, 0); // must always be a time that starts at T00:00:00
   const thisWeeksStart = new Date(todaysDate);
 
   setStartOfWeek(thisWeeksStart);
@@ -66,32 +67,38 @@ const CalendarContextProvider = ({ children }) => {
   const [gridItemTimes, setGridItemTimes] = useState([]);
   const [slots, setSlots] = useState([]);
 
-
   useEffect(() => {
     const fetchSlots = async () => {
-      try {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get_slots`);
-        const data = await res.json();
+      if (mode === 'admin') {
+        try {
+          const res = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/api/get_slots`
+          );
+          const data = await res.json();
 
-        const flatSlots = data.weeks.flatMap((week) =>
-          week.slots.map((slot) => ({
-            ...slot,
-            slot_time: new Date(slot.slot_time),
-          }))
-        );
-        setSlots(flatSlots);
+          const flatSlots = data.weeks.flatMap((week) =>
+            week.slots.map((slot) => ({
+              ...slot,
+              slot_time: new Date(slot.slot_time),
+            }))
+          );
+          setSlots(flatSlots);
 
-        const computedGrid = getGridItemTimes(weekdates, flatSlots);
+          const computedGrid = getGridItemTimes(weekdates, flatSlots);
+          setGridItemTimes(computedGrid);
+          console.log('admin view lots fetched and grid set:', computedGrid);
+        } catch (err) {
+          console.error('Error fetching slots:', err);
+        }
+      } else {
+        const computedGrid = getGridItemTimes(weekdates, []); // no slots for volunteer's calendars
         setGridItemTimes(computedGrid);
-        console.log('✅ Slots fetched and grid set:', computedGrid);
-      } catch (err) {
-        console.error('Error fetching slots:', err);
+        console.log('admin view lots fetched and grid set:', computedGrid);
       }
     };
 
     fetchSlots();
   }, [currentDate]);
-
 
   return (
     <CalendarContext.Provider
@@ -111,6 +118,7 @@ const CalendarContextProvider = ({ children }) => {
 
 CalendarContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
+  mode: PropTypes.oneOf(['admin', 'volunteer']).isRequired,
 };
 
 const useCalendarContext = () => {

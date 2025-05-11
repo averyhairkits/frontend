@@ -25,11 +25,23 @@ export default function App() {
     <UserProvider>
       <BrowserRouter>
         <Routes>
-          <Route element={<PrivateRoute />}></Route>
           <Route path='/' element={<PublicOnlyRoute />}>
+            <Route path='' element={<SignUp />} />
+            <Route path='forgot-password' element={<RequestPasswordReset />} />
+          </Route>
+
+          <Route path='auth/callback' element={<AuthCallback />} />
+          <Route path='auth/reset-password' element={<ResetPassword />} />
+
+          {/* LATER MAKE PRIVATE TEMPORARILY MADE ALL PATHS PUBLIC */}
+          <Route path='/' element={<PrivateRoute />}>
+            {' '}
+          </Route>
+
+          <Route path='/'>
             <Route
               element={
-                <CalendarContextProvider>
+                <CalendarContextProvider mode='volunteer'>
                   <SavedTimesContextProvider>
                     <ConfirmedTimesContextProvider>
                       <Outlet />
@@ -39,15 +51,24 @@ export default function App() {
               }
             >
               <Route path='volunteer-home' element={<Home isAdmin={false} />} />
+            </Route>
 
+            <Route
+              element={
+                <CalendarContextProvider mode='admin'>
+                  <SavedTimesContextProvider>
+                    <ConfirmedTimesContextProvider>
+                      <Outlet />
+                    </ConfirmedTimesContextProvider>
+                  </SavedTimesContextProvider>
+                </CalendarContextProvider>
+              }
+            >
               <Route path='admin-home' element={<Home isAdmin={true} />} />
               <Route path='user-list' element={<UserList />} />
             </Route>
-            <Route path='/' element={<SignUp />} />
-            <Route path='forgot-password' element={<RequestPasswordReset />} />
           </Route>
-          <Route path='auth/callback' element={<AuthCallback />} />
-          <Route path='auth/reset-password' element={<ResetPassword />} />
+
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>

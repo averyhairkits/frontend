@@ -159,6 +159,7 @@ export function UserProvider({ children }) {
     }
   };
 
+
   const fetchAllUsers = async () => {
     try {
       const res = await fetch(buildUrl('/api/get_users'));

@@ -21,7 +21,7 @@ export default function SignUp() {
   const [isSignIn, setIsSignIn] = useState(true);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { googleAuth } = useUser();
+  const { login, googleAuth } = useUser();
 
   const [formState, setFormState] = useState({
     firstname: '',
@@ -31,51 +31,15 @@ export default function SignUp() {
     username: '',
   });
 
-  //handles toggling btw signin and create account
-  const handleToggle = () => {
-    setIsSignIn(!isSignIn);
+  const handleChange = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
     setError('');
   };
 
-  //form component functions
-  const handleChangeFirstname = (e) => {
-    setFormState({ ...formState, firstname: e.target.value });
-    setError('');
-  };
-
-  const handleChangeLastname = (e) => {
-    setFormState({ ...formState, lastname: e.target.value });
-    setError('');
-  };
-
-  const handleChangeEmail = (e) => {
-    setFormState({ ...formState, email: e.target.value });
-    setError('');
-  };
-
-  const handleChangePassword = (e) => {
-    setFormState({ ...formState, password: e.target.value });
-    setError('');
-  };
-
-  const handleChangeUsername = (e) => {
-    setFormState({ ...formState, username: e.target.value });
-    setError('');
-  };
-
-  const handleGoogleSignup = async () => {
-    try {
-      await googleAuth();
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-
     try {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/auth/signup`,
@@ -116,6 +80,29 @@ export default function SignUp() {
     }
   };
 
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    try {
+      await login(formState.email, formState.password);
+      navigate('/', { replace: true });
+    } catch (error) {
+      setError(error.message || 'Failed to login. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     await googleAuth();
+  //   } catch (error) {
+  //     setError(error.message);
+  //   }
+  // };
+
   return (
     <StyledPage>
       <LeftSide>
@@ -139,12 +126,23 @@ export default function SignUp() {
           </ToggleTab>
         </ToggleContainer>
 
-        <Form onSubmit={() => {}}>
+        <Form onSubmit={handleSignIn}>
           {isSignIn ? (
             // Sign-in Form
             <>
-              <Input.Text title='Email' placeholder='example@mail.com' />
-              <Input.Password title='Password' placeholder='password' />
+              <Input.Text 
+              title='Email' 
+              placeholder='example@mail.com'
+              name='email'
+              value={formState.email}
+              onChange={handleChange}/>
+
+              <Input.Password 
+              title='Password'
+              placeholder='password'
+              name='password'
+              value={formState.password}
+              onChange={handleChange}/>
               <SubmitButton onClick={() => navigate('/volunteer-home')}>
                 Sign in
               </SubmitButton>
@@ -153,15 +151,34 @@ export default function SignUp() {
           ) : (
             // Sign-up Form
             <>
-              <Input.Text title='First Name' placeholder='John' />
-              <Input.Text title='Last Name' placeholder='Doe' />
-              <Input.Text title='Email' placeholder='example@mail.com' />
-              <Input.Password title='Password' placeholder='password' />
-              <Input.Password
-                title='Confirm Password'
-                placeholder='re-enter password'
-              />
-              <SubmitButton onClick={() => navigate('/volunteer-home')}>
+              <Input.Text 
+              title='First Name' 
+              placeholder='John' 
+              name='firstname'     
+              value={formState.firstname}
+              onChange={handleChange}/>
+
+              <Input.Text title='Last Name' 
+              placeholder='Doe' 
+              name='lastname'     
+              value={formState.lastname}
+              onChange={handleChange}/>
+
+              <Input.Text 
+              title='Email' 
+              placeholder='example@mail.com' 
+              name='email'
+              value={formState.email}
+              onChange={handleChange}/>
+
+              <Input.Password 
+              title='Password' 
+              placeholder='password'
+              name='password'
+              value={formState.password}
+              onChange={handleChange}/>
+
+              <SubmitButton onClick={handleSignUp}>
                 Create Account
               </SubmitButton>
               <GoogleButton text='Sign up with Google' />
