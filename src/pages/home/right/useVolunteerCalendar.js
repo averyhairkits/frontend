@@ -37,6 +37,9 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
 
   // manage volunteers selecting/deselecting cells
   const toggleSelection = (index) => {
+    const item = gridItemTimes[index];
+    if (item?.isOverbooked) return;
+
     setSelectedCells((prev) => {
       const newMap = new Map(prev);
       if (newMap.has(index)) {

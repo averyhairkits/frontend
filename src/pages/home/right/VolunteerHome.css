@@ -128,7 +128,13 @@
   background-color: var(--purple2-highlight);
 }
 
-.full {
+/* .full {
+  background-color: var(--light-gray);
+  pointer-events: none;
+} */
+
+.overbooked {
   background-color: var(--light-gray);
   pointer-events: none;
 }
+
