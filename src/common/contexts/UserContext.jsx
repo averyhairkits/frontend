@@ -159,12 +159,11 @@ export function UserProvider({ children }) {
     }
   };
 
-
   const fetchAllUsers = async () => {
     try {
       const res = await fetch(buildUrl('/api/get_users'));
       const data = await res.json();
-      const formatted = data.map(user => ({
+      const formatted = data.map((user) => ({
         id: user.id,
         name: `${user.firstname} ${user.lastname}`,
         email: user.email,
@@ -176,7 +175,6 @@ export function UserProvider({ children }) {
       console.error('Error fetching all users:', err);
     }
   };
-  
 
   useEffect(() => {
     checkAuth();
