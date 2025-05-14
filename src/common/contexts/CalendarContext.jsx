@@ -24,7 +24,7 @@ const weekRange = (date) => {
   return weekDates;
 };
 
-const getGridItemTimes = (weekdates, overbookedTimes, slots = []) => {
+const getGridItemTimes = (weekdates, overbookedTimes, slots) => {
   const gridItemTimes = Array.from({ length: 140 });
 
   for (let i = 0; i < 140; i++) {
@@ -51,8 +51,6 @@ const getGridItemTimes = (weekdates, overbookedTimes, slots = []) => {
  
     }
   }
-
-  console.log('gridItemTimes: ', gridItemTimes);
   return gridItemTimes;
 };
 
@@ -98,10 +96,8 @@ const CalendarContextProvider = ({ children, mode }) => {
       }
       else { //volunteer fetch
         try {
-          console.log("running volunteer calendar now");
           const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get_user_slots?user_id=${user.id}`);
           const data = await res.json();
-          console.log("data is this ", data);
 
           const flatSlots = data.weeks.flatMap((week) =>
             week.slots.map((slot) => ({
@@ -110,7 +106,6 @@ const CalendarContextProvider = ({ children, mode }) => {
             }))
           );
           setSlots(flatSlots);
-          console.log("FLatslots is dis", flatSlots);
 
           const overbookedTimes = new Set(
           (data.summary?.overbookedSlots || []).map(slot =>
@@ -119,7 +114,6 @@ const CalendarContextProvider = ({ children, mode }) => {
         );
           const computedGrid = getGridItemTimes(weekdates,overbookedTimes, flatSlots);
           setGridItemTimes(computedGrid);
-          console.log('volunteer view lots fetched and grid set:', computedGrid);
         } catch (err) {
           console.error('Error fetching slots:', err);
         }

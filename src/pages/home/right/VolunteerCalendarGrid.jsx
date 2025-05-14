@@ -55,12 +55,20 @@ export const VolunteerCalendarGrid = ({
         const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'} 
         ${isOverbooked ? 'overbooked' : ''}`.trim();
 
+        const size = Math.min(gridItemTimes[i].size, 5);
+        const isSelected = selectedCells.has(i);
+        const backgroundColor =
+          !isSelected && size > 0
+            ? `var(--sign-up-fill-${size})`
+            : undefined;
+
         return (
           <div
             key={i}
             className={`${itemType} ${selectedCells.has(i) && isConfirmedSession ? 'confirmed' : selectedCells.has(i) ? `selected${selectedCells.get(i)}` : ''}`}
             onMouseDown={() => !isOverbooked && handleMouseDown(i)}
             onMouseEnter={() => !isOverbooked && handleMouseEnter(i)}
+            style={{ backgroundColor }}
           ></div>
         );
       })}

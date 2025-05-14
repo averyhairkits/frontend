@@ -5,9 +5,6 @@ import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 import { useUser } from 'common/contexts/UserContext';
 
-const buildUrl = (endpoint) =>
-  `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
-
 export const useVolunteerCalendar = ({ numVolunteers }) => {
   const buildUrl = (endpoint) =>
     `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
@@ -19,9 +16,7 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
   ); // contains one week
   const isDragging = useRef(false);
   const { weekdates, gridItemTimes } = useCalendarContext();
-
   const [selectedCells, setSelectedCells] = useState(new Map()); // contains one week
-  
   const { user } = useUser();
 
   // check if availability is different compared to last save for
@@ -70,19 +65,39 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     isDragging.current = false;
   };
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   const handleSave = async () => {
-    console.log('Saved');
+
     setJustSaved(true);
     setCanSave(false);
     setPrevSelectedCells(new Map(selectedCells)); // saved cells are now fixed until next save
-  
+
 
     //convert selected cells to ISO timestamps
     const selectedTimestamps = Array.from(selectedCells.keys()).map((index) => {
       const item = gridItemTimes[index];
-      return item?.start?.toISOString(); // safely get ISO string
+      if (!item?.start) return null;
+
+      //convert time to UTC time so backend can store as ISO
+      const localDate = item.start;
+      const offsetMs = localDate.getTimezoneOffset() * 60000;
+      const correctedUTCDate = new Date(localDate.getTime() - offsetMs);
+      return correctedUTCDate.toISOString();
     }).filter(Boolean);
 
+    console.log("selected timestamps", selectedTimestamps);
 
     try {
       const token = localStorage.getItem('token');
@@ -105,11 +120,41 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
         return;
       }
       const result = await response.json();
-      console.log('Successfully submitted slot request:', result);
+      console.log('Successfully submitted slot request from inside handleSave:', result);
     } catch (error) {
       console.error('Network error:', error);
     }
   };
+
+
+  useEffect(() => {
+    // filter savedTimes to only include times that are in weekDates
+    const filteredSavedTimes = Array.from(savedTimes).filter((savedTime) =>
+      weekdates.some(
+        (weekdate) => savedTime.time.toDateString() === weekdate.toDateString()
+      )
+    );
+
+    // selectedCells is a map of cell numbers and num people based on gridItemTimes
+    const newMap = new Map();
+    filteredSavedTimes.forEach((savedTime) => {
+      const index = gridItemTimes.findIndex(
+        (gridItemTime) =>
+          gridItemTime.start.getTime() === savedTime.time.getTime()
+      );
+      if (index !== -1) newMap.set(index, savedTime.numPeople);
+    });
+
+    setSelectedCells(newMap);
+
+    if (justSaved) {
+      const timesArray = Array.from(savedTimes);
+    }
+  }, [weekdates, savedTimes]);
+
+
+
+
 
 
   // keep checking if current selected cells are different from last saved cells
@@ -142,50 +187,6 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     setSavedTimes(new Set([...filteredOldTimes, ...newlySavedTimes]));
   }, [prevSelectedCells]);
 
-
-  useEffect(() => {
-    // filter savedTimes to only include times that are in weekDates
-    const filteredSavedTimes = Array.from(savedTimes).filter((savedTime) =>
-      weekdates.some(
-        (weekdate) => savedTime.time.toDateString() === weekdate.toDateString()
-      )
-    );
-
-    // selectedCells is a map of cell numbers and num people based on gridItemTimes
-    const newMap = new Map();
-    filteredSavedTimes.forEach((savedTime) => {
-      const index = gridItemTimes.findIndex(
-        (gridItemTime) =>
-          gridItemTime.start.getTime() === savedTime.time.getTime()
-      );
-      if (index !== -1) newMap.set(index, savedTime.numPeople);
-    });
-
-    setSelectedCells(newMap);
-
-    if (justSaved) {
-      const timesArray = Array.from(savedTimes);
-      console.log('✅ Final timesArray (ready to POST):', timesArray);
-  
-      const submitSavedTimes = async () => {
-        try {
-          const res = await fetch(buildUrl('/api/new_request'), {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ slots: timesArray }),
-          });
-  
-          if (!res.ok) throw new Error('Failed to save');
-          console.log('Saved successfully!');
-        } catch (err) {
-          console.error('Error saving times:', err);
-        }
-      };
-      submitSavedTimes();
-    }
-  }, [weekdates, savedTimes]);
 
 
 
