@@ -141,10 +141,6 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
   }, [weekdates, savedTimes]);
 
 
-
-
-
-
   // keep checking if current selected cells are different from last saved cells
   useEffect(() => {
     !justSaved && selectedCellsChanged() ? setCanSave(true) : setCanSave(false);

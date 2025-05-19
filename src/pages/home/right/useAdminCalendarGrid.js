@@ -18,6 +18,41 @@ export const useAdminCalendarGrid = () => {
   const buildUrl = (endpoint) =>
     `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
 
+
+  useEffect(() => {
+    const fetchSessions = async () => {
+      if (!user?.id) return;
+
+      try {
+        const res = await fetch(buildUrl(`/admin/get_sessions?user_id=${user.id}`));
+        const data = await res.json();
+
+        if (!res.ok) {
+          console.error('Failed to fetch sessions:', data.error || 'Unknown error');
+          return;
+        }
+        console.log("data here", data);
+        // Assume each session has id, title, start, end, description, status
+        if (data){
+
+        }
+        const parsed = data.sessions.map((s) => ({
+          ...s,
+          start: new Date(s.start),
+          end: new Date(s.end),
+          volunteers: s.volunteers || [], // fallback
+        }));
+
+        setConfirmedTimes(new Set(parsed));
+      } catch (err) {
+        console.error('Fetch sessions network error:', err);
+      }
+    };
+
+    fetchSessions();
+  }, [user?.id]);
+
+
   // Convert grid index to row and column
   const getGridPosition = (i) => {
     const col = Math.floor(i / 20);
@@ -162,18 +197,24 @@ export const useAdminCalendarGrid = () => {
   };
 
   const getEventTime = (row, isStart) => {
-    if (isStart) {
-      return gridItemTimes[getIndex(row, 0)].start.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    }
+  const timeBlock = gridItemTimes[getIndex(row, 0)];
+  if (!timeBlock) return '--:--';
 
-    return gridItemTimes[getIndex(row, 0)].end.toLocaleTimeString([], {
+  if (isStart) {
+    if (!timeBlock.start) return '--:--';
+    return timeBlock.start.toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
     });
-  };
+  } else {
+    if (!timeBlock.end) return '--:--';
+    return timeBlock.end.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+};
+
 
   const getEventDate = (s, isDate) => {
     return weekdates[s.col].toLocaleDateString(
