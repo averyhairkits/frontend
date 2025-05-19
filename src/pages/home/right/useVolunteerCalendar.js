@@ -66,18 +66,6 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
   };
 
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   const handleSave = async () => {
 
     setJustSaved(true);

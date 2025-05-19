@@ -13,6 +13,9 @@ export const useAdminCalendarGrid = () => {
   const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
   const { weekdates, gridItemTimes } = useCalendarContext();
 
+  const buildUrl = (endpoint) =>
+    `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
+
   // Convert grid index to row and column
   const getGridPosition = (i) => {
     const col = Math.floor(i / 20);
@@ -111,7 +114,7 @@ export const useAdminCalendarGrid = () => {
     setCanSave(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const { title, description, startRow, endRow, col, volunteers } = eventData;
     const minRow = Math.min(startRow, endRow);
     const maxRow = Math.max(startRow, endRow);
@@ -126,6 +129,27 @@ export const useAdminCalendarGrid = () => {
 
     const newConfirmedTimes = new Set([...confirmedTimes, newConfirmedTime]);
     setConfirmedTimes(newConfirmedTimes);
+    console.log("here are new confirmed times", newConfirmedTimes);
+
+    try {
+      const response = await fetch(buildUrl('/admin/approve_request'), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newConfirmedTime),
+        });
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('Request failed:', error);
+        return;
+      }
+      const result = await response.json();
+      console.log('Successfully sent admin approve to backend:', result);
+    } catch (error) {
+      console.error('Network error:', error);
+    }
+
     eventEditor.resetEvent();
     setCanSave(false);
   };
