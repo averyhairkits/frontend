@@ -9,6 +9,7 @@ export const useAdminCalendarGrid = () => {
   const { eventData, isEditing, setIsEditing, ...eventEditor } =
     useEventEditor();
   const [canSave, setCanSave] = useState(false);
+  const [selectedSessionToDelete, setSelectedSessionToDelete] = useState(null);
 
   const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
   const { weekdates, gridItemTimes } = useCalendarContext();
@@ -127,10 +128,6 @@ export const useAdminCalendarGrid = () => {
       volunteers: volunteers,
     };
 
-    const newConfirmedTimes = new Set([...confirmedTimes, newConfirmedTime]);
-    setConfirmedTimes(newConfirmedTimes);
-    console.log("here are new confirmed times", newConfirmedTimes);
-
     try {
       const response = await fetch(buildUrl('/admin/approve_request'), {
           method: 'POST',
@@ -145,7 +142,15 @@ export const useAdminCalendarGrid = () => {
         return;
       }
       const result = await response.json();
-      console.log('Successfully sent admin approve to backend:', result);
+      if (!result.session?.id) {
+        console.error('No session ID returned from backend');
+        return;
+      }
+      const confirmedSessionWithId = { ...newConfirmedTime, id: result.session.id };
+      const newConfirmedTimes = new Set([...confirmedTimes, confirmedSessionWithId]);
+      setConfirmedTimes(newConfirmedTimes);
+      console.log("NEW CONFIRMED TIMES HERE", newConfirmedTimes);
+
     } catch (error) {
       console.error('Network error:', error);
     }
@@ -192,6 +197,48 @@ export const useAdminCalendarGrid = () => {
     console.log('Confirmed Times: ', confirmedTimes);
   }, [confirmedTimes]);
 
+
+  const handleSessionClick = (session) => {
+    setSelectedSessionToDelete(session);
+  };
+
+
+
+ const confirmDelete = async () => {
+  if (!selectedSessionToDelete?.id) return;
+
+  try {
+    const response = await fetch(
+      buildUrl(`/admin/cancel_request/${selectedSessionToDelete.id}`),
+      { method: 'PUT' }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('Failed to cancel session:', error);
+      return;
+    }
+
+    // update the local confirmedTimes set with the cancelled status
+    const updated = new Set(
+      Array.from(confirmedTimes).map((session) =>
+        session.id === selectedSessionToDelete.id
+          ? { ...session, status: 'cancelled' }
+          : session
+      )
+    );
+    setConfirmedTimes(updated);
+    setSelectedSessionToDelete(null);
+  } catch (err) {
+    console.error('Cancel network error:', err);
+  }
+};
+
+const cancelDelete = () => {
+  setSelectedSessionToDelete(null);
+};
+
+
   return {
     handleMouseUp,
     canSave,
@@ -209,5 +256,9 @@ export const useAdminCalendarGrid = () => {
     getEventDate,
     handleChangeTitle: eventEditor.handleChangeTitle,
     handleChangeDescription: eventEditor.handleChangeDescription,
+    handleSessionClick,
+    confirmDelete,
+    cancelDelete,
+    selectedSessionToDelete,
   };
 };

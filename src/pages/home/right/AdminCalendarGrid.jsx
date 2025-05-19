@@ -27,6 +27,10 @@ export const AdminCalendarGrid = () => {
     getEventDate,
     handleChangeTitle,
     handleChangeDescription,
+    handleSessionClick,
+    confirmDelete,
+    cancelDelete,
+    selectedSessionToDelete,
   } = useAdminCalendarGrid();
 
   const renderEventPopup = (eventData) => {
@@ -102,7 +106,10 @@ export const AdminCalendarGrid = () => {
         const maxRow = Math.max(aSelection.startRow, aSelection.endRow);
 
         return (
-          <div key={i} className='event' style={getSelectionStyle(aSelection)}>
+          <div key={i} 
+            className={`event ${session.status === 'cancelled' ? 'cancelled' : ''}`}
+            style={getSelectionStyle(aSelection)} 
+            onClick={() => handleSessionClick(session)}>
             <div className='content'>
               <h1>{session.title || 'New Event'}</h1>
               <h2>
@@ -143,6 +150,18 @@ export const AdminCalendarGrid = () => {
             </div>
           </div>
           {isEditing && renderEventPopup(eventData)}
+        </div>
+      )}
+
+      {selectedSessionToDelete && (
+        <div className="deletePopup">
+          <div className="popupBox">
+            <p>Are you sure you want to cancel this session?</p>
+            <div className="popupActions">
+              <button onClick={confirmDelete}>Yes</button>
+              <button onClick={cancelDelete}>No</button>
+            </div>
+          </div>
         </div>
       )}
     </div>
