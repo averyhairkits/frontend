@@ -156,14 +156,28 @@ export const useAdminCalendarGrid = () => {
     const minRow = Math.min(startRow, endRow);
     const maxRow = Math.max(startRow, endRow);
 
+    const localToUTCISO = (date) => {
+      const offsetMs = date.getTimezoneOffset() * 60000;
+      return new Date(date.getTime() - offsetMs);
+    };
+
     const newConfirmedTime = {
-      title: title,
-      start: gridItemTimes[getIndex(minRow, col)].start,
-      end: gridItemTimes[getIndex(maxRow, col)].end,
-      description: description,
-      volunteers: volunteers,
+      title,
+      start: localToUTCISO(gridItemTimes[getIndex(minRow, col)].start),
+      end: localToUTCISO(gridItemTimes[getIndex(maxRow, col)].end),
+      description,
+      volunteers,
       created_by: user.id,
     };
+
+    // const newConfirmedTime = {
+    //   title: title,
+    //   start: gridItemTimes[getIndex(minRow, col)].start,
+    //   end: gridItemTimes[getIndex(maxRow, col)].end,
+    //   description: description,
+    //   volunteers: volunteers,
+    //   created_by: user.id,
+    // };
 
     try {
       const response = await fetch(buildUrl('/admin/approve_request'), {
