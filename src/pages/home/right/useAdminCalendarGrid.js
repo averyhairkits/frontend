@@ -144,11 +144,11 @@ export const useAdminCalendarGrid = () => {
         return;
       }
       const result = await response.json();
-      if (!result.session?.id) {
+      if (!result.session) {
         console.error('No session ID returned from backend');
         return;
       }
-      const confirmedSessionWithId = { ...newConfirmedTime, id: result.session.id };
+      const confirmedSessionWithId = { ...newConfirmedTime, id: result.session };
       const newConfirmedTimes = new Set([...confirmedTimes, confirmedSessionWithId]);
       setConfirmedTimes(newConfirmedTimes);
       console.log("NEW CONFIRMED TIMES HERE", newConfirmedTimes);
