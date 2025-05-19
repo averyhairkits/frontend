@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useConfirmedTimesContext } from 'common/contexts/ConfirmedTimesContext';
 
+import { useUser } from 'common/contexts/UserContext';
 import { useEventEditor } from './useEventEditor';
-
 export const useAdminCalendarGrid = () => {
   const { eventData, isEditing, setIsEditing, ...eventEditor } =
     useEventEditor();
@@ -13,6 +13,7 @@ export const useAdminCalendarGrid = () => {
 
   const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
   const { weekdates, gridItemTimes } = useCalendarContext();
+  const { user } = useUser();
 
   const buildUrl = (endpoint) =>
     `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
@@ -126,6 +127,7 @@ export const useAdminCalendarGrid = () => {
       end: gridItemTimes[getIndex(maxRow, col)].end,
       description: description,
       volunteers: volunteers,
+      created_by: user.id,
     };
 
     try {
