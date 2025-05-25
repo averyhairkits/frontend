@@ -6,7 +6,7 @@ export default function LeftLog() {
   return (
     <div className='white-bg'>
       <h3 className='how-to-title'>
-        <Icon.Clock className='how-to-icon' /> Cancellation Log
+        <Icon.Clock className='how-to-icon' /> Activity Log
       </h3>
       <div className='details'>
         <div>

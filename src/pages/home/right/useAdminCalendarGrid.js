@@ -276,12 +276,10 @@ export const useAdminCalendarGrid = () => {
       return;
     }
 
-    // update the local confirmedTimes set with the cancelled status
+    // delete the selected-to-delete section from confirmedTimes
     const updated = new Set(
-      Array.from(confirmedTimes).map((session) =>
-        session.id === selectedSessionToDelete.id
-          ? { ...session, status: 'cancelled' }
-          : session
+      Array.from(confirmedTimes).filter(
+        (session) => session.id !== selectedSessionToDelete.id
       )
     );
     setConfirmedTimes(updated);

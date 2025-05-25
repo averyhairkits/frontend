@@ -82,7 +82,7 @@
 .event.cancelled {
   background-color: gray;
   box-shadow: none;
-  opacity: 0.5;
+  visibility: hidden;
 }
 .event.cancelled .content::-webkit-scrollbar-thumb {
   background-color: gray;
