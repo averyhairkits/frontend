@@ -119,7 +119,7 @@ export const AdminCalendarGrid = () => {
               <h3>{session.description}</h3>
               <div className='numVolunteersContainer'>
                 <Icon.User width='24px' />
-                <h4>{session.volunteers.length}</h4>
+                <h4>{session.volunteers && session.volunteers.length > 0 ? session.volunteers.length : '0'}</h4>
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@ export const AdminCalendarGrid = () => {
             </h2>
             <div className='numVolunteersContainer'>
               <Icon.User width='24px' />
-              <h4>{predictedVolunteers}</h4>
+              <h4>{predictedVolunteers?.length ?? 0}</h4>
             </div>
           </div>
           {isEditing && renderEventPopup(eventData)}

@@ -32,7 +32,7 @@ export const useAdminCalendarGrid = () => {
           console.error('Failed to fetch sessions:', data.error || 'Unknown error');
           return;
         }
-        console.log("data here", data);
+        console.log("admin fetched session here", data);
         //assume each session has id, title, start, end, description, status
         if (data){
 
@@ -42,6 +42,7 @@ export const useAdminCalendarGrid = () => {
           start: new Date(s.start.replace(' ', 'T')), //convert 'YYYY-MM-DD HH:MM:SS' → 'YYYY-MM-DDTHH:MM:SS'
           end: new Date(s.end.replace(' ', 'T')),
           volunteers: s.volunteers || [], // fallback
+          created_by_name: s.created_by_user ? `${s.created_by_user.firstname} ${s.created_by_user.lastname}` : 'Unknown', 
         }));
 
         setConfirmedTimes(new Set(parsed));
@@ -141,11 +142,14 @@ export const useAdminCalendarGrid = () => {
   };
 
   const handleMouseUp = () => {
+
     eventData.startRow !== null && setCanSave(true);
     const minRow = Math.min(eventData.startRow, eventData.endRow);
     const maxRow = Math.max(eventData.startRow, eventData.endRow);
 
     const hasOverlap = filteredConfirmedTimes.some((confirmedTime) => {
+      if (confirmedTime.status === 'cancelled') return false;
+      
       const confirmedSelection = dateToRowCol(confirmedTime);
 
       return (
@@ -318,10 +322,12 @@ export const useAdminCalendarGrid = () => {
       return;
     }
 
-    // delete the selected-to-delete section from confirmedTimes
+    //mark the selected-to-delete section as deleted
     const updated = new Set(
-      Array.from(confirmedTimes).filter(
-        (session) => session.id !== selectedSessionToDelete.id
+      Array.from(confirmedTimes).map((session) =>
+        session.id === selectedSessionToDelete.id
+          ? { ...session, status: 'cancelled' }
+          : session
       )
     );
     setConfirmedTimes(updated);
