@@ -10,6 +10,8 @@ export const useAdminCalendarGrid = () => {
     useEventEditor();
   const [canSave, setCanSave] = useState(false);
   const [selectedSessionToDelete, setSelectedSessionToDelete] = useState(null);
+  const [predictedVolunteers, setPredictedVolunteers] = useState([]);
+
 
   const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
   const { weekdates, gridItemTimes } = useCalendarContext();
@@ -38,8 +40,8 @@ export const useAdminCalendarGrid = () => {
         }
         const parsed = data.sessions.map((s) => ({
           ...s,
-          start: new Date(s.start),
-          end: new Date(s.end),
+          start: new Date(s.start.replace(' ', 'T')), // Convert 'YYYY-MM-DD HH:MM:SS' → 'YYYY-MM-DDTHH:MM:SS'
+          end: new Date(s.end.replace(' ', 'T')),
           volunteers: s.volunteers || [], // fallback
         }));
 
@@ -51,6 +53,44 @@ export const useAdminCalendarGrid = () => {
 
     fetchSessions();
   }, [user?.id]);
+
+  const getStartEndTimesFromEvent = ({ startRow, endRow, col }) => {
+  if (startRow === null || endRow === null || col === null) return { start: null, end: null };
+
+  const minRow = Math.min(startRow, endRow);
+  const maxRow = Math.max(startRow, endRow);
+
+  const start = gridItemTimes[getIndex(minRow, col)]?.start || null;
+  const end = gridItemTimes[getIndex(maxRow, col)]?.end || null;
+
+  return { start, end };
+};
+
+
+  
+  useEffect(() => {
+  const fetchPredictedVolunteers = async () => {
+    const { start, end } = getStartEndTimesFromEvent(eventData);
+    if (!start || !end) return;
+
+    try {
+      const res = await fetch(buildUrl(`/admin/match_volunteers?start=${start.toISOString()}&end=${end.toISOString()}`));
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error('Failed to fetch predicted volunteers:', data.error || 'Unknown error');
+        return;
+      }
+
+      setPredictedVolunteers(data.volunteers || []);
+    } catch (err) {
+      console.error('Volunteer match fetch error:', err);
+    }
+  };
+
+  fetchPredictedVolunteers();
+}, [eventData.startRow, eventData.endRow, eventData.col]);
+
 
 
   // Convert grid index to row and column
@@ -107,6 +147,8 @@ export const useAdminCalendarGrid = () => {
     const maxRow = Math.max(eventData.startRow, eventData.endRow);
 
     const hasOverlap = filteredConfirmedTimes.some((confirmedTime) => {
+
+      console.log("Placing session:", confirmedTime.title, confirmedTime.start, typeof confirmedTime.start);
       const confirmedSelection = dateToRowCol(confirmedTime);
 
       return (
@@ -151,33 +193,30 @@ export const useAdminCalendarGrid = () => {
     setCanSave(false);
   };
 
+  const formatLocalDateTimeForDB = (date) => {
+  if (!date || !(date instanceof Date)) return null;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
   const handleSave = async () => {
     const { title, description, startRow, endRow, col, volunteers } = eventData;
-    const minRow = Math.min(startRow, endRow);
-    const maxRow = Math.max(startRow, endRow);
-
-    const localToUTCISO = (date) => {
-      const offsetMs = date.getTimezoneOffset() * 60000;
-      return new Date(date.getTime() - offsetMs);
-    };
-
+    const { start, end } = getStartEndTimesFromEvent(eventData);
+    if (!start || !end) return;
+    
     const newConfirmedTime = {
       title,
-      start: localToUTCISO(gridItemTimes[getIndex(minRow, col)].start),
-      end: localToUTCISO(gridItemTimes[getIndex(maxRow, col)].end),
+      start: formatLocalDateTimeForDB(start),
+      end: formatLocalDateTimeForDB(end),
       description,
-      volunteers,
+      volunteers: [],
       created_by: user.id,
     };
-
-    // const newConfirmedTime = {
-    //   title: title,
-    //   start: gridItemTimes[getIndex(minRow, col)].start,
-    //   end: gridItemTimes[getIndex(maxRow, col)].end,
-    //   description: description,
-    //   volunteers: volunteers,
-    //   created_by: user.id,
-    // };
 
     try {
       const response = await fetch(buildUrl('/admin/approve_request'), {
@@ -197,10 +236,16 @@ export const useAdminCalendarGrid = () => {
         console.error('No session ID returned from backend');
         return;
       }
-      const confirmedSessionWithId = { ...newConfirmedTime, id: result.session };
+      //const confirmedSessionWithId = { ...newConfirmedTime, id: result.session };
+      
+      const confirmedSessionWithId = {
+        ...newConfirmedTime,
+        id: result.session,
+        start: new Date(newConfirmedTime.start),
+        end: new Date(newConfirmedTime.end),
+      };
       const newConfirmedTimes = new Set([...confirmedTimes, confirmedSessionWithId]);
       setConfirmedTimes(newConfirmedTimes);
-      console.log("NEW CONFIRMED TIMES HERE", newConfirmedTimes);
 
     } catch (error) {
       console.error('Network error:', error);

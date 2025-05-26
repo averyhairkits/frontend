@@ -86,6 +86,7 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     }).filter(Boolean);
 
     console.log("selected timestamps", selectedTimestamps);
+    console.log(typeof selectedTimestamps[0]);
 
     try {
       const token = localStorage.getItem('token');
