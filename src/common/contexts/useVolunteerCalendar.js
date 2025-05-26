@@ -1,12 +1,9 @@
 // While volunteers select availability
 import { useEffect, useRef, useState } from 'react';
 
-import { useCalendarContext } from 'common/contexts/CalendarContext';
-import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
-import { useUser } from 'common/contexts/UserContext';
-
-const buildUrl = (endpoint) =>
-  `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
+import { useCalendarContext } from './CalendarContext';
+import { useSavedTimesContext } from './SavedTimesContext';
+import { useUser } from './UserContext';
 
 export const useVolunteerCalendar = ({ numVolunteers }) => {
   const buildUrl = (endpoint) =>
@@ -19,9 +16,7 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
   ); // contains one week
   const isDragging = useRef(false);
   const { weekdates, gridItemTimes } = useCalendarContext();
-
   const [selectedCells, setSelectedCells] = useState(new Map()); // contains one week
-  
   const { user } = useUser();
 
   // check if availability is different compared to last save for
@@ -71,18 +66,34 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
   };
 
   const handleSave = async () => {
-    console.log('Saved');
     setJustSaved(true);
     setCanSave(false);
     setPrevSelectedCells(new Map(selectedCells)); // saved cells are now fixed until next save
-  
 
-    //convert selected cells to ISO timestamps
-    const selectedTimestamps = Array.from(selectedCells.keys()).map((index) => {
-      const item = gridItemTimes[index];
-      return item?.start?.toISOString(); // safely get ISO string
-    }).filter(Boolean);
+    const selectedTimestamps = Array.from(selectedCells.entries())
+      .filter(([index, size]) => {
+        // Only include if this cell is new or its size changed
+        return (
+          !prevSelectedCells.has(index) || prevSelectedCells.get(index) !== size
+        );
+      })
+      .map(([index, size]) => {
+        const item = gridItemTimes[index];
+        if (!item?.start) return null;
 
+        const offsetMs = item.start.getTimezoneOffset() * 60000;
+        const isoTime = new Date(item.start.getTime() - offsetMs).toISOString();
+
+        return {
+          slot_time: isoTime,
+          request_size: size,
+          user_id: user.id,
+        };
+      })
+      .filter(Boolean);
+
+    console.log('selected timestamps', selectedTimestamps);
+    console.log(typeof selectedTimestamps);
 
     try {
       const token = localStorage.getItem('token');
@@ -93,55 +104,24 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          reqTimeStampList: selectedTimestamps,
-          request_size: numVolunteers,
-          user_id: user.id,
+          reqTimes: selectedTimestamps,
         }),
       });
-  
+
       if (!response.ok) {
         const error = await response.json();
         console.error('Request failed:', error);
         return;
       }
       const result = await response.json();
-      console.log('Successfully submitted slot request:', result);
+      console.log(
+        'Successfully submitted slot request from inside handleSave:',
+        result
+      );
     } catch (error) {
       console.error('Network error:', error);
     }
   };
-
-
-  // keep checking if current selected cells are different from last saved cells
-  useEffect(() => {
-    !justSaved && selectedCellsChanged() ? setCanSave(true) : setCanSave(false);
-  }, [selectedCells]);
-
-  useEffect(() => {
-    // newlySavedTimes is a set of time objects that are selected & saved for the current week
-    const newlySavedTimes = new Set();
-    // add in times that have been saved for current week
-    prevSelectedCells.forEach((numPeople, index) => {
-      const item = gridItemTimes[index];
-      if (!item || !item.start) return;
-      newlySavedTimes.add({
-        time: new Date(item.start),
-        numPeople: numPeople,
-      });
-    });
-    
-    // keep savedTimes the same, but remove all times that are in the current week, and add newlySavedTimes instead
-    const filteredOldTimes = Array.from(savedTimes).filter(
-      (savedDate) =>
-        !weekdates.some(
-          (weekDate) =>
-            savedDate.time.toDateString() === weekDate.toDateString()
-        )
-    );
-
-    setSavedTimes(new Set([...filteredOldTimes, ...newlySavedTimes]));
-  }, [prevSelectedCells]);
-
 
   useEffect(() => {
     // filter savedTimes to only include times that are in weekDates
@@ -165,29 +145,38 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
 
     if (justSaved) {
       const timesArray = Array.from(savedTimes);
-      console.log('✅ Final timesArray (ready to POST):', timesArray);
-  
-      const submitSavedTimes = async () => {
-        try {
-          const res = await fetch(buildUrl('/api/new_request'), {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ slots: timesArray }),
-          });
-  
-          if (!res.ok) throw new Error('Failed to save');
-          console.log('Saved successfully!');
-        } catch (err) {
-          console.error('Error saving times:', err);
-        }
-      };
-      submitSavedTimes();
     }
   }, [weekdates, savedTimes]);
 
+  // keep checking if current selected cells are different from last saved cells
+  useEffect(() => {
+    !justSaved && selectedCellsChanged() ? setCanSave(true) : setCanSave(false);
+  }, [selectedCells]);
 
+  useEffect(() => {
+    // newlySavedTimes is a set of time objects that are selected & saved for the current week
+    const newlySavedTimes = new Set();
+    // add in times that have been saved for current week
+    prevSelectedCells.forEach((numPeople, index) => {
+      const item = gridItemTimes[index];
+      if (!item || !item.start) return;
+      newlySavedTimes.add({
+        time: new Date(item.start),
+        numPeople: numPeople,
+      });
+    });
+
+    // keep savedTimes the same, but remove all times that are in the current week, and add newlySavedTimes instead
+    const filteredOldTimes = Array.from(savedTimes).filter(
+      (savedDate) =>
+        !weekdates.some(
+          (weekDate) =>
+            savedDate.time.toDateString() === weekDate.toDateString()
+        )
+    );
+
+    setSavedTimes(new Set([...filteredOldTimes, ...newlySavedTimes]));
+  }, [prevSelectedCells]);
 
   return {
     selectedCells,

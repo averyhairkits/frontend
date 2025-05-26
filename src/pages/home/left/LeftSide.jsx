@@ -39,7 +39,7 @@ const getVolunteerTileClass = ({ date, savedTimes }) => {
 // Admin mini-calendar underline
 const getAdminTileClass = ({ date, confirmedTimes }) => {
   const isConfirmedDate = Array.from(confirmedTimes).some(
-    (d) => d.start.toDateString() === date.toDateString()
+    (d) => new Date(d.start).toDateString() === date.toDateString()
   );
 
   // if (has4MoreSelected && isConfirmedDate) return 'underlineBoth';

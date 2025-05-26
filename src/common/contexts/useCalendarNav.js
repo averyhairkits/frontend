@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import { useCalendarContext } from 'common/contexts/CalendarContext';
-import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
+import { useCalendarContext } from './CalendarContext';
+import { useSavedTimesContext } from './SavedTimesContext';
 
 export const useCalendarNav = () => {
   const { setJustSaved } = useSavedTimesContext();

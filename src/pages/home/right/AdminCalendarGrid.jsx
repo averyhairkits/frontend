@@ -4,7 +4,7 @@ import { Icon } from 'assets/icons/icons';
 import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
-import { useAdminCalendarGrid } from 'pages/home/right/useAdminCalendarGrid';
+import { useAdminCalendarGrid } from 'common/contexts/useAdminCalendarGrid';
 
 import './AdminHome.css';
 
@@ -27,6 +27,11 @@ export const AdminCalendarGrid = () => {
     getEventDate,
     handleChangeTitle,
     handleChangeDescription,
+    handleSessionClick,
+    confirmDelete,
+    cancelDelete,
+    selectedSessionToDelete,
+    predictedVolunteers,
   } = useAdminCalendarGrid();
 
   const renderEventPopup = (eventData) => {
@@ -102,7 +107,12 @@ export const AdminCalendarGrid = () => {
         const maxRow = Math.max(aSelection.startRow, aSelection.endRow);
 
         return (
-          <div key={i} className='event' style={getSelectionStyle(aSelection)}>
+          <div
+            key={i}
+            className={`event ${session.status === 'cancelled' ? 'cancelled' : ''}`}
+            style={getSelectionStyle(aSelection)}
+            onClick={() => handleSessionClick(session)}
+          >
             <div className='content'>
               <h1>{session.title || 'New Event'}</h1>
               <h2>
@@ -111,7 +121,11 @@ export const AdminCalendarGrid = () => {
               <h3>{session.description}</h3>
               <div className='numVolunteersContainer'>
                 <Icon.User width='24px' />
-                <h4>{session.volunteers.length}</h4>
+                <h4>
+                  {session.volunteers && session.volunteers.length > 0
+                    ? session.volunteers.length
+                    : '0'}
+                </h4>
               </div>
             </div>
           </div>
@@ -139,10 +153,22 @@ export const AdminCalendarGrid = () => {
             </h2>
             <div className='numVolunteersContainer'>
               <Icon.User width='24px' />
-              <h4>{eventData.volunteers.length}</h4>
+              <h4>{predictedVolunteers ?? 0}</h4>
             </div>
           </div>
           {isEditing && renderEventPopup(eventData)}
+        </div>
+      )}
+
+      {selectedSessionToDelete && (
+        <div className='deletePopup'>
+          <div className='popupBox'>
+            <p>Are you sure you want to cancel this session?</p>
+            <div className='popupActions'>
+              <button onClick={confirmDelete}>Yes</button>
+              <button onClick={cancelDelete}>No</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

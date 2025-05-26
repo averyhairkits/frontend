@@ -19,6 +19,7 @@ import UserList from 'pages/home/right/UserList';
 import NotFound from 'pages/not-found/NotFound';
 
 import './App.css';
+import RoleRedirect from './RoleRedirect';
 
 export default function App() {
   return (
@@ -27,16 +28,18 @@ export default function App() {
         <Routes>
           <Route path='/' element={<PublicOnlyRoute />}>
             <Route path='' element={<SignUp />} />
+            <Route path='login' element={<SignUp />} />
             <Route path='forgot-password' element={<RequestPasswordReset />} />
           </Route>
 
           <Route path='auth/callback' element={<AuthCallback />} />
           <Route path='auth/reset-password' element={<ResetPassword />} />
 
-
           <Route path='/' element={<PrivateRoute />}>
-            <Route element={
-                <CalendarContextProvider mode="volunteer">
+            <Route index element={<RoleRedirect />} />
+            <Route
+              element={
+                <CalendarContextProvider mode='volunteer'>
                   <SavedTimesContextProvider>
                     <ConfirmedTimesContextProvider>
                       <Outlet />

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
+import GoogleButton from 'common/components/GoogleButton';
 import { Form } from 'common/components/form/Form';
 import { Input } from 'common/components/form/Input';
 import SubmitButton from 'common/components/form/SubmitButton';
@@ -14,6 +16,28 @@ import {
   ToggleContainer,
   ToggleTab,
 } from './styles';
+
+const LoginInputError = ({ error }) => {
+  if (error && error.includes('Invalid credentials')) {
+    return <p className='errorMessage'>* Invalid email or password *</p>;
+  }
+  return;
+};
+
+LoginInputError.propTypes = {
+  error: PropTypes.string,
+};
+
+const InputError = ({ error }) => {
+  if (error && error.includes('Email') && error.includes('are required')) {
+    return <p className='errorMessage'>* All fields are required *</p>;
+  }
+  return;
+};
+
+InputError.propTypes = {
+  error: PropTypes.string,
+};
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -90,6 +114,7 @@ export default function SignUp() {
       //navigate('/', { replace: true });
     } catch (error) {
       setError(error.message || 'Failed to login. Please try again.');
+      !error && navigate('/volunteer-home');
     } finally {
       setIsLoading(false);
     }
@@ -130,6 +155,8 @@ export default function SignUp() {
           {isSignIn ? (
             // Sign-in Form
             <>
+              <InputError error={error} />
+              <LoginInputError error={error} />
               <Input.Text
                 title='Email'
                 placeholder='example@mail.com'
@@ -137,7 +164,6 @@ export default function SignUp() {
                 value={formState.email}
                 onChange={handleChange}
               />
-
               <Input.Password
                 title='Password'
                 placeholder='password'
@@ -145,13 +171,13 @@ export default function SignUp() {
                 value={formState.password}
                 onChange={handleChange}
               />
-              <SubmitButton onClick={() => navigate('/volunteer-home')}>
-                Sign in
-              </SubmitButton>
+              <SubmitButton onClick={handleSignIn}>Sign in</SubmitButton>
+              <GoogleButton text='Sign in with Google' />
             </>
           ) : (
             // Sign-up Form
             <>
+              <InputError error={error} />
               <Input.Text
                 title='First Name'
                 placeholder='John'
@@ -185,6 +211,7 @@ export default function SignUp() {
               />
 
               <SubmitButton onClick={handleSignUp}>Create Account</SubmitButton>
+              <GoogleButton text='Sign up with Google' />
             </>
           )}
         </Form>
