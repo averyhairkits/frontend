@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import GoogleButton from 'common/components/GoogleButton';
 import { Form } from 'common/components/form/Form';
 import { Input } from 'common/components/form/Input';
 import SubmitButton from 'common/components/form/SubmitButton';
@@ -131,58 +130,61 @@ export default function SignUp() {
           {isSignIn ? (
             // Sign-in Form
             <>
-              <Input.Text 
-              title='Email' 
-              placeholder='example@mail.com'
-              name='email'
-              value={formState.email}
-              onChange={handleChange}/>
+              <Input.Text
+                title='Email'
+                placeholder='example@mail.com'
+                name='email'
+                value={formState.email}
+                onChange={handleChange}
+              />
 
-              <Input.Password 
-              title='Password'
-              placeholder='password'
-              name='password'
-              value={formState.password}
-              onChange={handleChange}/>
+              <Input.Password
+                title='Password'
+                placeholder='password'
+                name='password'
+                value={formState.password}
+                onChange={handleChange}
+              />
               <SubmitButton onClick={() => navigate('/volunteer-home')}>
                 Sign in
               </SubmitButton>
-              <GoogleButton text='Sign in with Google' />
             </>
           ) : (
             // Sign-up Form
             <>
-              <Input.Text 
-              title='First Name' 
-              placeholder='John' 
-              name='firstname'     
-              value={formState.firstname}
-              onChange={handleChange}/>
+              <Input.Text
+                title='First Name'
+                placeholder='John'
+                name='firstname'
+                value={formState.firstname}
+                onChange={handleChange}
+              />
 
-              <Input.Text title='Last Name' 
-              placeholder='Doe' 
-              name='lastname'     
-              value={formState.lastname}
-              onChange={handleChange}/>
+              <Input.Text
+                title='Last Name'
+                placeholder='Doe'
+                name='lastname'
+                value={formState.lastname}
+                onChange={handleChange}
+              />
 
-              <Input.Text 
-              title='Email' 
-              placeholder='example@mail.com' 
-              name='email'
-              value={formState.email}
-              onChange={handleChange}/>
+              <Input.Text
+                title='Email'
+                placeholder='example@mail.com'
+                name='email'
+                value={formState.email}
+                onChange={handleChange}
+              />
 
-              <Input.Password 
-              title='Password' 
-              placeholder='password'
-              name='password'
-              value={formState.password}
-              onChange={handleChange}/>
+              <Input.Password
+                title='Password'
+                placeholder='password'
+                name='password'
+                value={formState.password}
+                onChange={handleChange}
+              />
 
-              <SubmitButton onClick={handleSignUp}>
-                Create Account
-              </SubmitButton>
-              <GoogleButton text='Sign up with Google' />
+              <SubmitButton onClick={handleSignUp}>Create Account</SubmitButton>
             </>
           )}
         </Form>
