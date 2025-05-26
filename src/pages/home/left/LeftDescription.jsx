@@ -16,11 +16,13 @@ export default function LeftDescription() {
           </li>
           <li>
             Click and drag to choose the dates and time slots when you&apos;ll
-            be available.
+            be available. Selected dates are highlighted blue. Darker shades of
+            blue indicate a higher number head count for your team registered at
+            that time.
           </li>
           <li>
-            Time slots with confirmed events that still have vacancies are
-            highlighted in purple.
+            Time slots with confirmed events that still have vacancies will be
+            highlighted in purple when selected.
           </li>
           <li>Click &quot;Save&quot; to finalize your availability.</li>
           <li>
@@ -29,7 +31,8 @@ export default function LeftDescription() {
           </li>
           <li>
             If a volunteering activity is scheduled during your available times,
-            you&apos;ll receive an email notification.
+            you&apos;ll be able to see the event time highlighted in purple on
+            the calendar.
           </li>
           {/* insert additional steps here: one step is a <li/> */}
         </ol>
@@ -42,14 +45,8 @@ export default function LeftDescription() {
         <p>How will I know if a session I was scheduled for was cancelled?</p>
         <ul>
           <li>
-            You will be promptly informed by email and the notification center
-            in the top right.
-          </li>
-        </ul>
-        <p>How will I know if a session I was scheduled for was cancelled?</p>
-        <ul>
-          <li>
-            You will be promptly informed by email and the notification center
+            The time slots that the event was scheduled on will become blue
+            instead of purple.
           </li>
         </ul>
         {/* insert additional questions & answers here: one question and answer is a <p/> <ul> <li/> </ul> */}
