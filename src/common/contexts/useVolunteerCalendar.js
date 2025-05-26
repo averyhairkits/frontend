@@ -73,19 +73,6 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     setCanSave(false);
     setPrevSelectedCells(new Map(selectedCells)); // saved cells are now fixed until next save
 
-    // //convert selected cells to ISO timestamps
-    // const selectedTimestamps = Array.from(selectedCells.keys()).map((index) => {
-    //   const item = gridItemTimes[index];
-    //   if (!item?.start) return null;
-
-    //   //convert time to UTC time so backend can store as ISO
-    //   const localDate = item.start;
-    //   const offsetMs = localDate.getTimezoneOffset() * 60000;
-    //   const correctedUTCDate = new Date(localDate.getTime() - offsetMs);
-    //   return correctedUTCDate.toISOString();
-    // }).filter(Boolean);
-
-
     const selectedTimestamps = Array.from(selectedCells.entries()).filter(([index, size]) => {
       // Only include if this cell is new or its size changed
       return !prevSelectedCells.has(index) || prevSelectedCells.get(index) !== size;

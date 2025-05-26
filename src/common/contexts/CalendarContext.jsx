@@ -24,7 +24,7 @@ const weekRange = (date) => {
   return weekDates;
 };
 
-const getGridItemTimes = (weekdates, overbookedTimes, slots) => {
+const getGridItemTimes = (weekdates, slots) => {
   const gridItemTimes = Array.from({ length: 140 });
 
   for (let i = 0; i < 140; i++) {
@@ -47,7 +47,6 @@ const getGridItemTimes = (weekdates, overbookedTimes, slots) => {
       start: start,
       end: end,
       size: matchingSlot ? matchingSlot.current_size : 0,
-      isOverbooked: overbookedTimes.has(start.getTime()), // check if start time is in the overbooked times
  
     }
   }
@@ -87,7 +86,7 @@ const CalendarContextProvider = ({ children, mode }) => {
           );
           setSlots(flatSlots);
 
-          const computedGrid = getGridItemTimes(weekdates, new Set(), flatSlots);
+          const computedGrid = getGridItemTimes(weekdates, flatSlots);
           setGridItemTimes(computedGrid);
           console.log('admin view lots fetched and grid set:', computedGrid);
         } catch (err) {
@@ -107,12 +106,7 @@ const CalendarContextProvider = ({ children, mode }) => {
           );
           setSlots(flatSlots);
 
-          const overbookedTimes = new Set(
-          (data.summary?.overbookedSlots || []).map(slot =>
-            new Date(slot.slot_time).getTime()
-          )
-        );
-          const computedGrid = getGridItemTimes(weekdates,overbookedTimes, flatSlots);
+          const computedGrid = getGridItemTimes(weekdates, flatSlots);
           setGridItemTimes(computedGrid);
         } catch (err) {
           console.error('Error fetching slots:', err);
