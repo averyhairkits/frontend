@@ -74,43 +74,17 @@ Header.propTypes = {
   }).isRequired,
 };
 
-const Rows = ({ sortedAllUsers }) => {
-  console.log('sortedAllusers: ', sortedAllUsers);
-  const handleGrant = async (user) => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/auth/grant_admin`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: user.email }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to grant admin');
-      }
-
-      alert(`Not authorized`);
-    } catch (error) {
-      console.error(error);
-      alert(`Error: ${error.message}`);
-    }
-  };
-
+const Rows = ({ sortedAllUsers, handleGrant }) => {
   return (
     <tbody>
       {sortedAllUsers.map((user, i) => {
+        console.log(`User ${i}:`, user);
         return (
           <tr
             key={i}
             style={{
               backgroundColor:
-                i % 2 === 0 ? 'var(--white)' : 'var(--lightest-gray)',
-            }}
-          >
+                i % 2 === 0 ? 'var(--white)' : 'var(--lightest-gray)',}}>
             <td>
               <h3 className='name'>{user.name}</h3>
             </td>
@@ -121,7 +95,11 @@ const Rows = ({ sortedAllUsers }) => {
               <h3>{new Date(user.dateRegistered).toLocaleDateString()}</h3>
             </td>
             <td className='admin'>
-              <input onClick={() => handleGrant(user)} type='checkbox' />
+              <input
+                type='checkbox'
+                checked={user.role === 'admin'}
+                onClick={() => handleGrant(user)}
+              />
             </td>
           </tr>
         );
@@ -132,6 +110,7 @@ const Rows = ({ sortedAllUsers }) => {
 
 Rows.propTypes = {
   sortedAllUsers: PropTypes.array.isRequired,
+  handleGrant: PropTypes.func.isRequired,
 };
 
 const UserList = () => {
@@ -146,7 +125,7 @@ const UserList = () => {
         <div className='tableContainer'>
           <table>
             <Header sortHandlers={sortHandlers} />
-            <Rows sortedAllUsers={sortedAllUsers} />
+            <Rows sortedAllUsers={sortedAllUsers} handleGrant={sortHandlers.handleGrant} />
           </table>
         </div>
       </div>
