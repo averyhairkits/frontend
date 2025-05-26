@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
+import GoogleButton from 'common/components/GoogleButton';
 import { Form } from 'common/components/form/Form';
 import { Input } from 'common/components/form/Input';
 import SubmitButton from 'common/components/form/SubmitButton';
@@ -154,6 +155,8 @@ export default function SignUp() {
           {isSignIn ? (
             // Sign-in Form
             <>
+              <InputError error={error} />
+              <LoginInputError error={error} />
               <Input.Text
                 title='Email'
                 placeholder='example@mail.com'
@@ -168,13 +171,13 @@ export default function SignUp() {
                 value={formState.password}
                 onChange={handleChange}
               />
-              <SubmitButton onClick={() => navigate('/volunteer-home')}>
-                Sign in
-              </SubmitButton>
+              <SubmitButton onClick={handleSignIn}>Sign in</SubmitButton>
+              <GoogleButton text='Sign in with Google' />
             </>
           ) : (
             // Sign-up Form
             <>
+              <InputError error={error} />
               <Input.Text
                 title='First Name'
                 placeholder='John'
@@ -208,6 +211,7 @@ export default function SignUp() {
               />
 
               <SubmitButton onClick={handleSignUp}>Create Account</SubmitButton>
+              <GoogleButton text='Sign up with Google' />
             </>
           )}
         </Form>
