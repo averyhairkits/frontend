@@ -4,8 +4,8 @@ import { Icon } from 'assets/icons/icons';
 import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
+import { useCalendarNav } from 'common/contexts/useCalendarNav';
 import 'pages/home/Home.css';
-import { useCalendarNav } from 'pages/home/right/useCalendarNav';
 
 export const CalendarNav = ({ isAdmin }) => {
   const { handlePrevWeek, handleNextWeek } = useCalendarNav();

@@ -3,10 +3,10 @@ import React from 'react';
 import { Icon } from 'assets/icons/icons';
 import PropTypes from 'prop-types';
 
+import useUserList from 'common/contexts/useUserList';
 import 'pages/home/Home.css';
 import NavButtons from 'pages/home/NavButtons';
 import LeftSide from 'pages/home/left/LeftSide';
-import useUserList from 'pages/home/right/useUserList';
 
 import './UserList.css';
 

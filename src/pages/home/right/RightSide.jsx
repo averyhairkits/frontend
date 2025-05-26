@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
+import { useNumVolunteers } from 'common/contexts/useNumVolunteers';
+import { useVolunteerCalendar } from 'common/contexts/useVolunteerCalendar';
 import 'pages/home/Home.css';
 import { AdminCalendarGrid } from 'pages/home/right/AdminCalendarGrid';
 import { CalendarNav } from 'pages/home/right/CalendarNav';
 import { VolunteerCalendarGrid } from 'pages/home/right/VolunteerCalendarGrid';
-import { useNumVolunteers } from 'pages/home/right/useNumVolunteers';
-import { useVolunteerCalendar } from 'pages/home/right/useVolunteerCalendar';
 
 import './VolunteerHome.css';
 

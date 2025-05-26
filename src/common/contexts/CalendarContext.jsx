@@ -76,7 +76,7 @@ const CalendarContextProvider = ({ children, mode }) => {
 
       if (mode === 'admin') {
         try {
-          const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get_slots`);
+          const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/admin/get_slots`);
           const data = await res.json();
 
           const flatSlots = data.weeks.flatMap((week) =>

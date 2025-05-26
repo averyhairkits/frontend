@@ -4,7 +4,7 @@ import { Icon } from 'assets/icons/icons';
 import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
-import { useAdminCalendarGrid } from 'pages/home/right/useAdminCalendarGrid';
+import { useAdminCalendarGrid } from 'common/contexts/useAdminCalendarGrid';
 
 import './AdminHome.css';
 
