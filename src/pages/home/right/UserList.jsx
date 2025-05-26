@@ -84,7 +84,9 @@ const Rows = ({ sortedAllUsers, handleGrant }) => {
             key={i}
             style={{
               backgroundColor:
-                i % 2 === 0 ? 'var(--white)' : 'var(--lightest-gray)',}}>
+                i % 2 === 0 ? 'var(--white)' : 'var(--lightest-gray)',
+            }}
+          >
             <td>
               <h3 className='name'>{user.name}</h3>
             </td>
@@ -125,7 +127,10 @@ const UserList = () => {
         <div className='tableContainer'>
           <table>
             <Header sortHandlers={sortHandlers} />
-            <Rows sortedAllUsers={sortedAllUsers} handleGrant={sortHandlers.handleGrant} />
+            <Rows
+              sortedAllUsers={sortedAllUsers}
+              handleGrant={sortHandlers.handleGrant}
+            />
           </table>
         </div>
       </div>

@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useUser } from './UserContext';
 
 import PropTypes from 'prop-types';
+
+import { useUser } from './UserContext';
 
 function setStartOfWeek(date) {
   if (date.getDay() === 0) {
@@ -47,8 +48,7 @@ const getGridItemTimes = (weekdates, slots) => {
       start: start,
       end: end,
       size: matchingSlot ? matchingSlot.current_size : 0,
- 
-    }
+    };
   }
   return gridItemTimes;
 };
@@ -75,7 +75,9 @@ const CalendarContextProvider = ({ children, mode }) => {
 
       if (mode === 'admin') {
         try {
-          const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/admin/get_slots`);
+          const res = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/admin/get_slots`
+          );
           const data = await res.json();
 
           const flatSlots = data.weeks.flatMap((week) =>
@@ -92,10 +94,12 @@ const CalendarContextProvider = ({ children, mode }) => {
         } catch (err) {
           console.error('Error fetching slots:', err);
         }
-      }
-      else { //volunteer fetch
+      } else {
+        //volunteer fetch
         try {
-          const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get_user_slots?user_id=${user.id}`);
+          const res = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/api/get_user_slots?user_id=${user.id}`
+          );
           const data = await res.json();
 
           const flatSlots = data.weeks.flatMap((week) =>

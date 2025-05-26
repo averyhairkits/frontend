@@ -1,6 +1,8 @@
-import { useUser } from 'common/contexts/UserContext';
 import { useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
+
+import { useUser } from 'common/contexts/UserContext';
 
 export default function RoleRedirect() {
   const { user } = useUser();
@@ -8,8 +10,8 @@ export default function RoleRedirect() {
 
   useEffect(() => {
     if (!user) return;
-    
-    console.log("Redirecting user inside ROLEREDIRECTTT:", user);
+
+    console.log('Redirecting user inside ROLEREDIRECTTT:', user);
 
     if (user.role === 'admin') {
       navigate('/admin-home', { replace: true });

@@ -2,16 +2,16 @@ import { useEffect, useState } from 'react';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useConfirmedTimesContext } from 'common/contexts/ConfirmedTimesContext';
-
 import { useUser } from 'common/contexts/UserContext';
+
 import { useEventEditor } from './useEventEditor';
+
 export const useAdminCalendarGrid = () => {
   const { eventData, isEditing, setIsEditing, ...eventEditor } =
     useEventEditor();
   const [canSave, setCanSave] = useState(false);
   const [selectedSessionToDelete, setSelectedSessionToDelete] = useState(null);
   const [predictedVolunteers, setPredictedVolunteers] = useState([]);
-
 
   const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
   const { weekdates, gridItemTimes } = useCalendarContext();
@@ -20,29 +20,31 @@ export const useAdminCalendarGrid = () => {
   const buildUrl = (endpoint) =>
     `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
 
-
   useEffect(() => {
     const fetchSessions = async () => {
-
       try {
         const res = await fetch(buildUrl(`/admin/get_sessions`));
         const data = await res.json();
 
         if (!res.ok) {
-          console.error('Failed to fetch sessions:', data.error || 'Unknown error');
+          console.error(
+            'Failed to fetch sessions:',
+            data.error || 'Unknown error'
+          );
           return;
         }
-        console.log("admin fetched session here", data);
+        console.log('admin fetched session here', data);
         //assume each session has id, title, start, end, description, status
-        if (data){
-
+        if (data) {
         }
         const parsed = data.sessions.map((s) => ({
           ...s,
           start: new Date(s.start.replace(' ', 'T')), //convert 'YYYY-MM-DD HH:MM:SS' → 'YYYY-MM-DDTHH:MM:SS'
           end: new Date(s.end.replace(' ', 'T')),
           volunteers: s.volunteers || [], // fallback
-          created_by_name: s.created_by_user ? `${s.created_by_user.firstname} ${s.created_by_user.lastname}` : 'Unknown', 
+          created_by_name: s.created_by_user
+            ? `${s.created_by_user.firstname} ${s.created_by_user.lastname}`
+            : 'Unknown',
         }));
 
         setConfirmedTimes(new Set(parsed));
@@ -55,50 +57,54 @@ export const useAdminCalendarGrid = () => {
   }, [user?.id]);
 
   const getStartEndTimesFromEvent = ({ startRow, endRow, col }) => {
-  if (startRow === null || endRow === null || col === null) return { start: null, end: null };
+    if (startRow === null || endRow === null || col === null)
+      return { start: null, end: null };
 
-  const minRow = Math.min(startRow, endRow);
-  const maxRow = Math.max(startRow, endRow);
+    const minRow = Math.min(startRow, endRow);
+    const maxRow = Math.max(startRow, endRow);
 
-  const start = gridItemTimes[getIndex(minRow, col)]?.start || null;
-  const end = gridItemTimes[getIndex(maxRow, col)]?.end || null;
+    const start = gridItemTimes[getIndex(minRow, col)]?.start || null;
+    const end = gridItemTimes[getIndex(maxRow, col)]?.end || null;
 
-  return { start, end };
-};
-
-
-  useEffect(() => {
-  const fetchPredictedVolunteers = async () => {
-    const { start, end } = getStartEndTimesFromEvent(eventData);
-    if (!start || !end) return;
-
-    try {
-      const res = await fetch(buildUrl(`/admin/match_volunteers?start=${start.toISOString()}&end=${end.toISOString()}`));
-      const data = await res.json();
-      //data is {
-      // volunteers: array of objects
-        //object includes volunteer firstname, lastname, id, email
-      //current size: total size of all overlapping parties
-      //}
-
-      if (!res.ok) {
-        console.error('Failed to fetch predicted volunteers:', data.error || 'Unknown error');
-        return;
-      }
-      console.log("here is fetched predicted volunteers data", data)
-      console.log("here are attending volunteers:", data.volunteers)
-
-      setPredictedVolunteers(data.current_size);
-    } catch (err) {
-      console.error('Volunteer match fetch error:', err);
-    }
+    return { start, end };
   };
 
-  fetchPredictedVolunteers();
-}, [eventData.startRow, eventData.endRow, eventData.col]);
+  useEffect(() => {
+    const fetchPredictedVolunteers = async () => {
+      const { start, end } = getStartEndTimesFromEvent(eventData);
+      if (!start || !end) return;
 
+      try {
+        const res = await fetch(
+          buildUrl(
+            `/admin/match_volunteers?start=${start.toISOString()}&end=${end.toISOString()}`
+          )
+        );
+        const data = await res.json();
+        //data is {
+        // volunteers: array of objects
+        //object includes volunteer firstname, lastname, id, email
+        //current size: total size of all overlapping parties
+        //}
 
+        if (!res.ok) {
+          console.error(
+            'Failed to fetch predicted volunteers:',
+            data.error || 'Unknown error'
+          );
+          return;
+        }
+        console.log('here is fetched predicted volunteers data', data);
+        console.log('here are attending volunteers:', data.volunteers);
 
+        setPredictedVolunteers(data.current_size);
+      } catch (err) {
+        console.error('Volunteer match fetch error:', err);
+      }
+    };
+
+    fetchPredictedVolunteers();
+  }, [eventData.startRow, eventData.endRow, eventData.col]);
 
   // Convert grid index to row and column
   const getGridPosition = (i) => {
@@ -149,7 +155,6 @@ export const useAdminCalendarGrid = () => {
   };
 
   const handleMouseUp = () => {
-
     eventData.startRow !== null && setCanSave(true);
     const minRow = Math.min(eventData.startRow, eventData.endRow);
     const maxRow = Math.max(eventData.startRow, eventData.endRow);
@@ -202,38 +207,37 @@ export const useAdminCalendarGrid = () => {
   };
 
   const formatLocalDateTimeForDB = (date) => {
-  if (!date || !(date instanceof Date)) return null;
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-};
+    if (!date || !(date instanceof Date)) return null;
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
 
   const handleSave = async () => {
     const { title, description, startRow, endRow, col, volunteers } = eventData;
     const { start, end } = getStartEndTimesFromEvent(eventData);
     if (!start || !end) return;
-    
+
     const newConfirmedTime = {
       title,
       start: formatLocalDateTimeForDB(start),
       end: formatLocalDateTimeForDB(end),
       description,
-      volunteers: [],
       created_by: user.id,
     };
 
     try {
       const response = await fetch(buildUrl('/admin/approve_request'), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newConfirmedTime),
-        });
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newConfirmedTime),
+      });
       if (!response.ok) {
         const error = await response.json();
         console.error('Request failed:', error);
@@ -245,16 +249,18 @@ export const useAdminCalendarGrid = () => {
         return;
       }
       //const confirmedSessionWithId = { ...newConfirmedTime, id: result.session };
-      
+
       const confirmedSessionWithId = {
         ...newConfirmedTime,
         id: result.session,
         start: new Date(newConfirmedTime.start),
         end: new Date(newConfirmedTime.end),
       };
-      const newConfirmedTimes = new Set([...confirmedTimes, confirmedSessionWithId]);
+      const newConfirmedTimes = new Set([
+        ...confirmedTimes,
+        confirmedSessionWithId,
+      ]);
       setConfirmedTimes(newConfirmedTimes);
-
     } catch (error) {
       console.error('Network error:', error);
     }
@@ -264,24 +270,23 @@ export const useAdminCalendarGrid = () => {
   };
 
   const getEventTime = (row, isStart) => {
-  const timeBlock = gridItemTimes[getIndex(row, 0)];
-  if (!timeBlock) return '--:--';
+    const timeBlock = gridItemTimes[getIndex(row, 0)];
+    if (!timeBlock) return '--:--';
 
-  if (isStart) {
-    if (!timeBlock.start) return '--:--';
-    return timeBlock.start.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  } else {
-    if (!timeBlock.end) return '--:--';
-    return timeBlock.end.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  }
-};
-
+    if (isStart) {
+      if (!timeBlock.start) return '--:--';
+      return timeBlock.start.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } else {
+      if (!timeBlock.end) return '--:--';
+      return timeBlock.end.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    }
+  };
 
   const getEventDate = (s, isDate) => {
     return weekdates[s.col].toLocaleDateString(
@@ -307,47 +312,43 @@ export const useAdminCalendarGrid = () => {
     console.log('Confirmed Times: ', confirmedTimes);
   }, [confirmedTimes]);
 
-
   const handleSessionClick = (session) => {
     setSelectedSessionToDelete(session);
   };
 
+  const confirmDelete = async () => {
+    if (!selectedSessionToDelete?.id) return;
 
+    try {
+      const response = await fetch(
+        buildUrl(`/admin/cancel_request/${selectedSessionToDelete.id}`),
+        { method: 'PUT' }
+      );
 
- const confirmDelete = async () => {
-  if (!selectedSessionToDelete?.id) return;
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('Failed to cancel session:', error);
+        return;
+      }
 
-  try {
-    const response = await fetch(
-      buildUrl(`/admin/cancel_request/${selectedSessionToDelete.id}`),
-      { method: 'PUT' }
-    );
-
-    if (!response.ok) {
-      const error = await response.json();
-      console.error('Failed to cancel session:', error);
-      return;
+      //mark the selected-to-delete section as deleted
+      const updated = new Set(
+        Array.from(confirmedTimes).map((session) =>
+          session.id === selectedSessionToDelete.id
+            ? { ...session, status: 'cancelled' }
+            : session
+        )
+      );
+      setConfirmedTimes(updated);
+      setSelectedSessionToDelete(null);
+    } catch (err) {
+      console.error('Cancel network error:', err);
     }
+  };
 
-    //mark the selected-to-delete section as deleted
-    const updated = new Set(
-      Array.from(confirmedTimes).map((session) =>
-        session.id === selectedSessionToDelete.id
-          ? { ...session, status: 'cancelled' }
-          : session
-      )
-    );
-    setConfirmedTimes(updated);
+  const cancelDelete = () => {
     setSelectedSessionToDelete(null);
-  } catch (err) {
-    console.error('Cancel network error:', err);
-  }
-};
-
-const cancelDelete = () => {
-  setSelectedSessionToDelete(null);
-};
-
+  };
 
   return {
     handleMouseUp,

@@ -21,10 +21,9 @@ export const VolunteerCalendarGrid = ({
       onMouseLeave={handleMouseUp}
       style={{ overflow: 'hidden' }} // differ from admin calendarGrid
     >
-
       {gridItems.map((_, i) => {
         if (!gridItemTimes[i] || !gridItemTimes[i].start) {
-          console.log("gridItemsTimes not found");
+          console.log('gridItemsTimes not found');
           return false;
         }
 
@@ -43,14 +42,13 @@ export const VolunteerCalendarGrid = ({
           return false;
         });
 
-        const itemType = `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'}`.trim();
+        const itemType =
+          `${i % 2 === 0 ? 'calendarGridItemTop' : 'calendarGridItemBottom'}`.trim();
 
         const size = Math.min(gridItemTimes[i].size, 5);
         const isSelected = selectedCells.has(i);
         const backgroundColor =
-          !isSelected && size > 0
-            ? `var(--sign-up-fill-${size})`
-            : undefined;
+          !isSelected && size > 0 ? `var(--sign-up-fill-${size})` : undefined;
 
         return (
           <div

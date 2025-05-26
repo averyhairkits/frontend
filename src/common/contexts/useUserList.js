@@ -9,43 +9,39 @@ export const useUserList = () => {
   useEffect(() => {
     fetchAllUsers();
   }, []);
-const handleGrant = async (user) => {
-  const newRole = user.role === 'admin' ? 'volunteer' : 'admin';
+  const handleGrant = async (user) => {
+    const newRole = user.role === 'admin' ? 'volunteer' : 'admin';
 
-  try {
-    const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/auth/update_role`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ usertoupdate: user }),
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/auth/update_role`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ usertoupdate: user }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        console.error('Server responded with error:', result);
+        throw new Error(result.error || 'Failed to update role');
       }
-    );
 
-    const result = await response.json();
+      setAllUsers((prevUsers) =>
+        prevUsers.map((u) => (u.id === user.id ? { ...u, role: newRole } : u))
+      );
 
-    if (!response.ok) {
-      console.error('Server responded with error:', result);
-      throw new Error(result.error || 'Failed to update role');
+      console.log(`Role changed to ${newRole} for`, user.firstname);
+    } catch (error) {
+      console.error('Error updating role:', error);
+      alert(`Error: ${error.message}`);
     }
-
-    setAllUsers((prevUsers) =>
-      prevUsers.map((u) =>
-        u.id === user.id ? { ...u, role: newRole } : u
-      )
-    );
-
-    console.log(`Role changed to ${newRole} for`, user.firstname);
-  } catch (error) {
-    console.error('Error updating role:', error);
-    alert(`Error: ${error.message}`);
-  }
-};
-
-
+  };
 
   const sortedAllUsers = useMemo(() => {
     const sortedUsers = [...allUsers];

@@ -31,7 +31,7 @@ export const AdminCalendarGrid = () => {
     confirmDelete,
     cancelDelete,
     selectedSessionToDelete,
-    predictedVolunteers
+    predictedVolunteers,
   } = useAdminCalendarGrid();
 
   const renderEventPopup = (eventData) => {
@@ -107,10 +107,12 @@ export const AdminCalendarGrid = () => {
         const maxRow = Math.max(aSelection.startRow, aSelection.endRow);
 
         return (
-          <div key={i} 
+          <div
+            key={i}
             className={`event ${session.status === 'cancelled' ? 'cancelled' : ''}`}
-            style={getSelectionStyle(aSelection)} 
-            onClick={() => handleSessionClick(session)}>
+            style={getSelectionStyle(aSelection)}
+            onClick={() => handleSessionClick(session)}
+          >
             <div className='content'>
               <h1>{session.title || 'New Event'}</h1>
               <h2>
@@ -119,7 +121,11 @@ export const AdminCalendarGrid = () => {
               <h3>{session.description}</h3>
               <div className='numVolunteersContainer'>
                 <Icon.User width='24px' />
-                <h4>{session.volunteers && session.volunteers.length > 0 ? session.volunteers.length : '0'}</h4>
+                <h4>
+                  {session.volunteers && session.volunteers.length > 0
+                    ? session.volunteers.length
+                    : '0'}
+                </h4>
               </div>
             </div>
           </div>
@@ -155,10 +161,10 @@ export const AdminCalendarGrid = () => {
       )}
 
       {selectedSessionToDelete && (
-        <div className="deletePopup">
-          <div className="popupBox">
+        <div className='deletePopup'>
+          <div className='popupBox'>
             <p>Are you sure you want to cancel this session?</p>
-            <div className="popupActions">
+            <div className='popupActions'>
               <button onClick={confirmDelete}>Yes</button>
               <button onClick={cancelDelete}>No</button>
             </div>

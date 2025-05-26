@@ -46,7 +46,6 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     });
   };
 
-
   // handleMouseDown, handleMouseEnter, and handleMouseUp
   // manage click and drag functions
 
@@ -66,31 +65,34 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     isDragging.current = false;
   };
 
-  
   const handleSave = async () => {
-
     setJustSaved(true);
     setCanSave(false);
     setPrevSelectedCells(new Map(selectedCells)); // saved cells are now fixed until next save
 
-    const selectedTimestamps = Array.from(selectedCells.entries()).filter(([index, size]) => {
-      // Only include if this cell is new or its size changed
-      return !prevSelectedCells.has(index) || prevSelectedCells.get(index) !== size;
-    }).map(([index, size]) => {
-      const item = gridItemTimes[index];
-      if (!item?.start) return null;
+    const selectedTimestamps = Array.from(selectedCells.entries())
+      .filter(([index, size]) => {
+        // Only include if this cell is new or its size changed
+        return (
+          !prevSelectedCells.has(index) || prevSelectedCells.get(index) !== size
+        );
+      })
+      .map(([index, size]) => {
+        const item = gridItemTimes[index];
+        if (!item?.start) return null;
 
-      const offsetMs = item.start.getTimezoneOffset() * 60000;
-      const isoTime = new Date(item.start.getTime() - offsetMs).toISOString();
+        const offsetMs = item.start.getTimezoneOffset() * 60000;
+        const isoTime = new Date(item.start.getTime() - offsetMs).toISOString();
 
-      return {
-        slot_time: isoTime,
-        request_size: size,
-        user_id: user.id,
-      };
-    }).filter(Boolean);
+        return {
+          slot_time: isoTime,
+          request_size: size,
+          user_id: user.id,
+        };
+      })
+      .filter(Boolean);
 
-    console.log("selected timestamps", selectedTimestamps);
+    console.log('selected timestamps', selectedTimestamps);
     console.log(typeof selectedTimestamps);
 
     try {
@@ -105,19 +107,21 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
           reqTimes: selectedTimestamps,
         }),
       });
-  
+
       if (!response.ok) {
         const error = await response.json();
         console.error('Request failed:', error);
         return;
       }
       const result = await response.json();
-      console.log('Successfully submitted slot request from inside handleSave:', result);
+      console.log(
+        'Successfully submitted slot request from inside handleSave:',
+        result
+      );
     } catch (error) {
       console.error('Network error:', error);
     }
   };
-
 
   useEffect(() => {
     // filter savedTimes to only include times that are in weekDates
@@ -144,7 +148,6 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     }
   }, [weekdates, savedTimes]);
 
-
   // keep checking if current selected cells are different from last saved cells
   useEffect(() => {
     !justSaved && selectedCellsChanged() ? setCanSave(true) : setCanSave(false);
@@ -162,7 +165,7 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
         numPeople: numPeople,
       });
     });
-    
+
     // keep savedTimes the same, but remove all times that are in the current week, and add newlySavedTimes instead
     const filteredOldTimes = Array.from(savedTimes).filter(
       (savedDate) =>
@@ -174,9 +177,6 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
 
     setSavedTimes(new Set([...filteredOldTimes, ...newlySavedTimes]));
   }, [prevSelectedCells]);
-
-
-
 
   return {
     selectedCells,
