@@ -147,7 +147,7 @@ export const AdminCalendarGrid = () => {
             </h2>
             <div className='numVolunteersContainer'>
               <Icon.User width='24px' />
-              <h4>{predictedVolunteers?.length ?? 0}</h4>
+              <h4>{predictedVolunteers ?? 0}</h4>
             </div>
           </div>
           {isEditing && renderEventPopup(eventData)}

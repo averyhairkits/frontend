@@ -67,7 +67,6 @@ export const useAdminCalendarGrid = () => {
 };
 
 
-  
   useEffect(() => {
   const fetchPredictedVolunteers = async () => {
     const { start, end } = getStartEndTimesFromEvent(eventData);
@@ -76,14 +75,20 @@ export const useAdminCalendarGrid = () => {
     try {
       const res = await fetch(buildUrl(`/admin/match_volunteers?start=${start.toISOString()}&end=${end.toISOString()}`));
       const data = await res.json();
+      //data is {
+      // volunteers: array of objects
+        //object includes volunteer firstname, lastname, id, email
+      //current size: total size of all overlapping parties
+      //}
 
       if (!res.ok) {
         console.error('Failed to fetch predicted volunteers:', data.error || 'Unknown error');
         return;
       }
       console.log("here is fetched predicted volunteers data", data)
+      console.log("here are attending volunteers:", data.volunteers)
 
-      setPredictedVolunteers(data.current_size || []);
+      setPredictedVolunteers(data.current_size);
     } catch (err) {
       console.error('Volunteer match fetch error:', err);
     }
@@ -91,6 +96,8 @@ export const useAdminCalendarGrid = () => {
 
   fetchPredictedVolunteers();
 }, [eventData.startRow, eventData.endRow, eventData.col]);
+
+
 
 
   // Convert grid index to row and column
@@ -149,7 +156,7 @@ export const useAdminCalendarGrid = () => {
 
     const hasOverlap = filteredConfirmedTimes.some((confirmedTime) => {
       if (confirmedTime.status === 'cancelled') return false;
-      
+
       const confirmedSelection = dateToRowCol(confirmedTime);
 
       return (
