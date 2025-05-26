@@ -81,8 +81,9 @@ export const useAdminCalendarGrid = () => {
         console.error('Failed to fetch predicted volunteers:', data.error || 'Unknown error');
         return;
       }
+      console.log("here is fetched predicted volunteers data", data)
 
-      setPredictedVolunteers(data.volunteers || []);
+      setPredictedVolunteers(data.current_size || []);
     } catch (err) {
       console.error('Volunteer match fetch error:', err);
     }
@@ -90,7 +91,6 @@ export const useAdminCalendarGrid = () => {
 
   fetchPredictedVolunteers();
 }, [eventData.startRow, eventData.endRow, eventData.col]);
-
 
 
   // Convert grid index to row and column
@@ -147,8 +147,6 @@ export const useAdminCalendarGrid = () => {
     const maxRow = Math.max(eventData.startRow, eventData.endRow);
 
     const hasOverlap = filteredConfirmedTimes.some((confirmedTime) => {
-
-      console.log("Placing session:", confirmedTime.title, confirmedTime.start, typeof confirmedTime.start);
       const confirmedSelection = dateToRowCol(confirmedTime);
 
       return (
@@ -360,5 +358,6 @@ const cancelDelete = () => {
     confirmDelete,
     cancelDelete,
     selectedSessionToDelete,
+    predictedVolunteers,
   };
 };

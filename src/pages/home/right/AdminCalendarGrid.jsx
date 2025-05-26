@@ -31,6 +31,7 @@ export const AdminCalendarGrid = () => {
     confirmDelete,
     cancelDelete,
     selectedSessionToDelete,
+    predictedVolunteers
   } = useAdminCalendarGrid();
 
   const renderEventPopup = (eventData) => {
@@ -146,7 +147,7 @@ export const AdminCalendarGrid = () => {
             </h2>
             <div className='numVolunteersContainer'>
               <Icon.User width='24px' />
-              <h4>{eventData.volunteers.length}</h4>
+              <h4>{predictedVolunteers}</h4>
             </div>
           </div>
           {isEditing && renderEventPopup(eventData)}
