@@ -1,6 +1,8 @@
-import { Icon } from 'assets/icons/icons';
-import { useLeftLog } from 'common/contexts/useLeftLog';
 import React from 'react';
+
+import { Icon } from 'assets/icons/icons';
+
+import { useLeftLog } from 'common/contexts/useLeftLog';
 
 export default function LeftLog() {
   const activityLog = useLeftLog();
@@ -17,7 +19,10 @@ export default function LeftLog() {
   const formatTimeRange = (start, end) => {
     const options = { weekday: 'short', hour: '2-digit', minute: '2-digit' };
     const startStr = start.toLocaleString('en-US', options);
-    const endStr = end.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const endStr = end.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
     return `${startStr} - ${endStr}`;
   };
 
@@ -29,10 +34,13 @@ export default function LeftLog() {
       <div className='details'>
         {Object.values(grouped).map(({ user, action, sessions }, i) => (
           <div key={i}>
-            <p>{user} {action} the following sessions:</p>
             <ul>
-              {sessions.map(({ start, end }, j) => (
-                <li key={j}>{formatTimeRange(start, end)}</li>
+              {[...sessions].reverse().map(({ start, end }, j) => (
+                <div key={j}>
+                  <li>
+                    {user} {action} the session: {formatTimeRange(start, end)}
+                  </li>
+                </div>
               ))}
             </ul>
           </div>
