@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useAdminCalendarGrid } from 'common/contexts/useAdminCalendarGrid';
+import { Tooltip } from './Tooltip';
 
 import './AdminHome.css';
 
@@ -35,6 +36,9 @@ export const AdminCalendarGrid = () => {
     loadingSessions
   } = useAdminCalendarGrid();
   
+  const [openTooltipIndex, setOpenTooltipIndex] = React.useState(null);
+
+
   if (loadingSessions) {
     return (
       <div className="page loading">
@@ -125,18 +129,43 @@ export const AdminCalendarGrid = () => {
             onClick={() => handleSessionClick(session)}
           >
             <div className='content'>
-              <h1>{session.title || 'New Event'}</h1>
-              <h2>
-                {getEventTime(minRow, true)} - {getEventTime(maxRow, false)}
-              </h2>
-              <h3>{session.description}</h3>
+              <div className='contentInner'>
+                <h1>{session.title || 'New Event'}</h1>
+                <h2>
+                  {getEventTime(minRow, true)} - {getEventTime(maxRow, false)}
+                </h2>
+                <h3>{session.description}</h3>
+              </div>
               <div className='numVolunteersContainer'>
-                <Icon.User width='24px' />
-                <h4>
-                  {session.current_size && session.current_size > 0
-                    ? session.current_size
-                    : '0'}
-                </h4>
+                <div className="volunteerTooltip"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenTooltipIndex(openTooltipIndex === i ? null : i);
+                  }}
+                >
+                  <Icon.User width="24px" />
+                  <h4>{session.current_size ?? '0'}</h4>
+
+                  <Tooltip
+                    isOpen={openTooltipIndex === i}
+                    content={
+                      session.volunteers?.length ? (
+                        <>
+                          <strong>Contacts:</strong>
+                          <ul>
+                            {session.volunteers.map((v) => (
+                              <li key={v.id}>
+                                {v.firstname} {v.lastname} – {v.email}
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                      ) : (
+                        <span>No volunteers</span>
+                      )
+                    }
+                  />
+                </div>
               </div>
             </div>
           </div>

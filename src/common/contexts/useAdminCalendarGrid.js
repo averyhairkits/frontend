@@ -86,11 +86,6 @@ export const useAdminCalendarGrid = () => {
           )
         );
         const data = await res.json();
-        //data is {
-        // volunteers: array of objects
-        //object includes volunteer firstname, lastname, id, email
-        //current size: total size of all overlapping parties
-        //}
 
         if (!res.ok) {
           console.error(

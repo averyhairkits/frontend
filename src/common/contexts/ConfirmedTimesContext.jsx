@@ -9,8 +9,11 @@ const ConfirmedTimesContextProvider = ({ children }) => {
   const [confirmedTimes, setConfirmedTimes] = useState(new Set());
 
   useEffect(() => {
-    console.log('Updated all confirmed times: ', confirmedTimes);
-  }, [confirmedTimes]);
+  const confirmedOnly = Array.from(confirmedTimes).filter(
+    (s) => s.status === 'confirmed'
+  );
+  console.log('Confirmed sessions:', confirmedOnly);
+}, [confirmedTimes]);
 
   return (
     <ConfirmedTimesContext.Provider
@@ -35,5 +38,6 @@ const useConfirmedTimesContext = () => {
 export {
   ConfirmedTimesContext,
   ConfirmedTimesContextProvider,
-  useConfirmedTimesContext,
+  useConfirmedTimesContext
 };
+

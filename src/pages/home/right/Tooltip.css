@@ -1,0 +1,40 @@
+
+.volunteerTooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.tooltipText {
+  position: absolute;
+  bottom: 105%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+
+  background-color: var(--purple1);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: normal;
+  width: max-content;
+  min-width: 150px;
+  max-width: 250px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+  text-align: left; 
+}
+
+.tooltipText ul {
+  margin: 8px 0 0;
+  padding-left: 1.5em;
+}
+
+.tooltipText li {
+  list-style: disc;
+  margin-bottom: 4px;
+  word-break: break-word;
+}

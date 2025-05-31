@@ -11,6 +11,7 @@ import 'pages/home/Home.css';
 import { AdminCalendarGrid } from 'pages/home/right/AdminCalendarGrid';
 import { CalendarNav } from 'pages/home/right/CalendarNav';
 import { VolunteerCalendarGrid } from 'pages/home/right/VolunteerCalendarGrid';
+import { Tooltip } from './Tooltip';
 
 import './VolunteerHome.css';
 
