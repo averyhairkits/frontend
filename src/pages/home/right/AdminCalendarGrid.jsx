@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useAdminCalendarGrid } from 'common/contexts/useAdminCalendarGrid';
-import { Tooltip } from './Tooltip';
 
 import './AdminHome.css';
+import { Tooltip } from './Tooltip';
 
 export const AdminCalendarGrid = () => {
   const { gridItemTimes } = useCalendarContext();
@@ -33,15 +33,14 @@ export const AdminCalendarGrid = () => {
     cancelDelete,
     selectedSessionToDelete,
     predictedVolunteers,
-    loadingSessions
+    loadingSessions,
   } = useAdminCalendarGrid();
-  
-  const [openTooltipIndex, setOpenTooltipIndex] = React.useState(null);
 
+  const [openTooltipIndex, setOpenTooltipIndex] = React.useState(null);
 
   if (loadingSessions) {
     return (
-      <div className="page loading">
+      <div className='page loading'>
         <p style={{ textAlign: 'center', padding: '2rem' }}>
           Loading sessions...
         </p>
@@ -137,13 +136,14 @@ export const AdminCalendarGrid = () => {
                 <h3>{session.description}</h3>
               </div>
               <div className='numVolunteersContainer'>
-                <div className="volunteerTooltip"
+                <div
+                  className='volunteerTooltip'
                   onClick={(e) => {
                     e.stopPropagation();
                     setOpenTooltipIndex(openTooltipIndex === i ? null : i);
                   }}
                 >
-                  <Icon.User width="24px" />
+                  <Icon.User width='24px' />
                   <h4>{session.current_size ?? '0'}</h4>
 
                   <Tooltip
@@ -194,7 +194,6 @@ export const AdminCalendarGrid = () => {
             <div className='numVolunteersContainer'>
               <Icon.User width='24px' />
               <h4>{predictedVolunteers?.current_size ?? 0}</h4>
-
             </div>
           </div>
           {isEditing && renderEventPopup(eventData)}

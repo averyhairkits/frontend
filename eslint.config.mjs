@@ -44,6 +44,9 @@ export default [
   importPlugin.flatConfigs.errors,
   {
     settings: {
+      react: {
+        version: '19.0.0',
+      },
       'import/resolver': {
         node: {
           paths: ['src'],

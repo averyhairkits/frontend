@@ -1,11 +1,11 @@
-div[style="color: red"] {
+div[style='color: red'] {
   text-align: center;
   font-size: 24px;
 }
 
 .leftSection {
   background-color: var(--purple1);
-  
+
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -29,7 +29,10 @@ div[style="color: red"] {
   justify-content: space-between;
 }
 
-.white-bg p, .white-bg ul, .white-bg ol, .white-bg li {
+.white-bg p,
+.white-bg ul,
+.white-bg ol,
+.white-bg li {
   color: var(--dark-gray);
   margin: 0px;
 }
@@ -46,7 +49,8 @@ div[style="color: red"] {
   gap: 1px;
 }
 
-.white-bg ul, .white-bg ol {
+.white-bg ul,
+.white-bg ol {
   padding-left: 25px;
 }
 /* bullet-point */
@@ -80,14 +84,14 @@ div[style="color: red"] {
 
 .title {
   display: flex;
-  align-items: center; 
-  font-size: 27px; 
+  align-items: center;
+  font-size: 27px;
   font-weight: bold;
   color: var(--white);
 }
 
 .logo-container img {
-  width: 150px; 
+  width: 150px;
   background-color: none;
 }
 
@@ -112,7 +116,6 @@ div[style="color: red"] {
   gap: 5px;
 }
 
-
 .log-entry .i {
   padding-top: 0px;
   margin-top: 0px;
@@ -121,7 +124,7 @@ div[style="color: red"] {
 }
 
 .how-to-title {
-  color: var(--purple1); 
+  color: var(--purple1);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -130,7 +133,7 @@ div[style="color: red"] {
 /* Calendar Styling */
 
 .react-calendar {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--white);
   border-radius: 10px;
   padding: 10px;
@@ -244,7 +247,7 @@ div[style="color: red"] {
 .react-calendar__tile.underline2::after,
 .react-calendar__tile.underlineBoth::before,
 .react-calendar__tile.underlineBoth::after {
-  content: "";
+  content: '';
   width: 19px;
   height: 3px;
   position: absolute;
@@ -277,7 +280,7 @@ div[style="color: red"] {
   flex-direction: column;
   gap: 10px;
 
-  max-height: 100px; 
+  max-height: 100px;
   overflow-y: auto;
-  padding-right: 7px; 
+  padding-right: 7px;
 }

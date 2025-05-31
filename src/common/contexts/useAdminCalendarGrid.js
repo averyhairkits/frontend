@@ -15,7 +15,7 @@ export const useAdminCalendarGrid = () => {
 
   const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
   const { weekdates, gridItemTimes } = useCalendarContext();
-  const [loadingSessions, setLoadingSessions] = useState(true); 
+  const [loadingSessions, setLoadingSessions] = useState(true);
   const { user } = useUser();
 
   const buildUrl = (endpoint) =>
@@ -23,7 +23,7 @@ export const useAdminCalendarGrid = () => {
 
   useEffect(() => {
     const fetchSessions = async () => {
-      setLoadingSessions(true); 
+      setLoadingSessions(true);
       try {
         const res = await fetch(buildUrl(`/admin/get_sessions`));
         const data = await res.json();
@@ -37,8 +37,6 @@ export const useAdminCalendarGrid = () => {
         }
         console.log('admin fetched session here', data);
         //assume each session has id, title, start, end, description, status
-        if (data) {
-        }
         const parsed = data.sessions.map((s) => ({
           ...s,
           start: new Date(s.start.replace(' ', 'T')), //convert 'YYYY-MM-DD HH:MM:SS' → 'YYYY-MM-DDTHH:MM:SS'
@@ -101,7 +99,6 @@ export const useAdminCalendarGrid = () => {
           current_size: data.current_size,
           volunteers: data.volunteers,
         });
-
       } catch (err) {
         console.error('Volunteer match fetch error:', err);
       }
@@ -222,7 +219,7 @@ export const useAdminCalendarGrid = () => {
   };
 
   const handleSave = async () => {
-    const { title, description, startRow, endRow, col, volunteers } = eventData;
+    const { title, description } = eventData;
     const { start, end } = getStartEndTimesFromEvent(eventData);
     if (!start || !end) return;
 
@@ -235,7 +232,6 @@ export const useAdminCalendarGrid = () => {
       volunteers: predictedVolunteers.volunteers || [],
       current_size: predictedVolunteers.current_size || 0,
     };
-
 
     try {
       const response = await fetch(buildUrl('/admin/approve_request'), {
@@ -255,7 +251,7 @@ export const useAdminCalendarGrid = () => {
         console.error('No session ID returned from backend');
         return;
       }
-       const confirmedSessionWithId = {
+      const confirmedSessionWithId = {
         id: result.session,
         title,
         description,
@@ -267,15 +263,11 @@ export const useAdminCalendarGrid = () => {
         status: 'confirmed',
       };
 
-
-
       const newConfirmedTimes = new Set([
         ...confirmedTimes,
         confirmedSessionWithId,
       ]);
       setConfirmedTimes(newConfirmedTimes);
-  
-
     } catch (error) {
       console.error('Network error:', error);
     }

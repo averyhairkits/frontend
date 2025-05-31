@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
-import GoogleButton from 'common/components/GoogleButton';
 import { Form } from 'common/components/form/Form';
 import { Input } from 'common/components/form/Input';
 import SubmitButton from 'common/components/form/SubmitButton';
@@ -44,7 +43,7 @@ export default function SignUp() {
   const [isSignIn, setIsSignIn] = useState(true);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login, googleAuth } = useUser();
+  const { login } = useUser();
 
   const [formState, setFormState] = useState({
     firstname: '',
@@ -120,14 +119,6 @@ export default function SignUp() {
     }
   };
 
-  // const handleGoogleLogin = async () => {
-  //   try {
-  //     await googleAuth();
-  //   } catch (error) {
-  //     setError(error.message);
-  //   }
-  // };
-
   return (
     <StyledPage>
       <LeftSide>
@@ -172,7 +163,6 @@ export default function SignUp() {
                 onChange={handleChange}
               />
               <SubmitButton onClick={handleSignIn}>Sign in</SubmitButton>
-              <GoogleButton text='Sign in with Google' />
             </>
           ) : (
             // Sign-up Form
@@ -211,7 +201,6 @@ export default function SignUp() {
               />
 
               <SubmitButton onClick={handleSignUp}>Create Account</SubmitButton>
-              <GoogleButton text='Sign up with Google' />
             </>
           )}
         </Form>

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useCalendarContext } from './CalendarContext';
 import { useConfirmedTimesContext } from './ConfirmedTimesContext';
 import { useSavedTimesContext } from './SavedTimesContext';
-
 import { useUser } from './UserContext';
 
 export const useVolunteerCalendar = ({ numVolunteers }) => {
@@ -145,10 +144,6 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     });
 
     setSelectedCells(newMap);
-
-    if (justSaved) {
-      const timesArray = Array.from(savedTimes);
-    }
   }, [weekdates, savedTimes]);
 
   // keep checking if current selected cells are different from last saved cells
@@ -181,38 +176,36 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
     setSavedTimes(new Set([...filteredOldTimes, ...newlySavedTimes]));
   }, [prevSelectedCells]);
 
-
   useEffect(() => {
-  const fetchConfirmedSessions = async () => {
-    if (!user?.id) return;
+    const fetchConfirmedSessions = async () => {
+      if (!user?.id) return;
 
-    try {
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/api/get_user_sessions?user_id=${user.id}`
-      );
-      const data = await res.json();
+      try {
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/api/get_user_sessions?user_id=${user.id}`
+        );
+        const data = await res.json();
 
-      if (data.sessions) {
-        const parsed = data.sessions.map((entry) => {
-          const s = entry.sessions;
-          return {
-            ...s,
-            start: new Date(s.start),
-            end: new Date(s.end),
-          };
-        });
+        if (data.sessions) {
+          const parsed = data.sessions.map((entry) => {
+            const s = entry.sessions;
+            return {
+              ...s,
+              start: new Date(s.start),
+              end: new Date(s.end),
+            };
+          });
 
-        setConfirmedTimes(new Set(parsed));
-        console.log('setConfirmedTimes with new sessions');
+          setConfirmedTimes(new Set(parsed));
+          console.log('setConfirmedTimes with new sessions');
+        }
+      } catch (err) {
+        console.error('Error fetching confirmed sessions:', err);
       }
-    } catch (err) {
-      console.error('Error fetching confirmed sessions:', err);
-    }
-  };
+    };
 
-  fetchConfirmedSessions();
-}, [user?.id]);
-
+    fetchConfirmedSessions();
+  }, [user?.id]);
 
   return {
     selectedCells,
