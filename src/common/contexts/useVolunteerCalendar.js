@@ -2,7 +2,9 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { useCalendarContext } from './CalendarContext';
+import { useConfirmedTimesContext } from './ConfirmedTimesContext';
 import { useSavedTimesContext } from './SavedTimesContext';
+
 import { useUser } from './UserContext';
 
 export const useVolunteerCalendar = ({ numVolunteers }) => {
@@ -18,6 +20,7 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
   const { weekdates, gridItemTimes } = useCalendarContext();
   const [selectedCells, setSelectedCells] = useState(new Map()); // contains one week
   const { user } = useUser();
+  const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
 
   // check if availability is different compared to last save for
   // toggling save button clickability
@@ -177,6 +180,39 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
 
     setSavedTimes(new Set([...filteredOldTimes, ...newlySavedTimes]));
   }, [prevSelectedCells]);
+
+
+  useEffect(() => {
+  const fetchConfirmedSessions = async () => {
+    if (!user?.id) return;
+
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/get_user_sessions?user_id=${user.id}`
+      );
+      const data = await res.json();
+
+      if (data.sessions) {
+        const parsed = data.sessions.map((entry) => {
+          const s = entry.sessions;
+          return {
+            ...s,
+            start: new Date(s.start),
+            end: new Date(s.end),
+          };
+        });
+
+        setConfirmedTimes(new Set(parsed));
+        console.log('setConfirmedTimes with new sessions');
+      }
+    } catch (err) {
+      console.error('Error fetching confirmed sessions:', err);
+    }
+  };
+
+  fetchConfirmedSessions();
+}, [user?.id]);
+
 
   return {
     selectedCells,

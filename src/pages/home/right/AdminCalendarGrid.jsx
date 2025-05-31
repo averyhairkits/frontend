@@ -32,7 +32,18 @@ export const AdminCalendarGrid = () => {
     cancelDelete,
     selectedSessionToDelete,
     predictedVolunteers,
+    loadingSessions
   } = useAdminCalendarGrid();
+  
+  if (loadingSessions) {
+    return (
+      <div className="page loading">
+        <p style={{ textAlign: 'center', padding: '2rem' }}>
+          Loading sessions...
+        </p>
+      </div>
+    );
+  }
 
   const renderEventPopup = (eventData) => {
     const minRow = Math.min(eventData.startRow, eventData.endRow);
@@ -122,8 +133,8 @@ export const AdminCalendarGrid = () => {
               <div className='numVolunteersContainer'>
                 <Icon.User width='24px' />
                 <h4>
-                  {session.volunteers && session.volunteers.length > 0
-                    ? session.volunteers.length
+                  {session.current_size && session.current_size > 0
+                    ? session.current_size
                     : '0'}
                 </h4>
               </div>
@@ -153,7 +164,8 @@ export const AdminCalendarGrid = () => {
             </h2>
             <div className='numVolunteersContainer'>
               <Icon.User width='24px' />
-              <h4>{predictedVolunteers ?? 0}</h4>
+              <h4>{predictedVolunteers?.current_size ?? 0}</h4>
+
             </div>
           </div>
           {isEditing && renderEventPopup(eventData)}
