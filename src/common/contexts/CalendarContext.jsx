@@ -95,7 +95,7 @@ const CalendarContextProvider = ({ children, mode }) => {
           console.error('Error fetching slots:', err);
         }
       } else {
-        //volunteer fetch
+        //volunteer fetch previous slots
         try {
           const res = await fetch(
             `${process.env.REACT_APP_BACKEND_URL}/api/get_user_slots?user_id=${user.id}`

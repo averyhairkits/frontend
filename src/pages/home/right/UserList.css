@@ -7,7 +7,7 @@ h3 {
 }
 
 .tableContainer {
-  max-height: 85vh; 
+  max-height: 85vh;
   overflow-y: auto;
   border-radius: 10px;
   border: 1px solid var(--purple1);
@@ -50,12 +50,14 @@ table button {
   cursor: pointer;
 }
 
-th, td {
+th,
+td {
   box-sizing: border-box;
   padding: 13px;
   overflow-x: hidden;
 }
-th:hover, td:hover {
+th:hover,
+td:hover {
   overflow-x: auto;
 }
 
@@ -78,7 +80,7 @@ th.adminColumn {
   justify-content: center;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   width: 25%;
   aspect-ratio: 1 / 1;
   accent-color: var(--purple1);

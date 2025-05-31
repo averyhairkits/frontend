@@ -15,6 +15,7 @@ export const useAdminCalendarGrid = () => {
 
   const { confirmedTimes, setConfirmedTimes } = useConfirmedTimesContext();
   const { weekdates, gridItemTimes } = useCalendarContext();
+  const [loadingSessions, setLoadingSessions] = useState(true);
   const { user } = useUser();
 
   const buildUrl = (endpoint) =>
@@ -22,6 +23,7 @@ export const useAdminCalendarGrid = () => {
 
   useEffect(() => {
     const fetchSessions = async () => {
+      setLoadingSessions(true);
       try {
         const res = await fetch(buildUrl(`/admin/get_sessions`));
         const data = await res.json();
@@ -35,12 +37,11 @@ export const useAdminCalendarGrid = () => {
         }
         console.log('admin fetched session here', data);
         //assume each session has id, title, start, end, description, status
-        if (data) {
-        }
         const parsed = data.sessions.map((s) => ({
           ...s,
           start: new Date(s.start.replace(' ', 'T')), //convert 'YYYY-MM-DD HH:MM:SS' → 'YYYY-MM-DDTHH:MM:SS'
           end: new Date(s.end.replace(' ', 'T')),
+          current_size: s.volunteer_count || 0,
           volunteers: s.volunteers || [], // fallback
           created_by_name: s.created_by_user
             ? `${s.created_by_user.firstname} ${s.created_by_user.lastname}`
@@ -50,6 +51,8 @@ export const useAdminCalendarGrid = () => {
         setConfirmedTimes(new Set(parsed));
       } catch (err) {
         console.error('Fetch sessions network error:', err);
+      } finally {
+        setLoadingSessions(false); // after all
       }
     };
 
@@ -81,11 +84,6 @@ export const useAdminCalendarGrid = () => {
           )
         );
         const data = await res.json();
-        //data is {
-        // volunteers: array of objects
-        //object includes volunteer firstname, lastname, id, email
-        //current size: total size of all overlapping parties
-        //}
 
         if (!res.ok) {
           console.error(
@@ -97,7 +95,10 @@ export const useAdminCalendarGrid = () => {
         console.log('here is fetched predicted volunteers data', data);
         console.log('here are attending volunteers:', data.volunteers);
 
-        setPredictedVolunteers(data.current_size);
+        setPredictedVolunteers({
+          current_size: data.current_size,
+          volunteers: data.volunteers,
+        });
       } catch (err) {
         console.error('Volunteer match fetch error:', err);
       }
@@ -218,7 +219,7 @@ export const useAdminCalendarGrid = () => {
   };
 
   const handleSave = async () => {
-    const { title, description, startRow, endRow, col, volunteers } = eventData;
+    const { title, description } = eventData;
     const { start, end } = getStartEndTimesFromEvent(eventData);
     if (!start || !end) return;
 
@@ -228,6 +229,8 @@ export const useAdminCalendarGrid = () => {
       end: formatLocalDateTimeForDB(end),
       description,
       created_by: user.id,
+      volunteers: predictedVolunteers.volunteers || [],
+      current_size: predictedVolunteers.current_size || 0,
     };
 
     try {
@@ -248,14 +251,18 @@ export const useAdminCalendarGrid = () => {
         console.error('No session ID returned from backend');
         return;
       }
-      //const confirmedSessionWithId = { ...newConfirmedTime, id: result.session };
-
       const confirmedSessionWithId = {
-        ...newConfirmedTime,
         id: result.session,
-        start: new Date(newConfirmedTime.start),
-        end: new Date(newConfirmedTime.end),
+        title,
+        description,
+        start: new Date(start),
+        end: new Date(end),
+        created_by: user.id,
+        volunteers: predictedVolunteers.volunteers || [],
+        current_size: predictedVolunteers.current_size || 0,
+        status: 'confirmed',
       };
+
       const newConfirmedTimes = new Set([
         ...confirmedTimes,
         confirmedSessionWithId,
@@ -372,5 +379,6 @@ export const useAdminCalendarGrid = () => {
     cancelDelete,
     selectedSessionToDelete,
     predictedVolunteers,
+    loadingSessions,
   };
 };

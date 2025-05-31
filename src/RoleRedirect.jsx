@@ -11,8 +11,6 @@ export default function RoleRedirect() {
   useEffect(() => {
     if (!user) return;
 
-    console.log('Redirecting user inside ROLEREDIRECTTT:', user);
-
     if (user.role === 'admin') {
       navigate('/admin-home', { replace: true });
     } else {
