@@ -28,10 +28,17 @@ LoginInputError.propTypes = {
 };
 
 const InputError = ({ error }) => {
-  if (error && error.includes('Email') && error.includes('are required')) {
+  if (!error) return null;
+
+  if (error.includes('Email') && error.includes('are required')) {
     return <p className='errorMessage'>* All fields are required *</p>;
   }
-  return;
+
+  if (error.toLowerCase().includes('duplicate') || error.toLowerCase().includes('already')) {
+    return <p className='errorMessage'>* An account with this email already exists *</p>;
+  }
+
+  return null;
 };
 
 InputError.propTypes = {
@@ -86,18 +93,25 @@ export default function SignUp() {
         throw new Error(data.error || 'Failed to create account');
       }
       alert(
-        'Account created successfully! Please check your email to verify your account.'
+        'Account created successfully! Please reload the page to sign in.'
       );
       navigate('/', {
         state: {
           message:
-            'Account created successfully! Please check your email to verify your account.',
+            'Account created successfully! Please reload the page to sign in.',
         },
       });
     } catch (error) {
       console.error('Signup error:', error);
-      setError(error.message || 'Failed to create account. Please try again.');
-    } finally {
+
+      const message = error.message || '';
+
+      if (message.includes('duplicate') || message.includes('already registered')) {
+        setError('An account with this email already exists.');
+      } else {
+        setError('Failed to create account. Please try again.');
+      }
+    }finally {
       setIsLoading(false);
     }
   };
