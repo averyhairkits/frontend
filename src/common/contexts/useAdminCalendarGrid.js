@@ -22,6 +22,7 @@ export const useAdminCalendarGrid = () => {
     `${process.env.REACT_APP_BACKEND_URL.replace(/\/$/, '')}${endpoint}`;
 
   useEffect(() => {
+    if (!user?.id) return;
     const fetchSessions = async () => {
       setLoadingSessions(true);
       try {
@@ -57,7 +58,7 @@ export const useAdminCalendarGrid = () => {
     };
 
     fetchSessions();
-  }, [user?.id]);
+  }, [user]);
 
   const getStartEndTimesFromEvent = ({ startRow, endRow, col }) => {
     if (startRow === null || endRow === null || col === null)
