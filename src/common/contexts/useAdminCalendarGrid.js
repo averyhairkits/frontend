@@ -77,12 +77,13 @@ export const useAdminCalendarGrid = () => {
   useEffect(() => {
     const fetchPredictedVolunteers = async () => {
       const { start, end } = getStartEndTimesFromEvent(eventData);
+
       if (!start || !end) return;
 
       try {
         const res = await fetch(
           buildUrl(
-            `/admin/match_volunteers?start=${start.toISOString()}&end=${end.toISOString()}`
+            `/admin/match_volunteers?start=${encodeURIComponent(formatLocalDateTimeForDB(start))}&end=${encodeURIComponent(formatLocalDateTimeForDB(end))}`
           )
         );
         const data = await res.json();
