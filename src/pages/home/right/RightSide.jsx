@@ -1,16 +1,16 @@
 import React from 'react';
 
 import { Icon } from 'assets/icons/icons.js';
-import PropTypes from 'prop-types';
-
 import { useCalendarContext } from 'common/contexts/CalendarContext';
 import { useSavedTimesContext } from 'common/contexts/SavedTimesContext';
 import { useNumVolunteers } from 'common/contexts/useNumVolunteers';
+import { useUser } from 'common/contexts/UserContext';
 import { useVolunteerCalendar } from 'common/contexts/useVolunteerCalendar';
 import 'pages/home/Home.css';
 import { AdminCalendarGrid } from 'pages/home/right/AdminCalendarGrid';
 import { CalendarNav } from 'pages/home/right/CalendarNav';
 import { VolunteerCalendarGrid } from 'pages/home/right/VolunteerCalendarGrid';
+import PropTypes from 'prop-types';
 
 import './VolunteerHome.css';
 
@@ -126,6 +126,8 @@ Save.propTypes = {
 };
 
 const RightSide = ({ isAdmin }) => {
+  const { user } = useUser();
+   
   const { weekdates, gridItemTimes, todaysDate } = useCalendarContext();
 
   const {
@@ -145,6 +147,8 @@ const RightSide = ({ isAdmin }) => {
   } = useVolunteerCalendar({ numVolunteers: numVolunteers });
 
   const { canSave } = useSavedTimesContext();
+
+  if (!user?.id) return <p>Loading...</p>;
 
   return (
     <div className='rightside'>

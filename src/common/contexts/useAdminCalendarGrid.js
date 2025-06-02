@@ -23,6 +23,7 @@ export const useAdminCalendarGrid = () => {
 
   useEffect(() => {
     if (!user?.id) return;
+
     const fetchSessions = async () => {
       setLoadingSessions(true);
       try {
@@ -58,7 +59,7 @@ export const useAdminCalendarGrid = () => {
     };
 
     fetchSessions();
-  }, [user]);
+  }, [user?.id]);
 
   const getStartEndTimesFromEvent = ({ startRow, endRow, col }) => {
     if (startRow === null || endRow === null || col === null)
@@ -220,6 +221,10 @@ export const useAdminCalendarGrid = () => {
   };
 
   const handleSave = async () => {
+    if (!user?.id) {
+      return;
+    }
+
     const { title, description } = eventData;
     const { start, end } = getStartEndTimesFromEvent(eventData);
     if (!start || !end) return;
@@ -248,12 +253,9 @@ export const useAdminCalendarGrid = () => {
         return;
       }
       const result = await response.json();
-      if (!result.session) {
-        console.error('No session ID returned from backend');
-        return;
-      }
+
       const confirmedSessionWithId = {
-        id: result.session,
+        id: result.session.id,
         title,
         description,
         start: new Date(start),
@@ -321,6 +323,10 @@ export const useAdminCalendarGrid = () => {
   }, [confirmedTimes]);
 
   const handleSessionClick = (session) => {
+    if (typeof session.id !== 'string') {
+    console.log('Invalid session.id:', typeof session.id);
+    return;
+  }
     setSelectedSessionToDelete(session);
   };
 
@@ -329,7 +335,7 @@ export const useAdminCalendarGrid = () => {
 
     try {
       const response = await fetch(
-        buildUrl(`/admin/cancel_request/${selectedSessionToDelete.id}`),
+        buildUrl(`/admin/cancel_request/${String(selectedSessionToDelete?.id)}`),
         { method: 'PUT' }
       );
 
@@ -339,16 +345,28 @@ export const useAdminCalendarGrid = () => {
         return;
       }
 
-      //mark the selected-to-delete section as deleted
-      const updated = new Set(
-        Array.from(confirmedTimes).map((session) =>
-          session.id === selectedSessionToDelete.id
-            ? { ...session, status: 'cancelled' }
-            : session
-        )
+      const updatedArray = Array.from(confirmedTimes).map((session) =>
+        session.id === selectedSessionToDelete.id
+          ? { ...session, status: 'cancelled' }
+          : session
       );
-      setConfirmedTimes(updated);
+
+      // Check if anything actually changed
+      let changed = false;
+      const confirmedArray = Array.from(confirmedTimes);
+      for (let i = 0; i < confirmedArray.length; i++) {
+        if (confirmedArray[i].status !== updatedArray[i].status) {
+          changed = true;
+          break;
+      } }
+
+      // Only update if changed
+      if (changed) {
+        setConfirmedTimes(new Set(updatedArray));
+      }
       setSelectedSessionToDelete(null);
+
+        
     } catch (err) {
       console.error('Cancel network error:', err);
     }

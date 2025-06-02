@@ -68,6 +68,13 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
   };
 
   const handleSave = async () => {
+
+    if (!user?.id) {
+      console.warn('Blocked save: user.id is undefined');
+      return;
+    }
+    console.log("this is userid", user.id)
+
     setJustSaved(true);
     setCanSave(false);
     setPrevSelectedCells(new Map(selectedCells)); // saved cells are now fixed until next save
@@ -178,7 +185,7 @@ export const useVolunteerCalendar = ({ numVolunteers }) => {
 
   useEffect(() => {
     const fetchConfirmedSessions = async () => {
-      if (!user?.id) return;
+      if (!user?.id || user?.role === 'admin') return;
 
       try {
         const res = await fetch(
