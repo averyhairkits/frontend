@@ -1,4 +1,4 @@
-# Avery’s Helpful Hair Kits Scheduling Portal
+# Avery’s Helpful Hair Kits Scheduling Portal - FRONTEND
 
 This web app helps Avery’s Helpful Hair Kits streamline volunteer session sign-ups and admin session management. Built during the 2025 Discover Program at Northwestern.
 
@@ -23,17 +23,15 @@ Check out DISC:
 ```
 npm i
 ```
-### 2. Environment Variables
+### 2. Environment Variables for Local Development
 Create a `.env` file in the root directory with the following:
 
 ```env
 REACT_APP_BACKEND_URL=http://localhost:5050
-
-```
-npm i
 ```
 
-### 2. Set up formatting with Prettier and ESLint
+
+### 3. Set up formatting with Prettier and ESLint
 
 If you are contributing to this repo, you must make sure ALL your code is
 formatted according to our `eslint.config.mjs` and `.prettierrc.json` configs.
@@ -55,7 +53,7 @@ Here's how to set that up:
 
 Find more details about our linting config [here](#code-formatting-rules)
 
-### 3. Run the app in development mode
+### 4. Run the app in development mode
 
 ```
 npm start
